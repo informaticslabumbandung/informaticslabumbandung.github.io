@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal Lab IF | UM Bandung</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { 
+            --umb-blue: #002d5d; 
+            --umb-gold: #ffc107; 
+            --bg-light: #f4f7f9; 
+        }
+        
+        body { background-color: var(--bg-light); font-family: 'Poppins', sans-serif; }
+        
+        /* Navbar Styling - Konsisten */
+        .navbar { 
+            background: var(--umb-blue); 
+            border-bottom: 4px solid var(--umb-gold); 
+            transition: 0.3s; 
+        }
+        .navbar-brand { font-weight: 700; letter-spacing: 1px; color: white !important; }
+        .nav-link { 
+            font-weight: 500; 
+            color: rgba(255,255,255,0.8) !important; 
+            margin: 0 10px; 
+            transition: 0.3s;
+        }
+        
+        /* Highlight Menu Aktif (JADWAL) */
+        .nav-link:hover, .nav-link.active { 
+            color: var(--umb-gold) !important; 
+            font-weight: 700 !important; 
+        }
+
+        /* Looker Studio Container */
+        .report-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-top: 75%; /* Rasio 4:3 */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            background: white;
+            border: 1px solid #ddd;
+        }
+        
+        .report-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Footer Styling - Samakan dengan index.html */
+        .main-footer { background-color: #0b1d33; color: #ffffff; padding: 70px 0 0; }
+        .footer-title { color: var(--umb-gold); font-weight: 700; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
+        .footer-link { color: rgba(255,255,255,0.7); text-decoration: none; display: block; margin-bottom: 12px; transition: 0.3s; }
+        .footer-link:hover { color: var(--umb-gold); padding-left: 5px; }
+        
+        .copyright-area { background: #071424; padding: 25px 0; border-top: 1px solid rgba(255,255,255,0.05); }
+        .copyright-text { color: rgba(255,255,255,0.5); font-size: 0.85rem; }
+        .made-by { color: rgba(255,255,255,0.5); font-size: 0.85rem; display: block; margin-top: 5px; }
+        .made-by strong { color: var(--umb-gold); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <i class="fas fa-university me-3 text-warning"></i>
+                <div>
+                    <span class="fs-6 d-block fw-bold" style="letter-spacing: 0.5px;">LABORATORIUM INFORMATIKA</span>
+                    <small class="fs-6 opacity-75">UM BANDUNG</small>
+                </div>
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto text-start py-3 py-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="/">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/jadwal/">JADWAL</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/fasilitas/">FASILITAS</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/peminjaman/">PEMINJAMAN</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/bebas_lab/">BEBAS LAB</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold" style="color: var(--umb-blue);">Jadwal Penggunaan Ruangan</h2>
+            <p class="text-muted">Laboratorium Teknik Informatika - Universitas Muhammadiyah Bandung</p>
+            <hr class="mx-auto" style="width: 60px; height: 4px; background: var(--umb-gold); opacity: 1;">
+        </div>
+
+        <div class="report-container">
+            <iframe 
+                src="https://lookerstudio.google.com/embed/reporting/12c26ded-64f2-4a86-9ba9-84e2af31bd50/page/p_e4dsxxz9td" 
+                allowfullscreen 
+                sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
+            </iframe>
+        </div>
+        
+        <div class="alert alert-warning mt-4 border-0 shadow-sm" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-info-circle fs-4 me-3"></i>
+                <div>
+                    <strong>Informasi:</strong> Jadwal di atas tersinkronisasi langsung dengan sistem input asisten lab. Jika laporan tidak muncul, silakan tekan <strong>F5</strong> atau refresh halaman.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="d-flex align-items-center mb-4">
+                        <img src="https://umbandung.ac.id/assets/img/logo-umb.png" width="50" class="me-3">
+                        <div>
+                            <h6 class="fw-bold mb-0 text-white">LABORATORIUM INFORMATIKA</h6>
+                            <small style="color: #ffc107;">UM BANDUNG</small>
+                        </div>
+                    </div>
+                    <p class="footer-description small">
+                        Pusat praktikum, riset, dan pengembangan teknologi mahasiswa Teknik Informatika Universitas Muhammadiyah Bandung. Unggul dalam keilmuan dan islami dalam karakter.
+                    </p>
+                    <div class="mt-4">
+                        <a href="#" class="text-white me-3 fs-5"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white me-3 fs-5"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-white fs-5"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-6 px-lg-4">
+                    <h6 class="footer-title">Tautan</h6>
+                    <a href="index.html" class="footer-link small">Home</a>
+                    <a href="jadwal.html" class="footer-link small">Jadwal Lab</a>
+                    <a href="fasilitas.html" class="footer-link small">Fasilitas</a>
+                    <a href="peminjaman.html" class="footer-link small">Peminjaman</a>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h6 class="footer-title">Layanan</h6>
+                    <a href="bebas_lab.html" class="footer-link small">Bebas Laboratorium</a>
+                    <a href="#" class="footer-link small">Asisten Laboratorium</a>
+                    <a href="https://lms.umbandung.ac.id/login/index.php" target="_blank" class="footer-link small">E-Learning UMB</a>
+                    <a href="#" class="footer-link small">Pusat Bantuan</a>
+                </div>
+
+                <div class="col-lg-3">
+                    <h6 class="footer-title">Kontak Kami</h6>
+                    <div class="footer-contact-text small">
+                        <p><i class="fas fa-map-marker-alt text-warning me-2"></i> Jl. Soekarno Hatta No.752, Cipadung Kidul, Bandung.</p>
+                        <p><i class="fas fa-envelope text-warning me-2"></i> informaticslab.umbandung@gmail.com</p>
+                        <p><i class="fas fa-phone text-warning me-2"></i> (022) 1234567</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright-area mt-5">
+            <div class="container text-center">
+                <span class="copyright-text">
+                    &copy; <span id="tahun-otomatis"></span> Teknik Informatika. All rights reserved
+                </span>
+                <span class="made-by">
+                    made by <strong>Laboratory of Informatics</strong>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('tahun-otomatis').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Peminjaman Lab IF | UM Bandung</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --umb-blue: #002d5d; --umb-gold: #ffc107; --bg-light: #f4f7f9; }
+        body { background-color: var(--bg-light); font-family: 'Poppins', sans-serif; }
+        .navbar { background: var(--umb-blue); border-bottom: 4px solid var(--umb-gold); }
+        .nav-link.active { color: var(--umb-gold) !important; font-weight: 700; }
+        
+        .hero-card { 
+            border-radius: 20px; 
+            background: linear-gradient(135deg, var(--umb-blue) 0%, #004a99 100%);
+            color: white; padding: 40px 20px; margin-bottom: 30px; 
+        }
+        .card-info { 
+            border-radius: 15px; background: white; padding: 25px; height: 100%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--umb-gold);
+        }
+        .info-title { color: var(--umb-blue); font-weight: 700; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .card-table { border-radius: 15px; background: white; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        thead { background: var(--umb-blue); color: white; }
+        /* Footer Styling - Samakan dengan index.html */
+        .main-footer { background-color: #0b1d33; color: #ffffff; padding: 70px 0 0; }
+        .footer-title { color: var(--umb-gold); font-weight: 700; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
+        .footer-link { color: rgba(255,255,255,0.7); text-decoration: none; display: block; margin-bottom: 12px; transition: 0.3s; }
+        .footer-link:hover { color: var(--umb-gold); padding-left: 5px; }
+        
+        .copyright-area { background: #071424; padding: 25px 0; border-top: 1px solid rgba(255,255,255,0.05); }
+        .copyright-text { color: rgba(255,255,255,0.5); font-size: 0.85rem; }
+        .made-by { color: rgba(255,255,255,0.5); font-size: 0.85rem; display: block; margin-top: 5px; }
+        .made-by strong { color: var(--umb-gold); }
+        /* Pastikan content modal membulat sempurna */
+        #formModal .modal-content {
+            border-radius: 20px;
+            border: none;
+            overflow: hidden; /* Penting agar background header tidak bocor keluar radius */
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+        }
+
+        /* Label form agar lebih profesional */
+        #formModal .form-label {
+            color: var(--umb-blue);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Input field yang lebih clean */
+        #formModal .form-control {
+            border: 1px solid #e0e0e0;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        #formModal .form-control:focus {
+            border-color: var(--umb-blue);
+            box-shadow: 0 0 0 0.25rem rgba(0, 45, 93, 0.1);
+        }
+
+        /* Samakan warna semua tombol primary agar tidak terlalu terang */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--umb-blue) 0%, #004a99 100%) !important;
+            border: none !important;
+        }
+
+        /* Samakan warna tombol outline agar serasi */
+        .btn-outline-primary {
+            color: var(--umb-blue) !important;
+            border-color: var(--umb-blue) !important;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--umb-blue) !important;
+            color: white !important;
+        }
+
+        /* Samakan warna penanda nomor / badge */
+        .badge.bg-primary {
+            background-color: var(--umb-blue) !important;
+            font-weight: 600;
+        }
+
+        /* Pastikan warna teks di card-info (poin 1, 2, 3) juga biru gelap */
+        .text-primary {
+            color: var(--umb-blue) !important;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <i class="fas fa-university me-3 text-warning"></i>
+                <div>
+                    <span class="fs-6 d-block fw-bold">LABORATORIUM INFORMATIKA</span>
+                    <small class="fs-6 opacity-75">UM BANDUNG</small>
+                </div>
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto text-start py-3 py-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="site-labif-umbandung/">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="site-labif-umbandung/jadwal/">JADWAL</a></li>
+                    <li class="nav-item"><a class="nav-link" href="site-labif-umbandung/fasilitas/">FASILITAS</a></li>
+                    <li class="nav-item"><a class="nav-link" href="site-labif-umbandung/peminjaman/">PEMINJAMAN</a></li>
+                    <li class="nav-item"><a class="nav-link" href="site-labif-umbandung/bebas_lab/">BEBAS LAB</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="hero-card text-center">
+            <h1 class="fw-bold">Peminjaman Ruang & Alat</h1>
+            <p class="lead opacity-75">Layanan pengajuan fasilitas terpadu Laboratorium Informatika.</p>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="card-info shadow-sm" style="border-top: 4px solid var(--umb-blue);">
+                    <h6 class="fw-bold text-primary mb-3"><i class="fas fa-file-signature me-2"></i> 1. ISI SURAT PERMOHONAN</h6>
+                    <ul class="ps-3 mb-0" style="font-size: 0.8rem; line-height: 1.6;">
+                        <li>a. Nama kegiatan</li>
+                        <li>b. Tanggal, waktu, & lokasi</li>
+                        <li>c. Alat/Ruang yang dipinjam</li>
+                        <li>d. Jumlah peserta</li>
+                        <li>e. Nama & No. HP PIC</li>
+                    </ul>
+                    <hr>
+                    <small class="text-danger d-block mt-2" style="font-size: 0.7rem;">*Surat ditujukan ke Kaprodi Teknik Informatika.</small>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card-info shadow-sm" style="border-top: 4px solid var(--umb-gold);">
+                    <h6 class="fw-bold text-dark mb-3"><i class="fas fa-clock me-2 text-warning"></i> 2. JAM OPERASIONAL</h6>
+                    <div class="small" style="font-size: 0.8rem;">
+                        <div class="d-flex justify-content-between mb-1"><span>Senin - Kamis</span><b>08:00 - 16:00</b></div>
+                        <div class="d-flex justify-content-between mb-1"><span>Jumat</span><b>08:00 - 16:00</b></div>
+                        <div class="d-flex justify-content-between mb-2"><span>Sabtu</span><b>08:00 - 14:00</b></div>
+                        
+                        <div class="bg-light p-2 rounded mb-3 border-start border-3 border-warning">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted"><i class="fas fa-utensils me-1"></i> Istirahat (Sen-Kam):</span>
+                                <b class="text-danger">12:00 - 13:00</b>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted"><i class="fas fa-mosque me-1"></i> Istirahat (Jumat):</span>
+                                <b class="text-danger">11:30 - 13:00</b>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info p-2 mb-0" style="font-size: 0.75rem;">
+                            <strong>Note:</strong> Pengajuan maksimal <b>H-3 Kerja</b> sebelum kegiatan.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card-info shadow-sm" style="border-top: 4px solid #dc3545;">
+                    <h6 class="fw-bold text-danger mb-3"><i class="fas fa-id-card me-2"></i> 3. PENYERAHAN H-1</h6>
+                    <p class="small mb-2" style="font-size: 0.8rem;">Jika status <b>"DISETUJUI"</b>, serahkan berkas fisik ke Laboran paling lambat H-1:</p>
+                    <ul class="ps-3 mb-2" style="font-size: 0.8rem;">
+                        <li>Surat Komitmen (Asli)</li>
+                        <li>Kartu Identitas (KTP/KTM)</li>
+                    </ul>
+                    <a href="https://s.id/komitmenpeminjamanLabIF" target="_blank" class="btn btn-sm btn-outline-danger w-100 fw-bold py-2 mt-1" style="font-size: 0.75rem;">
+                        <i class="fas fa-download me-1"></i> Download Surat Komitmen
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-table">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+                <h4 class="fw-bold text-dark mb-0">
+                    <i class="fas fa-clipboard-check me-2 text-warning"></i>Status Pengajuan Bebas Lab
+                </h4>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#formModal">
+                        <i class="fas fa-plus-circle me-1"></i> Pengajuan Baru
+                    </button>
+                    <button class="btn btn-outline-primary rounded-pill px-3 shadow-sm" onclick="location.reload()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </div>
+
+            <div class="alert alert-light border-0 small mb-3 p-0 text-muted">
+                <i class="fas fa-info-circle me-1"></i> Hanya upload Surat Permohonan. Surat Komitmen dibawa fisik saat hari-H.
+            </div>
+
+            <div id="loading" class="text-center py-4">
+                <div class="spinner-border text-primary"></div>
+            </div>
+            
+            <div class="table-responsive">
+                <table id="tabel-peminjaman" class="table table-hover w-100" style="display:none;">
+                    <thead><tr id="table-header"></tr></thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="formModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered"> 
+            <div class="modal-content border-0 shadow" style="border-radius: 20px;">
+                <div class="modal-header border-0 py-4 px-4" style="background: linear-gradient(135deg, var(--umb-blue) 0%, #004a99 100%); border-radius: 20px 20px 0 0;">
+                    <h5 class="modal-title fw-bold text-white mb-0">
+                        <i class="fas fa-file-signature me-2 text-warning"></i>Form Pengajuan Bebas Lab
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="peminjamanForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Email</label>
+                                <input type="email" 
+                                    name="email" 
+                                    id="emailInput" 
+                                    class="form-control" 
+                                    placeholder="contoh@email.com" 
+                                    required>
+                                <div id="email-feedback" class="text-danger mt-1 fw-bold" style="font-size: 0.75rem; display: none;">
+                                    <i class="fas fa-envelope-open me-1"></i> Format email salah! (Gunakan @ dan domain)
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3"><label class="form-label fw-bold">Nama Kegiatan</label><input type="text" name="namaKegiatan" class="form-control" required></div>
+                            <div class="col-md-6 mb-3"><label class="form-label fw-bold">Nama PIC</label><input type="text" name="namaPIC" class="form-control" required></div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold text-dark">WhatsApp PIC</label>
+                                <input type="text" 
+                                    name="whatsapp" 
+                                    id="whatsappInput"
+                                    class="form-control" 
+                                    placeholder="Contoh: 08123456789"
+                                    autocomplete="off"
+                                    required>
+                                <div id="wa-feedback" class="text-danger mt-1 fw-bold" style="font-size: 0.75rem; display: none;">
+                                    <i class="fas fa-times-circle me-1"></i> Hanya boleh angka (0-9)!
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3"><label class="form-label fw-bold">Tanggal</label><input type="date" name="tanggal" class="form-control" required></div>
+                            <div class="col-md-4 mb-3"><label class="form-label fw-bold">Jam Mulai</label><input type="time" name="waktuMulai" class="form-control" required></div>
+                            <div class="col-md-4 mb-3"><label class="form-label fw-bold">Jam Selesai</label><input type="time" name="waktuSelesai" class="form-control" required></div>
+                            <div class="col-12 mb-4">
+                                <label class="fw-bold">Upload Surat Permohonan (Hanya PDF)</label>
+                                <input type="file" id="fileInput" name="myFile" class="form-control" accept=".pdf" required>
+                                <small class="text-muted d-block mt-1">Maksimal ukuran file: <b>2 MB</b></small>
+                            </div>
+                        </div>
+                        <div id="statusMsg"></div>
+                        <button type="submit" id="submitBtn" class="btn btn-primary w-100 py-3 fw-bold rounded-pill shadow-lg border-0 mt-3" 
+                                style="background: linear-gradient(135deg, var(--umb-blue) 0%, #004a99 100%);">
+                            <i class="fas fa-paper-plane me-2"></i> KIRIM PENGAJUAN SEKARANG
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="d-flex align-items-center mb-4">
+                        <img src="https://umbandung.ac.id/assets/img/logo-umb.png" width="50" class="me-3">
+                        <div>
+                            <h6 class="fw-bold mb-0 text-white">LABORATORIUM INFORMATIKA</h6>
+                            <small style="color: #ffc107;">UM BANDUNG</small>
+                        </div>
+                    </div>
+                    <p class="footer-description small">
+                        Pusat praktikum, riset, dan pengembangan teknologi mahasiswa Teknik Informatika Universitas Muhammadiyah Bandung. Unggul dalam keilmuan dan islami dalam karakter.
+                    </p>
+                    <div class="mt-4">
+                        <a href="#" class="text-white me-3 fs-5"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white me-3 fs-5"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-white fs-5"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-6 px-lg-4">
+                    <h6 class="footer-title">Tautan</h6>
+                    <a href="index.html" class="footer-link small">Home</a>
+                    <a href="jadwal.html" class="footer-link small">Jadwal Lab</a>
+                    <a href="fasilitas.html" class="footer-link small">Fasilitas</a>
+                    <a href="peminjaman.html" class="footer-link small">Peminjaman</a>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h6 class="footer-title">Layanan</h6>
+                    <a href="bebas_lab.html" class="footer-link small">Bebas Laboratorium</a>
+                    <a href="#" class="footer-link small">Asisten Laboratorium</a>
+                    <a href="https://lms.umbandung.ac.id/login/index.php" target="_blank" class="footer-link small">E-Learning UMB</a>
+                    <a href="#" class="footer-link small">Pusat Bantuan</a>
+                </div>
+
+                <div class="col-lg-3">
+                    <h6 class="footer-title">Kontak Kami</h6>
+                    <div class="footer-contact-text small">
+                        <p><i class="fas fa-map-marker-alt text-warning me-2"></i> Jl. Soekarno Hatta No.752, Cipadung Kidul, Bandung.</p>
+                        <p><i class="fas fa-envelope text-warning me-2"></i> informaticslab.umbandung@gmail.com</p>
+                        <p><i class="fas fa-phone text-warning me-2"></i> (022) 1234567</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright-area mt-5">
+            <div class="container text-center">
+                <span class="copyright-text">
+                    &copy; <span id="tahun-otomatis"></span> Teknik Informatika. All rights reserved
+                </span>
+                <span class="made-by">
+                    made by <strong>Laboratory of Informatics</strong>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="security.js"></script>
+    <script>
+        const SHEET_ID = '1Kd6te5CvI4rdn05G1taE9uaUApYxJtJdqmQeqnrut1A';
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzS5rA-hZfqwVJo4WSIn7xcvVk5hSznypesheqt25c5b56uCwWTzJerzAMoC0S-u4t8/exec"; 
+
+        // 1. AMBIL DATA
+        function ambilData() {
+            const script = document.createElement('script');
+            script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=responseHandler:prosesData`;
+            document.body.appendChild(script);
+        }
+
+        window.prosesData = function(data) {
+            try {
+                const kolomTarget = ["Nama Kegiatan", "Nama PIC", "Tanggal Kegiatan", "Waktu Mulai Kegiatan", "Waktu Selesai Kegiatan", "Keterangan", "Status Kegiatan"];
+                const allCols = data.table.cols;
+                const allRows = data.table.rows;
+                const indeksTarget = [];
+                let hHtml = '';
+                
+                kolomTarget.forEach(n => {
+                    const idx = allCols.findIndex(c => c.label && c.label.trim().toLowerCase() === n.toLowerCase());
+                    if (idx !== -1) { indeksTarget.push({ idx: idx, label: n }); hHtml += `<th>${n}</th>`; }
+                });
+                document.getElementById('table-header').innerHTML = hHtml;
+
+                let bHtml = '';
+                allRows.forEach(row => {
+                    if (!row.c || !row.c[indeksTarget[0].idx]) return;
+                    bHtml += '<tr>';
+                    indeksTarget.forEach(t => {
+                        let val = row.c[t.idx] ? (row.c[t.idx].f || row.c[t.idx].v || '') : '';
+                        
+                        // STATUS BADGE
+                        if (t.label === "Status Kegiatan") {
+                            let s = val.toString().toLowerCase();
+                            let cls = s.includes("selesai") || s.includes("setuju") || s.includes("diterima") ? "bg-success" :
+                                    s.includes("proses") || s.includes("antre") || s.includes("pending") ? "bg-warning text-dark" :
+                                    s.includes("batal") || s.includes("tolak") || s.includes("reject") ? "bg-danger" : "bg-secondary";
+                            val = `<span class="badge ${cls} shadow-sm px-3 py-2" style="min-width: 80px; border-radius: 8px;">${val.toUpperCase()}</span>`;
+                        }
+
+                        // KETERANGAN BOX
+                        if (t.label === "Keterangan") {
+                            let ket = val.toString().toLowerCase();
+                            if (ket.includes("diterima") || ket.includes("acc") || ket.includes("ambil")) {
+                                val = `<div class="text-success fw-bold"><i class="fas fa-check-circle me-1"></i> ${val}</div>`;
+                            } else if (ket.includes("hubungi laboran") || ket.includes("antre") || ket.includes("pending")) {
+                                val = `<div class="badge bg-info text-white p-2" style="border-radius: 8px;"><i class="fas fa-info-circle me-1"></i> ${val}</div>`;
+                            } else if (ket.includes("ditolak") || ket.includes("gagal") || ket.includes("penuh")) {
+                                val = `<div class="text-danger fw-bold"><i class="fas fa-times-circle me-1"></i> ${val}</div>`;
+                            } else {
+                                val = `<div class="text-muted small italic">${val}</div>`;
+                            }
+                        }
+                        bHtml += `<td class="align-middle">${val}</td>`;
+                    });
+                    bHtml += '</tr>';
+                });
+
+                document.getElementById('table-body').innerHTML = bHtml;
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('tabel-peminjaman').style.display = 'table';
+                
+                if (!$.fn.DataTable.isDataTable('#tabel-peminjaman')) {
+                    $('#tabel-peminjaman').DataTable({ 
+                        "order": [[ 2, "desc" ]], // Urutkan berdasarkan Tanggal Kegiatan (Indeks 2)
+                        "language": {"search": "CARI:"} 
+                    });
+                }
+            } catch (e) { console.error(e); }
+        };
+
+        // 2. VALIDASI INPUT & FILE
+        $(document).ready(function() {
+            ambilData();
+
+            // Validasi WA
+            document.getElementById('whatsappInput').addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+                const feedback = document.getElementById('wa-feedback');
+                feedback.style.display = /[^0-9]/.test(this.value) ? 'block' : 'none';
+                this.classList.toggle('is-invalid', feedback.style.display === 'block');
+            });
+
+            // Validasi File (Pake SweetAlert!)
+            document.getElementById('fileInput').onchange = function() {
+                const file = this.files[0];
+                if (file && file.size > 2 * 1024 * 1024) {
+                    Swal.fire('File Terlalu Besar!', 'Maksimal ukuran file adalah 2MB bos.', 'error');
+                    this.value = "";
+                }
+            };
+
+            // Validasi Email
+            const emailInput = document.getElementById('emailInput');
+            emailInput.addEventListener('blur', function() {
+                this.value = this.value.trim();
+                const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const isValid = pattern.test(this.value) || this.value === "";
+                document.getElementById('email-feedback').style.display = isValid ? 'none' : 'block';
+                this.classList.toggle('is-invalid', !isValid);
+            });
+        });
+
+        // 3. SUBMIT FORM
+        document.getElementById('peminjamanForm').onsubmit = function(e) {
+            e.preventDefault();
+            const file = document.getElementById('fileInput').files[0];
+            
+            if (!file) {
+                Swal.fire('Waduh!', 'File BAP Sidang wajib diupload bos.', 'warning');
+                return;
+            }
+
+            Swal.fire({
+                title: 'Sedang Memproses...',
+                text: 'Mohon tunggu sebentar, data sedang diproses.',
+                allowOutsideClick: false,
+                didOpen: () => { Swal.showLoading(); }
+            });
+
+            const dataObj = Object.fromEntries(new FormData(this).entries());
+            const reader = new FileReader();
+
+            reader.onload = function(ev) {
+                dataObj.myFile = { data: ev.target.result.split(',')[1], name: file.name, mimeType: file.type };
+                fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify(dataObj), mode: 'no-cors' })
+                .then(() => {
+                    Swal.fire({ icon: 'success', title: 'Berhasil!', text: 'Silakan cek status di tabel secara berkala.', timer: 3000, showConfirmButton: false })
+                    .then(() => { location.reload(); });
+                })
+                .catch(err => { Swal.fire('Gagal!', err.message, 'error'); });
+            };
+            reader.readAsDataURL(file);
+        };
+    </script>
+</body>
+</html>
