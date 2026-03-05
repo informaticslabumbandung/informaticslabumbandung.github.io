@@ -8,10 +8,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
+            --umb-blue: #002d5d;
+            --umb-gold: #ffc107;
             --primary-neon: #00f2ff;
             --success-neon: #39ff14;
             --danger-neon: #ff3131;
-            --bg-dark: #0a0e14;
+            --bg-dark: #050a10;
         }
 
         body { 
@@ -21,20 +23,20 @@
             justify-content: center; 
             min-height: 100vh; 
             padding: 20px; 
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Poppins', sans-serif;
             color: white;
             overflow: hidden;
         }
 
-        /* Background Glow */
+        /* Ambient Glow Background */
         body::before {
             content: "";
             position: absolute;
-            width: 300px;
-            height: 300px;
-            background: var(--primary-neon);
-            filter: blur(150px);
-            opacity: 0.15;
+            width: 400px;
+            height: 400px;
+            background: var(--umb-blue);
+            filter: blur(180px);
+            opacity: 0.4;
             z-index: -1;
         }
 
@@ -43,23 +45,40 @@
             width: 100%; 
             border-radius: 30px; 
             text-align: center; 
-            border: 1px solid rgba(0, 242, 255, 0.3);
-            background: rgba(255, 255, 255, 0.05); 
-            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 193, 7, 0.2);
+            background: rgba(0, 45, 93, 0.2); 
+            backdrop-filter: blur(20px);
             position: relative;
             overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
-        /* Scanning Line Animation */
+        .logo-container {
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .logo-lab {
+            width: 80px;
+            height: 80px;
+            background: white;
+            padding: 10px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(255, 193, 7, 0.3);
+            border: 2px solid var(--umb-gold);
+        }
+
+        /* Scanning Line */
         .scanner-line {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 2px;
-            background: var(--primary-neon);
-            box-shadow: 0 0 15px var(--primary-neon);
-            animation: scan 3s linear infinite;
+            height: 3px;
+            background: linear-gradient(to right, transparent, var(--umb-gold), transparent);
+            box-shadow: 0 0 15px var(--umb-gold);
+            animation: scan 4s linear infinite;
             z-index: 10;
         }
 
@@ -71,106 +90,114 @@
         .status-icon { 
             font-size: 4rem; 
             margin-bottom: 15px;
-            filter: drop-shadow(0 0 10px currentColor);
+            filter: drop-shadow(0 0 15px currentColor);
         }
 
         .label-text { 
-            font-size: 0.75rem; 
-            color: rgba(255,255,255,0.5); 
+            font-size: 0.7rem; 
+            color: var(--umb-gold); 
             text-transform: uppercase; 
             letter-spacing: 2px; 
+            font-weight: 600;
         }
 
         .data-text { 
             font-weight: 700; 
             color: white; 
-            font-size: 1.2rem; 
-            letter-spacing: 1px;
-            text-shadow: 0 0 5px rgba(255,255,255,0.3);
+            font-size: 1.1rem; 
+            letter-spacing: 0.5px;
         }
 
         .data-box {
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255, 193, 7, 0.1);
+            border-left: 4px solid var(--umb-gold);
             transition: 0.3s;
         }
 
-        .data-box:hover {
-            border-color: var(--primary-neon);
-            background: rgba(0, 242, 255, 0.05);
+        .official-badge {
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            border: 1px solid var(--success-neon);
+            color: var(--success-neon);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 20px;
         }
 
         .btn-retry {
+            border: 1px solid var(--umb-gold);
+            color: var(--umb-gold);
             background: transparent;
-            border: 1px solid var(--primary-neon);
-            color: var(--primary-neon);
+            font-weight: bold;
+            letter-spacing: 1px;
             transition: 0.3s;
         }
 
         .btn-retry:hover {
-            background: var(--primary-neon);
-            color: black;
-            box-shadow: 0 0 20px var(--primary-neon);
+            background: var(--umb-gold);
+            color: var(--umb-blue);
+            box-shadow: 0 0 20px rgba(255, 193, 7, 0.4);
         }
 
-        .official-badge {
-            font-size: 0.7rem;
-            letter-spacing: 3px;
-            border: 1px solid var(--success-neon);
-            color: var(--success-neon);
-            display: inline-block;
-            padding: 5px 15px;
-            border-radius: 50px;
-            text-shadow: 0 0 5px var(--success-neon);
-        }
-
-        #loading p {
-            animation: pulse 1.5s infinite;
-        }
+        #loading p { animation: pulse 1.5s infinite; color: var(--umb-gold); }
 
         @keyframes pulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            50% { opacity: 0.4; }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div class="card card-verif shadow-lg p-5">
         <div class="scanner-line" id="line-scan"></div>
 
+        <div class="logo-container">
+            <!-- Icon Universitas sebagai Logo -->
+            <div class="d-inline-block logo-lab mb-2">
+                <i class="fas fa-university fa-3x text-dark"></i>
+            </div>
+            <div class="small fw-bold text-uppercase" style="letter-spacing: 1px; color: var(--umb-gold);">Lab Informatika</div>
+            <div class="small opacity-50">UM Bandung</div>
+        </div>
+
         <!-- LOADING STATE -->
         <div id="loading">
-            <div class="spinner-border text-info mb-3" style="width: 3rem; height: 3rem;" role="status"></div>
-            <p class="text-info small fw-bold mt-2">ACCESSING ENCRYPTED DATABASE...</p>
+            <div class="spinner-border text-warning mb-3" style="width: 2.5rem; height: 2.5rem;" role="status"></div>
+            <p class="small fw-bold">ENCRYPTING CONNECTION...</p>
         </div>
 
         <!-- SUCCESS STATE -->
         <div id="content" style="display:none;">
-            <div class="status-icon text-success"><i class="fas fa-shield-check"></i></div>
-            <h4 class="fw-bold text-success mb-1">VERIFIED</h4>
-            <div class="official-badge mb-4">AUTHENTIC DOCUMENT</div>
+            <div class="status-icon text-success"><i class="fas fa-check-shield"></i></div>
+            <h4 class="fw-bold mb-1">DOKUMEN ASLI</h4>
+            <div class="official-badge">Verified System</div>
             
-            <div class="text-start p-4 rounded-4 data-box mb-4">
-                <div class="mb-3 border-bottom border-secondary pb-2">
-                    <span class="label-text"><i class="fas fa-user me-2"></i>FULL NAME</span>
+            <div class="text-start p-3 rounded-3 data-box mb-4">
+                <div class="mb-3 border-bottom border-white border-opacity-10 pb-2">
+                    <span class="label-text">Nama Lengkap</span>
                     <div id="v-nama" class="data-text">...</div>
                 </div>
                 <div>
-                    <span class="label-text"><i class="fas fa-id-card me-2"></i>IDENTIFICATION NO.</span>
+                    <span class="label-text">NIM / ID</span>
                     <div id="v-nim" class="data-text">...</div>
                 </div>
             </div>
             
-            <p class="small text-muted mb-0" style="font-size: 0.65rem;">Timestamp: <span id="v-time"></span></p>
+            <p class="small text-muted mb-0" style="font-size: 0.6rem;">Verified at: <span id="v-time"></span></p>
         </div>
 
         <!-- ERROR STATE -->
         <div id="error-box" style="display:none;">
-            <div class="status-icon text-danger"><i class="fas fa-radiation"></i></div>
-            <h3 class="fw-bold text-danger mb-1">ACCESS DENIED</h3>
-            <p id="error-msg" class="text-white-50 small mb-4">Data Not Found.</p>
-            <button onclick="location.reload()" class="btn btn-sm btn-retry rounded-pill px-4">RE-SCAN</button>
+            <div class="status-icon text-danger"><i class="fas fa-exclamation-triangle"></i></div>
+            <h3 class="fw-bold text-danger mb-1">INVALID</h3>
+            <p id="error-msg" class="text-white-50 small mb-4">Data tidak terdaftar.</p>
+            <button onclick="location.reload()" class="btn btn-sm btn-retry rounded-pill px-4">SCAN ULANG</button>
         </div>
     </div>
 
@@ -183,7 +210,7 @@
         document.getElementById('v-time').innerText = new Date().toLocaleString('id-ID');
         
         if (!nimDariQR) {
-            tampilkanError("QR Code Invalid. Mohon gunakan dokumen resmi Lab IF.");
+            tampilkanError("QR Code tidak terbaca atau link tidak lengkap.");
             return;
         }
 
@@ -194,14 +221,12 @@
             const jsonData = JSON.parse(text.substring(47).slice(0, -2));
             const rows = jsonData.table.rows;
 
-            // Cari di Kolom D (Index 3)
             const barisCocok = rows.find(r => {
                 if (!r.c[3]) return false;
                 const nimDiSheet = (r.c[3].f || r.c[3].v || "").toString().trim();
                 return nimDiSheet === nimDariQR.trim();
             });
 
-            // Simulasi Delay biar keliatan "Mikir"
             setTimeout(() => {
                 if (barisCocok) {
                     document.getElementById('v-nama').innerText = barisCocok.c[2] ? (barisCocok.c[2].v || "-") : "-";
@@ -211,12 +236,12 @@
                     document.getElementById('content').style.display = 'block';
                     document.getElementById('line-scan').style.display = 'none';
                 } else {
-                    tampilkanError(`CREDENTIALS NOT FOUND: <br><span class='text-danger'>ID ${nimDariQR}</span> is not registered.`);
+                    tampilkanError(`DATA TIDAK DITEMUKAN: <br><span class='text-danger'>NIM ${nimDariQR}</span> belum terverifikasi Bebas Lab.`);
                 }
-            }, 1500);
+            }, 2000);
 
         } catch (err) {
-            tampilkanError("DATABASE CONNECTION FAILED. PLEASE RETRY.");
+            tampilkanError("SERVER TIMEOUT. PASTIKAN KONEKSI INTERNET STABIL.");
         }
     }
 

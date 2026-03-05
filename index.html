@@ -18,7 +18,6 @@
         
         body { font-family: 'Poppins', sans-serif; background-color: var(--bg-light); }
 
-        /* Navbar Styling - Konsisten dengan Peminjaman.html */
         .navbar { 
             background: var(--umb-blue); 
             border-bottom: 4px solid var(--umb-gold); 
@@ -32,7 +31,6 @@
             transition: 0.3s;
         }
         
-        /* Setting Bold untuk Menu Aktif/Hover */
         .nav-link:hover, .nav-link.active { 
             color: var(--umb-gold) !important; 
             font-weight: 700 !important; 
@@ -56,8 +54,7 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
         .card-fitur:hover { transform: translateY(-10px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        
-        /* Footer Styling - Samakan dengan index.html */
+                
         .main-footer { background-color: #0b1d33; color: #ffffff; padding: 70px 0 0; }
         .footer-title { color: var(--umb-gold); font-weight: 700; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
         .footer-link { color: rgba(255,255,255,0.7); text-decoration: none; display: block; margin-bottom: 12px; transition: 0.3s; }
@@ -73,7 +70,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <a class="navbar-brand d-flex align-items-center" href="/">
                 <i class="fas fa-university me-3 text-warning"></i>
                 <div>
                     <span class="fs-6 d-block fw-bold" style="letter-spacing: 0.5px;">LABORATORIUM INFORMATIKA</span>
@@ -114,7 +111,7 @@
                         <div class="fs-1 mb-3">📄</div>
                         <h4 class="fw-bold">Bebas Lab</h4>
                         <p class="text-muted">Pengajuan surat keterangan bebas laboratorium untuk syarat yudisium/wisuda.</p>
-                        <a href="bebas_lab.html" class="fw-bold text-decoration-none" style="color: var(--umb-blue);">Ajukan Sekarang →</a>
+                        <a href="bebas-lab/" class="fw-bold text-decoration-none" style="color: var(--umb-blue);">Ajukan Sekarang →</a>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -122,7 +119,7 @@
                         <div class="fs-1 mb-3">💻</div>
                         <h4 class="fw-bold">Peminjaman</h4>
                         <p class="text-muted">Booking ruangan dan peminjaman alat untuk penelitian atau kegiatan mahasiswa.</p>
-                        <a href="peminjaman.html" class="fw-bold text-decoration-none" style="color: var(--umb-blue);">Cek Prosedur →</a>
+                        <a href="peminjaman/" class="fw-bold text-decoration-none" style="color: var(--umb-blue);">Cek Prosedur →</a>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -130,7 +127,7 @@
                         <div class="fs-1 mb-3">🗓️</div>
                         <h4 class="fw-bold">Jadwal Lab</h4>
                         <p class="text-muted">Informasi jadwal praktikum dan penggunaan laboratorium Informatika harian.</p>
-                        <a href="jadwal.html" class="fw-bold text-decoration-none" style="color: var(--umb-blue);">Lihat Jadwal</a>
+                        <a href="jadwal/" class="fw-bold text-decoration-none" style="color: var(--umb-blue);">Lihat Jadwal →</a>
                     </div>
                 </div>
             </div>
@@ -142,7 +139,10 @@
             <div class="row g-4">
                 <div class="col-lg-4">
                     <div class="d-flex align-items-center mb-4">
-                        <img src="https://umbandung.ac.id/assets/img/logo-umb.png" width="50" class="me-3">
+                        <div class="me-3 d-flex align-items-center justify-content-center" 
+                            style="width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 12px; border: 1px solid rgba(255,193,7,0.3);">
+                            <i class="fas fa-university fs-4" style="color: #ffc107;"></i>
+                        </div>
                         <div>
                             <h6 class="fw-bold mb-0 text-white">LABORATORIUM INFORMATIKA</h6>
                             <small style="color: #ffc107;">UM BANDUNG</small>
@@ -160,15 +160,15 @@
 
                 <div class="col-lg-2 col-md-6 px-lg-4">
                     <h6 class="footer-title">Tautan</h6>
-                    <a href="index.html" class="footer-link small">Home</a>
-                    <a href="jadwal.html" class="footer-link small">Jadwal Lab</a>
-                    <a href="fasilitas.html" class="footer-link small">Fasilitas</a>
-                    <a href="peminjaman.html" class="footer-link small">Peminjaman</a>
+                    <a href="/" class="footer-link small">Home</a>
+                    <a href="/jadwal/" class="footer-link small">Jadwal Lab</a>
+                    <a href="/fasilitas/" class="footer-link small">Fasilitas</a>
+                    <a href="/peminjaman/" class="footer-link small">Peminjaman</a>
                 </div>
 
                 <div class="col-lg-3 col-md-6">
                     <h6 class="footer-title">Layanan</h6>
-                    <a href="bebas_lab.html" class="footer-link small">Bebas Laboratorium</a>
+                    <a href="../bebas-lab/" class="footer-link small">Bebas Laboratorium</a>
                     <a href="#" class="footer-link small">Asisten Laboratorium</a>
                     <a href="https://lms.umbandung.ac.id/login/index.php" target="_blank" class="footer-link small">E-Learning UMB</a>
                     <a href="#" class="footer-link small">Pusat Bantuan</a>
@@ -200,8 +200,7 @@
     <script>
         document.getElementById('tahun-otomatis').textContent = new Date().getFullYear();
     </script>
-    <script>
-        // Script sederhana untuk menandai menu mana yang aktif
+    <script>        
         const currentPage = window.location.pathname.split("/").pop();
         const navLinks = document.querySelectorAll(".nav-link");
 
@@ -210,26 +209,18 @@
                 link.classList.add("active");
             }
         });
-    document.addEventListener("DOMContentLoaded", function() {
-    // Ambil path URL saat ini (contoh: /jadwal/)
+    document.addEventListener("DOMContentLoaded", function() {    
     const currentPath = window.location.pathname;
     const navLinks = document.querySelectorAll(".nav-link");
 
-    navLinks.forEach(link => {
-        // Ambil isi href dari masing-masing link
+    navLinks.forEach(link => {        
         const href = link.getAttribute("href");
-
-        // Hapus class active dulu biar bersih
         link.classList.remove("active");
-
-        // Logika Deteksi:
-        // Jika di halaman utama
         if (currentPath === "/" || currentPath === "/index.html") {
             if (href === "/" || href === "/index.html") {
                 link.classList.add("active");
             }
         } 
-        // Jika di dalam folder (cocokkan path URL dengan href)
         else if (href !== "/" && currentPath.includes(href)) {
             link.classList.add("active");
         }
