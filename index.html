@@ -86,12 +86,12 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto text-start py-3 py-lg-0">
-                    <li class="nav-item"><a class="nav-link active" href="/">HOME</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/jadwal/">JADWAL</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/fasilitas/">FASILITAS</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/peminjaman/">PEMINJAMAN</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/bebas-lab/">BEBAS LAB</a></li>
+                <ul class="navbar-nav ms-auto py-3 py-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="jadwal/">JADWAL</a></li>
+                    <li class="nav-item"><a class="nav-link" href="fasilitas/">FASILITAS</a></li>
+                    <li class="nav-item"><a class="nav-link" href="peminjaman/">PEMINJAMAN</a></li>
+                    <li class="nav-item"><a class="nav-link" href="bebas_lab/">BEBAS LAB</a></li>
                 </ul>
             </div>
         </div>
@@ -210,6 +210,31 @@
                 link.classList.add("active");
             }
         });
+    document.addEventListener("DOMContentLoaded", function() {
+    // Ambil path URL saat ini (contoh: /jadwal/)
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll(".nav-link");
+
+    navLinks.forEach(link => {
+        // Ambil isi href dari masing-masing link
+        const href = link.getAttribute("href");
+
+        // Hapus class active dulu biar bersih
+        link.classList.remove("active");
+
+        // Logika Deteksi:
+        // Jika di halaman utama
+        if (currentPath === "/" || currentPath === "/index.html") {
+            if (href === "/" || href === "/index.html") {
+                link.classList.add("active");
+            }
+        } 
+        // Jika di dalam folder (cocokkan path URL dengan href)
+        else if (href !== "/" && currentPath.includes(href)) {
+            link.classList.add("active");
+        }
+    });
+});
     </script>
 </body>
 </html>
