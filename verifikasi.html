@@ -3,109 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verifikasi Surat | Lab IF</title>
+    <title>Digital Verification | Laboratorium Informatika</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background: #eef2f7; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .card-verif { max-width: 400px; width: 100%; border-radius: 25px; text-align: center; border: none; background: white; }
-        .status-icon { font-size: 5rem; margin-bottom: 20px; }
-        .label-text { font-size: 0.85rem; color: #6c757d; text-transform: uppercase; letter-spacing: 1px; }
-        .data-text { font-weight: 700; color: #212529; font-size: 1.1rem; }
+        :root {
+            --primary-neon: #00f2ff;
+            --success-neon: #39ff14;
+            --danger-neon: #ff3131;
+            --bg-dark: #0a0e14;
+        }
+
+        body { 
+            background: var(--bg-dark); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            padding: 20px; 
+            font-family: 'Courier New', Courier, monospace;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* Background Glow */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: var(--primary-neon);
+            filter: blur(150px);
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        .card-verif { 
+            max-width: 420px; 
+            width: 100%; 
+            border-radius: 30px; 
+            text-align: center; 
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05); 
+            backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Scanning Line Animation */
+        .scanner-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary-neon);
+            box-shadow: 0 0 15px var(--primary-neon);
+            animation: scan 3s linear infinite;
+            z-index: 10;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+
+        .status-icon { 
+            font-size: 4rem; 
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 10px currentColor);
+        }
+
+        .label-text { 
+            font-size: 0.75rem; 
+            color: rgba(255,255,255,0.5); 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+        }
+
+        .data-text { 
+            font-weight: 700; 
+            color: white; 
+            font-size: 1.2rem; 
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(255,255,255,0.3);
+        }
+
+        .data-box {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
+        }
+
+        .data-box:hover {
+            border-color: var(--primary-neon);
+            background: rgba(0, 242, 255, 0.05);
+        }
+
+        .btn-retry {
+            background: transparent;
+            border: 1px solid var(--primary-neon);
+            color: var(--primary-neon);
+            transition: 0.3s;
+        }
+
+        .btn-retry:hover {
+            background: var(--primary-neon);
+            color: black;
+            box-shadow: 0 0 20px var(--primary-neon);
+        }
+
+        .official-badge {
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            border: 1px solid var(--success-neon);
+            color: var(--success-neon);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 50px;
+            text-shadow: 0 0 5px var(--success-neon);
+        }
+
+        #loading p {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
     </style>
 </head>
 <body>
 
     <div class="card card-verif shadow-lg p-5">
+        <div class="scanner-line" id="line-scan"></div>
+
+        <!-- LOADING STATE -->
         <div id="loading">
-            <div class="spinner-border text-primary mb-3" role="status"></div>
-            <p class="text-muted">Menghubungkan ke Database Lab...</p>
+            <div class="spinner-border text-info mb-3" style="width: 3rem; height: 3rem;" role="status"></div>
+            <p class="text-info small fw-bold mt-2">ACCESSING ENCRYPTED DATABASE...</p>
         </div>
 
+        <!-- SUCCESS STATE -->
         <div id="content" style="display:none;">
-            <div class="status-icon text-success"><i class="fas fa-check-circle"></i></div>
-            <h3 class="fw-bold text-success mb-1">DOKUMEN ASLI</h3>
-            <p class="text-muted small mb-4">Terverifikasi Digital oleh Lab IF</p>
+            <div class="status-icon text-success"><i class="fas fa-shield-check"></i></div>
+            <h4 class="fw-bold text-success mb-1">VERIFIED</h4>
+            <div class="official-badge mb-4">AUTHENTIC DOCUMENT</div>
             
-            <div class="text-start p-3 bg-light rounded-4 mb-4">
-                <div class="mb-3">
-                    <span class="label-text">Nama Lengkap</span>
-                    <div id="v-nama" class="data-text">-</div>
+            <div class="text-start p-4 rounded-4 data-box mb-4">
+                <div class="mb-3 border-bottom border-secondary pb-2">
+                    <span class="label-text"><i class="fas fa-user me-2"></i>FULL NAME</span>
+                    <div id="v-nama" class="data-text">...</div>
                 </div>
                 <div>
-                    <span class="label-text">NIM</span>
-                    <div id="v-nim" class="data-text">-</div>
+                    <span class="label-text"><i class="fas fa-id-card me-2"></i>IDENTIFICATION NO.</span>
+                    <div id="v-nim" class="data-text">...</div>
                 </div>
             </div>
             
-            <div class="alert alert-success py-2 small fw-bold shadow-sm">
-                <i class="fas fa-shield-alt me-1"></i> VALID & RESMI
-            </div>
+            <p class="small text-muted mb-0" style="font-size: 0.65rem;">Timestamp: <span id="v-time"></span></p>
         </div>
 
+        <!-- ERROR STATE -->
         <div id="error-box" style="display:none;">
-            <div class="status-icon text-danger"><i class="fas fa-times-circle"></i></div>
-            <h3 class="fw-bold text-danger mb-1">TIDAK VALID</h3>
-            <p id="error-msg" class="text-muted small mb-4">Data tidak ditemukan.</p>
-            <button onclick="location.reload()" class="btn btn-sm btn-outline-secondary rounded-pill px-4">Coba Lagi</button>
+            <div class="status-icon text-danger"><i class="fas fa-radiation"></i></div>
+            <h3 class="fw-bold text-danger mb-1">ACCESS DENIED</h3>
+            <p id="error-msg" class="text-white-50 small mb-4">Data Not Found.</p>
+            <button onclick="location.reload()" class="btn btn-sm btn-retry rounded-pill px-4">RE-SCAN</button>
         </div>
     </div>
 
     <script>
-    // Ambil NIM dari URL (?nim=12345)
     const params = new URLSearchParams(window.location.search);
     const nimDariQR = params.get('nim');
-    
-    // ID SPREADSHEET KAMU
     const SHEET_ID = '1Ke7WpL9qsUlez63hyctzIJuQwpCBRbf0uQr3NROtm9g';
 
     async function verifikasiSekarang() {
+        document.getElementById('v-time').innerText = new Date().toLocaleString('id-ID');
+        
         if (!nimDariQR) {
-            tampilkanError("Scan QR Code pada surat fisik untuk memulai verifikasi.");
+            tampilkanError("QR Code Invalid. Mohon gunakan dokumen resmi Lab IF.");
             return;
         }
 
         try {
-            // URL JSON Google Sheets
             const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
             const response = await fetch(url);
             const text = await response.text();
-            
-            // Parsing data dari Google (Hapus prefix "/* google.visualize... */")
             const jsonData = JSON.parse(text.substring(47).slice(0, -2));
             const rows = jsonData.table.rows;
 
-            // CARI DATA (NIM ada di Kolom D / Index 3)
+            // Cari di Kolom D (Index 3)
             const barisCocok = rows.find(r => {
                 if (!r.c[3]) return false;
-                // Ambil nilai murni (v) atau teks terformat (f)
                 const nimDiSheet = (r.c[3].f || r.c[3].v || "").toString().trim();
                 return nimDiSheet === nimDariQR.trim();
             });
 
-            if (barisCocok) {
-                // Nama di Kolom C (Index 2), NIM di Kolom D (Index 3)
-                document.getElementById('v-nama').innerText = barisCocok.c[2] ? (barisCocok.c[2].v || "-") : "-";
-                document.getElementById('v-nim').innerText = barisCocok.c[3] ? (barisCocok.c[3].f || barisCocok.c[3].v || "-") : "-";
-                
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('content').style.display = 'block';
-            } else {
-                tampilkanError(`NIM <b>${nimDariQR}</b> tidak terdaftar dalam database Bebas Laboratorium.`);
-            }
+            // Simulasi Delay biar keliatan "Mikir"
+            setTimeout(() => {
+                if (barisCocok) {
+                    document.getElementById('v-nama').innerText = barisCocok.c[2] ? (barisCocok.c[2].v || "-") : "-";
+                    document.getElementById('v-nim').innerText = barisCocok.c[3] ? (barisCocok.c[3].f || barisCocok.c[3].v || "-") : "-";
+                    
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('content').style.display = 'block';
+                    document.getElementById('line-scan').style.display = 'none';
+                } else {
+                    tampilkanError(`CREDENTIALS NOT FOUND: <br><span class='text-danger'>ID ${nimDariQR}</span> is not registered.`);
+                }
+            }, 1500);
+
         } catch (err) {
-            console.error(err);
-            tampilkanError("Gagal mengambil data. Pastikan Spreadsheet sudah di 'Publish to Web'.");
+            tampilkanError("DATABASE CONNECTION FAILED. PLEASE RETRY.");
         }
     }
 
     function tampilkanError(msg) {
         document.getElementById('loading').style.display = 'none';
         document.getElementById('error-box').style.display = 'block';
+        document.getElementById('line-scan').style.background = 'var(--danger-neon)';
         document.getElementById('error-msg').innerHTML = msg;
     }
 
-    // Jalankan Verifikasi
     window.onload = verifikasiSekarang;
     </script>
 </body>
