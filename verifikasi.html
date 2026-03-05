@@ -10,33 +10,33 @@
         :root {
             --umb-blue: #002d5d;
             --umb-gold: #ffc107;
-            --primary-neon: #00f2ff;
-            --success-neon: #39ff14;
-            --danger-neon: #ff3131;
-            --bg-dark: #050a10;
+            --success-green: #28a745;
+            --danger-red: #dc3545;
+            --text-dark: #333333;
         }
 
         body { 
-            background: var(--bg-dark); 
+            background: #ffffff; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             min-height: 100vh; 
             padding: 20px; 
             font-family: 'Poppins', sans-serif;
-            color: white;
-            overflow: hidden;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            position: relative;
         }
 
-        /* Ambient Glow Background */
+        /* Soft Ambient Glow for White Theme */
         body::before {
             content: "";
             position: absolute;
-            width: 400px;
-            height: 400px;
-            background: var(--umb-blue);
-            filter: blur(180px);
-            opacity: 0.4;
+            width: 500px;
+            height: 500px;
+            background: rgba(0, 45, 93, 0.05);
+            filter: blur(100px);
+            border-radius: 50%;
             z-index: -1;
         }
 
@@ -45,12 +45,11 @@
             width: 100%; 
             border-radius: 30px; 
             text-align: center; 
-            border: 1px solid rgba(255, 193, 7, 0.2);
-            background: rgba(0, 45, 93, 0.2); 
-            backdrop-filter: blur(20px);
+            border: 1px solid #eeeeee;
+            background: #ffffff; 
             position: relative;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
         }
 
         .logo-container {
@@ -62,11 +61,15 @@
         .logo-lab {
             width: 80px;
             height: 80px;
-            background: white;
+            background: #ffffff;
             padding: 10px;
             border-radius: 20px;
-            box-shadow: 0 0 20px rgba(255, 193, 7, 0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             border: 2px solid var(--umb-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
         }
 
         /* Scanning Line */
@@ -75,7 +78,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 3px;
+            height: 4px;
             background: linear-gradient(to right, transparent, var(--umb-gold), transparent);
             box-shadow: 0 0 15px var(--umb-gold);
             animation: scan 4s linear infinite;
@@ -88,14 +91,15 @@
         }
 
         .status-icon { 
-            font-size: 4rem; 
-            margin-bottom: 15px;
-            filter: drop-shadow(0 0 15px currentColor);
+            font-size: 5rem; 
+            margin-bottom: 10px;
+            color: var(--success-green);
+            filter: drop-shadow(0 4px 10px rgba(40, 167, 69, 0.2));
         }
 
         .label-text { 
             font-size: 0.7rem; 
-            color: var(--umb-gold); 
+            color: #888888; 
             text-transform: uppercase; 
             letter-spacing: 2px; 
             font-weight: 600;
@@ -103,100 +107,105 @@
 
         .data-text { 
             font-weight: 700; 
-            color: white; 
+            color: var(--umb-blue); 
             font-size: 1.1rem; 
             letter-spacing: 0.5px;
         }
 
         .data-box {
-            background: rgba(0,0,0,0.4);
-            border: 1px solid rgba(255, 193, 7, 0.1);
+            background: #f8f9fa;
+            border: 1px solid #eeeeee;
             border-left: 4px solid var(--umb-gold);
             transition: 0.3s;
         }
 
         .official-badge {
-            font-size: 0.65rem;
-            letter-spacing: 2px;
-            border: 1px solid var(--success-neon);
-            color: var(--success-neon);
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            background: rgba(40, 167, 69, 0.1);
+            color: var(--success-green);
             display: inline-block;
-            padding: 4px 12px;
+            padding: 5px 15px;
             border-radius: 50px;
             text-transform: uppercase;
-            font-weight: bold;
+            font-weight: 700;
             margin-bottom: 20px;
         }
 
         .btn-retry {
-            border: 1px solid var(--umb-gold);
-            color: var(--umb-gold);
+            border: 2px solid var(--umb-blue);
+            color: var(--umb-blue);
             background: transparent;
-            font-weight: bold;
+            font-weight: 700;
             letter-spacing: 1px;
             transition: 0.3s;
         }
 
         .btn-retry:hover {
-            background: var(--umb-gold);
-            color: var(--umb-blue);
-            box-shadow: 0 0 20px rgba(255, 193, 7, 0.4);
+            background: var(--umb-blue);
+            color: white;
         }
 
-        #loading p { animation: pulse 1.5s infinite; color: var(--umb-gold); }
+        .text-umb-blue { color: var(--umb-blue); }
+        .text-dark-soft { color: #555555; }
+
+        #loading p { animation: pulse 1.5s infinite; color: var(--umb-blue); }
 
         @keyframes pulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
+            50% { opacity: 0.5; }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="card card-verif shadow-lg p-5">
+    <div class="card card-verif p-5">
         <div class="scanner-line" id="line-scan"></div>
 
         <div class="logo-container">
-            <!-- Icon Universitas sebagai Logo -->
-            <div class="d-inline-block logo-lab mb-2">
-                <i class="fas fa-university fa-3x text-dark"></i>
+            <div class="logo-lab mb-3">
+                <i class="fas fa-university fa-3x text-umb-blue"></i>
             </div>
-            <div class="small fw-bold text-uppercase" style="letter-spacing: 1px; color: var(--umb-gold);">Lab Informatika</div>
-            <div class="small opacity-50">UM Bandung</div>
+            <div class="small fw-bold text-uppercase text-umb-blue" style="letter-spacing: 1px;">Lab Informatika</div>
+            <div class="small text-dark-soft fw-semibold">UM Bandung</div>
         </div>
 
         <!-- LOADING STATE -->
         <div id="loading">
-            <div class="spinner-border text-warning mb-3" style="width: 2.5rem; height: 2.5rem;" role="status"></div>
-            <p class="small fw-bold">ENCRYPTING CONNECTION...</p>
+            <div class="spinner-border text-primary mb-3" style="width: 2.5rem; height: 2.5rem;" role="status"></div>
+            <p class="small fw-bold text-uppercase">Verifying Credentials...</p>
         </div>
 
         <!-- SUCCESS STATE -->
         <div id="content" style="display:none;">
-            <div class="status-icon text-success"><i class="fas fa-check-shield"></i></div>
-            <h4 class="fw-bold mb-1">DOKUMEN ASLI</h4>
+            <!-- Ikon Centang Hijau Besar -->
+            <div class="status-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            
+            <h4 class="fw-bold mb-1 text-umb-blue">DOKUMEN ASLI</h4>
             <div class="official-badge">Verified System</div>
             
             <div class="text-start p-3 rounded-3 data-box mb-4">
-                <div class="mb-3 border-bottom border-white border-opacity-10 pb-2">
+                <div class="mb-3 border-bottom border-light pb-2">
                     <span class="label-text">Nama Lengkap</span>
-                    <div id="v-nama" class="data-text">...</div>
+                    <div id="v-nama" class="data-text text-dark">...</div>
                 </div>
                 <div>
                     <span class="label-text">NIM / ID</span>
-                    <div id="v-nim" class="data-text">...</div>
+                    <div id="v-nim" class="data-text text-dark">...</div>
                 </div>
             </div>
             
-            <p class="small text-muted mb-0" style="font-size: 0.6rem;">Verified at: <span id="v-time"></span></p>
+            <p class="small text-muted mb-0 fw-medium">Verified at: <span id="v-time" class="text-dark"></span></p>
         </div>
 
         <!-- ERROR STATE -->
         <div id="error-box" style="display:none;">
-            <div class="status-icon text-danger"><i class="fas fa-exclamation-triangle"></i></div>
+            <div class="status-icon text-danger"><i class="fas fa-times-circle"></i></div>
             <h3 class="fw-bold text-danger mb-1">INVALID</h3>
-            <p id="error-msg" class="text-white-50 small mb-4">Data tidak terdaftar.</p>
+            <p id="error-msg" class="text-muted small mb-4">Data tidak ditemukan dalam database.</p>
             <button onclick="location.reload()" class="btn btn-sm btn-retry rounded-pill px-4">SCAN ULANG</button>
         </div>
     </div>
@@ -207,10 +216,15 @@
     const SHEET_ID = '1Ke7WpL9qsUlez63hyctzIJuQwpCBRbf0uQr3NROtm9g';
 
     async function verifikasiSekarang() {
-        document.getElementById('v-time').innerText = new Date().toLocaleString('id-ID');
+        // Set Waktu
+        const now = new Date();
+        document.getElementById('v-time').innerText = now.toLocaleString('id-ID', { 
+            day: '2-digit', month: 'long', year: 'numeric', 
+            hour: '2-digit', minute: '2-digit' 
+        });
         
         if (!nimDariQR) {
-            tampilkanError("QR Code tidak terbaca atau link tidak lengkap.");
+            tampilkanError("QR Code tidak valid atau NIM tidak ditemukan dalam URL.");
             return;
         }
 
@@ -238,17 +252,17 @@
                 } else {
                     tampilkanError(`DATA TIDAK DITEMUKAN: <br><span class='text-danger'>NIM ${nimDariQR}</span> belum terverifikasi Bebas Lab.`);
                 }
-            }, 2000);
+            }, 1500);
 
         } catch (err) {
-            tampilkanError("SERVER TIMEOUT. PASTIKAN KONEKSI INTERNET STABIL.");
+            tampilkanError("GAGAL MENGHUBUNGI SERVER. PERIKSA KONEKSI ANDA.");
         }
     }
 
     function tampilkanError(msg) {
         document.getElementById('loading').style.display = 'none';
         document.getElementById('error-box').style.display = 'block';
-        document.getElementById('line-scan').style.background = 'var(--danger-neon)';
+        document.getElementById('line-scan').style.background = 'var(--danger-red)';
         document.getElementById('error-msg').innerHTML = msg;
     }
 
