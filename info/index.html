@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berita & Pengumuman | Laboratorium Informatika UM Bandung</title>
+    
+    <!-- Bootstrap & FontAwesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { 
+            --umb-blue: #002d5d; 
+            --umb-blue-light: #00428a;
+            --umb-gold: #ffc107; 
+            --bg-light: #f8faff; 
+            --text-gray: #4b5563;
+        }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-light); 
+            color: #1f2937;
+            scroll-behavior: smooth;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar Modern */
+        .navbar { 
+            background: rgba(0, 45, 93, 0.98); 
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--umb-gold); 
+            transition: all 0.3s ease; 
+        }
+        .navbar-brand { font-weight: 700; letter-spacing: 0.5px; color: white !important; }
+        .nav-link { 
+            font-weight: 500; 
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.7) !important; 
+            margin: 0 12px; 
+            transition: 0.3s;
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 2px;
+            bottom: 0; left: 50%;
+            background-color: var(--umb-gold);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .nav-link:hover, .nav-link.active { color: var(--umb-gold) !important; }
+
+        /* Hero Section Mini */
+        .page-header {
+            background: linear-gradient(to right, rgba(0,45,93,0.95), rgba(0,45,93,0.75)), url('../lab-if.jpeg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0 100px;
+            text-align: center;
+            position: relative;
+        }
+        .hero-title {
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: -1px;
+        }
+
+        /* Wrapper Overlap */
+        .overlap-wrapper {
+            margin-top: -60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Card Berita Modern */
+        .card-berita {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+            background-color: #fff;
+            height: 100%;
+        }
+        .card-berita:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 12px 30px rgba(0, 45, 93, 0.12); 
+        }
+        .img-wrapper {
+            border-radius: 16px 16px 0 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .card-berita img {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .card-berita:hover img { transform: scale(1.08); }
+        
+        .date-badge {
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--umb-blue);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: absolute;
+            top: 15px; left: 15px;
+            z-index: 2;
+        }
+        .card-berita-body { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; }
+        .card-title-news {
+            font-weight: 700;
+            font-size: 1.2rem;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+        .card-title-news a {
+            color: #1f2937;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .card-title-news a:hover { color: var(--umb-blue); }
+        .card-snippet {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .read-more-btn {
+            margin-top: auto;
+            color: var(--umb-blue);
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .read-more-btn i {
+            margin-left: 6px;
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+        .read-more-btn:hover { color: var(--umb-gold); }
+        .read-more-btn:hover i { transform: translateX(4px); }
+
+        /* Footer */
+        .main-footer { background-color: #0b1d33; color: #ffffff; padding: 70px 0 0; margin-top: auto; }
+        .footer-title { color: var(--umb-gold); font-weight: 700; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
+        .footer-link { color: rgba(255,255,255,0.7); text-decoration: none; display: block; margin-bottom: 12px; transition: 0.3s; }
+        .footer-link:hover { color: var(--umb-gold); padding-left: 5px; }
+        
+        .copyright-area { background: #071424; padding: 25px 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 40px; }
+        .copyright-text { color: rgba(255,255,255,0.5); font-size: 0.85rem; }
+        .made-by { color: rgba(255,255,255,0.5); font-size: 0.85rem; display: block; margin-top: 5px; }
+        .made-by strong { color: var(--umb-gold); }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="../index.html">
+                <i class="fas fa-university fs-3 me-3 text-warning"></i>
+                <div class="d-flex flex-column">
+                    <span class="fs-6 fw-bold" style="line-height: 1.2;">LABORATORIUM INFORMATIKA</span>
+                    <small class="opacity-75" style="font-size: 0.75rem; font-weight: 500;">UNIVERSITAS MUHAMMADIYAH BANDUNG</small>
+                </div>
+            </a>
+
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto py-3 py-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="../index.html">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../info/">INFO</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../jadwal/">JADWAL</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../fasilitas/">FASILITAS</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../peminjaman/">PEMINJAMAN</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../bebas-lab/">BEBAS LAB</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HEADER HALAMAN -->
+    <header class="page-header">
+        <div class="container">
+            <h1 class="display-5 hero-title mb-3">Pusat Informasi & Pengumuman</h1>
+            <p class="fs-5 mb-0 max-w-2xl mx-auto opacity-75">Kumpulan berita, rekrutmen, dan info terbaru seputar kegiatan laboratorium.</p>
+        </div>
+    </header>
+
+    <!-- BERITA & INFORMASI (FULL GRID) -->
+    <section id="informasi-lab" class="pb-5 flex-grow-1">
+        <div class="container overlap-wrapper bg-white rounded-4 shadow p-4 p-md-5">
+            <!-- Container Berita -->
+            <div id="berita-container" class="row g-4">
+                <!-- Loading Indicator -->
+                <div class="col-12 text-center py-5" id="loading-berita">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="text-muted mt-3 fw-medium">Menarik data dari server...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="me-3 d-flex align-items-center justify-content-center" 
+                            style="width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 12px; border: 1px solid rgba(255,193,7,0.3);">
+                            <i class="fas fa-university fs-4" style="color: #ffc107;"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-0 text-white">LABORATORIUM INFORMATIKA</h6>
+                            <small style="color: #ffc107;">UM BANDUNG</small>
+                        </div>
+                    </div>
+                    <p class="footer-description small">
+                        Pusat praktikum, riset, dan pengembangan teknologi mahasiswa Teknik Informatika Universitas Muhammadiyah Bandung. Unggul dalam keilmuan dan islami dalam karakter.
+                    </p>
+                    <div class="mt-4">
+                        <a href="#" class="text-white me-3 fs-5"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white me-3 fs-5"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-white fs-5"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-6 px-lg-4">
+                    <h6 class="footer-title">Tautan</h6>
+                    <a href="../index.html" class="footer-link small">Home</a>
+                    <a href="../info/" class="footer-link small">Info & Berita</a>
+                    <a href="../jadwal/" class="footer-link small">Jadwal Lab</a>
+                    <a href="../fasilitas/" class="footer-link small">Fasilitas</a>
+                    <a href="../peminjaman/" class="footer-link small">Peminjaman</a>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h6 class="footer-title">Layanan</h6>
+                    <a href="../bebas-lab/" class="footer-link small">Bebas Laboratorium</a>
+                    <a href="#" class="footer-link small">Asisten Laboratorium</a>
+                    <a href="https://lms.umbandung.ac.id/login/index.php" target="_blank" class="footer-link small">E-Learning UMB</a>
+                    <a href="#" class="footer-link small">Pusat Bantuan</a>
+                </div>
+
+                <div class="col-lg-3">
+                    <h6 class="footer-title">Kontak Kami</h6>
+                    <div class="footer-contact-text small">
+                        <p><i class="fas fa-map-marker-alt text-warning me-2"></i> Jl. Soekarno Hatta No.752, Cipadung Kidul, Bandung.</p>
+                        <p><i class="fas fa-envelope text-warning me-2"></i> informaticslab.umbandung@gmail.com</p>
+                        <p><i class="fas fa-phone text-warning me-2"></i> (022) 1234567</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright-area mt-5">
+            <div class="container text-center">
+                <span class="copyright-text">
+                    &copy; <span id="tahun-otomatis"></span> Teknik Informatika. All rights reserved
+                </span>
+                <span class="made-by">
+                    made by <strong>Laboratory of Informatics</strong>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('tahun-otomatis').textContent = new Date().getFullYear();
+
+        document.addEventListener("DOMContentLoaded", function() {    
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll(".nav-link");
+
+            navLinks.forEach(link => {        
+                const href = link.getAttribute("href");
+                link.classList.remove("active");
+                if (currentPath.includes("/info/") && href.includes("info")) {
+                    link.classList.add("active");
+                }
+            });
+
+            // =========================================================================
+            // SCRIPT FETCH BERITA (GOOGLE SHEETS)
+            // =========================================================================
+            const SHEET_ID = '15JWk-ItlTGXX3xCNtO4cc8hBLdYVJkCMo0eTcac9QO4';
+            const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Sheet1`;
+            
+            const container = document.getElementById('berita-container');
+            const loading = document.getElementById('loading-berita');
+
+            function parseCSV(str) {
+                const arr = [];
+                let quote = false; let row = 0, col = 0, c = 0;
+                for (; c < str.length; c++) {
+                    let cc = str[c], nc = str[c+1];
+                    arr[row] = arr[row] || []; arr[row][col] = arr[row][col] || '';
+                    if (cc == '"' && quote && nc == '"') { arr[row][col] += cc; ++c; continue; }
+                    if (cc == '"') { quote = !quote; continue; }
+                    if (cc == ',' && !quote) { ++col; continue; }
+                    if (cc == '\r' && nc == '\n' && !quote) { ++row; col = 0; ++c; continue; }
+                    if (cc == '\n' && !quote) { ++row; col = 0; continue; }
+                    if (cc == '\r' && !quote) { ++row; col = 0; continue; }
+                    arr[row][col] += cc;
+                }
+                return arr;
+            }
+
+            fetch(url)
+                .then(res => {
+                    if (!res.ok) throw new Error('Network response error');
+                    return res.text();
+                })
+                .then(text => {
+                    const rows = parseCSV(text);
+                    loading.style.display = 'none';
+                    rows.shift(); // Hapus Header
+
+                    const validRows = rows.filter(row => row.length > 1 && row[0].trim() !== "");
+
+                    if (validRows.length === 0) {
+                        container.innerHTML = '<div class="col-12 text-center py-5"><i class="fas fa-folder-open text-muted fs-1 mb-3"></i><p class="text-muted fs-5">Belum ada informasi terbaru.</p></div>';
+                        return;
+                    }
+
+                    let htmlBerita = '';
+                    
+                    validRows.reverse().forEach(row => {
+                        const idBerita = row[0] || '';
+                        const tanggal = row[1] || 'Baru Saja';
+                        const judul = row[2] || 'Tanpa Judul';
+                        const gambar = row[3] || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80';
+                        const isi = row[4] || '';
+                        
+                        const rawText = isi.replace(/<[^>]*>?/gm, ''); 
+                        const snippet = rawText.length > 110 ? rawText.substring(0, 110) + '...' : rawText;
+
+                        // Perhatikan: Link diarahkan ke folder berita menggunakan jalur ../berita/
+                        htmlBerita += `
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card card-berita d-flex flex-column">
+                                    <div class="img-wrapper">
+                                        <div class="date-badge"><i class="far fa-calendar-alt me-1"></i> ${tanggal}</div>
+                                        <a href="../berita/index.html?id=${idBerita}">
+                                            <img src="${gambar}" alt="${judul}" onerror="this.src='https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80'">
+                                        </a>
+                                    </div>
+                                    <div class="card-berita-body">
+                                        <h3 class="card-title-news">
+                                            <a href="../berita/index.html?id=${idBerita}">${judul}</a>
+                                        </h3>
+                                        <p class="card-snippet">${snippet}</p>
+                                        <a href="../berita/index.html?id=${idBerita}" class="read-more-btn">
+                                            Baca Selengkapnya <i class="fas fa-arrow-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    container.innerHTML = htmlBerita;
+                })
+                .catch(err => {
+                    loading.innerHTML = `
+                        <div class="col-12 text-center py-5">
+                            <i class="fas fa-wifi text-danger mb-3" style="font-size: 2.5rem;"></i>
+                            <h5 class="text-danger fw-bold">Koneksi Terputus</h5>
+                            <p class="text-muted">Gagal memuat berita dari server. Silakan muat ulang halaman.</p>
+                        </div>
+                    `;
+                });
+        });
+    </script>
+</body>
+</html>

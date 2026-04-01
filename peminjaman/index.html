@@ -5,114 +5,200 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Peminjaman Lab IF | UM Bandung</title>
     
+    <!-- Bootstrap & FontAwesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        :root { --umb-blue: #002d5d; --umb-gold: #ffc107; --bg-light: #f4f7f9; }
-        body { background-color: var(--bg-light); font-family: 'Poppins', sans-serif; }
-        .navbar { background: var(--umb-blue); border-bottom: 4px solid var(--umb-gold); }
-        .nav-link.active { color: var(--umb-gold) !important; font-weight: 700; }
-        
-        .hero-card { 
-            border-radius: 20px; 
-            background: linear-gradient(135deg, var(--umb-blue) 0%, #004a99 100%);
-            color: white; padding: 40px 20px; margin-bottom: 30px; 
+        :root { 
+            --umb-blue: #002d5d; 
+            --umb-blue-light: #00428a;
+            --umb-gold: #ffc107; 
+            --bg-light: #f8faff; 
+            --text-gray: #4b5563;
         }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-light); 
+            color: #1f2937;
+            scroll-behavior: smooth;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar Modern */
+        .navbar { 
+            background: rgba(0, 45, 93, 0.98); 
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--umb-gold); 
+            transition: all 0.3s ease; 
+        }
+        .navbar-brand { font-weight: 700; letter-spacing: 0.5px; color: white !important; }
+        .nav-link { 
+            font-weight: 500; 
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.7) !important; 
+            margin: 0 12px; 
+            transition: 0.3s;
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 2px;
+            bottom: 0; left: 50%;
+            background-color: var(--umb-gold);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .nav-link:hover, .nav-link.active { color: var(--umb-gold) !important; }
+
+        /* Header Halaman (Serasi) */
+        .page-header {
+            background: linear-gradient(to right, rgba(0,45,93,0.95), rgba(0,45,93,0.75)), url('../lab-if.jpeg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0 100px;
+            text-align: center;
+            position: relative;
+        }
+        .hero-title {
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: -1px;
+        }
+
+        /* Wrapper Overlap */
+        .overlap-wrapper {
+            margin-top: -60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Info Cards Peminjaman */
         .card-info { 
-            border-radius: 15px; background: white; padding: 25px; height: 100%;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--umb-gold);
+            border-radius: 16px; 
+            background: white; 
+            padding: 30px; 
+            height: 100%;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06); 
+            border: none;
+            transition: all 0.3s ease;
         }
-        .info-title { color: var(--umb-blue); font-weight: 700; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .card-table { border-radius: 15px; background: white; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        thead { background: var(--umb-blue); color: white; }
-        .main-footer { background-color: #0b1d33; color: #ffffff; padding: 70px 0 0; }
-        .footer-title { color: var(--umb-gold); font-weight: 700; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
-        .footer-link { color: rgba(255,255,255,0.7); text-decoration: none; display: block; margin-bottom: 12px; transition: 0.3s; }
-        .footer-link:hover { color: var(--umb-gold); padding-left: 5px; }
+        .card-info:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 45, 93, 0.12);
+        }
+        .info-title { 
+            color: var(--umb-blue); 
+            font-weight: 700; 
+            margin-bottom: 15px; 
+            border-bottom: 1px solid #f0f0f0; 
+            padding-bottom: 15px; 
+        }
         
-        .copyright-area { background: #071424; padding: 25px 0; border-top: 1px solid rgba(255,255,255,0.05); }
-        .copyright-text { color: rgba(255,255,255,0.5); font-size: 0.85rem; }
-        .made-by { color: rgba(255,255,255,0.5); font-size: 0.85rem; display: block; margin-top: 5px; }
-        .made-by strong { color: var(--umb-gold); }
-        /* Pastikan content modal membulat sempurna */
+        /* Table Styling */
+        .card-table { 
+            border-radius: 16px; 
+            background: white; 
+            padding: 35px 25px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06); 
+            border: none;
+        }
+        thead { background: var(--umb-blue); color: white; }
+        .table-hover tbody tr:hover { background-color: #f8faff; }
+
+        /* Modal Styling */
         #formModal .modal-content {
             border-radius: 20px;
             border: none;
-            overflow: hidden; /* Penting agar background header tidak bocor keluar radius */
+            overflow: hidden; 
             box-shadow: 0 15px 50px rgba(0,0,0,0.2);
         }
-
-        /* Label form agar lebih profesional */
-        #formModal .form-label {
-            color: var(--umb-blue);
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        /* Input field yang lebih clean */
+        #formModal .form-label { color: var(--umb-blue); font-weight: 600; font-size: 0.9rem; }
         #formModal .form-control {
             border: 1px solid #e0e0e0;
             padding: 10px 15px;
             border-radius: 8px;
             transition: 0.3s;
         }
-
         #formModal .form-control:focus {
             border-color: var(--umb-blue);
             box-shadow: 0 0 0 0.25rem rgba(0, 45, 93, 0.1);
         }
 
-        /* Samakan warna semua tombol primary agar tidak terlalu terang */
+        /* Buttons */
         .btn-primary {
             background: linear-gradient(135deg, var(--umb-blue) 0%, #004a99 100%) !important;
             border: none !important;
+            transition: 0.3s ease;
         }
-
-        /* Samakan warna tombol outline agar serasi */
+        .btn-primary:hover {
+            box-shadow: 0 6px 15px rgba(0, 45, 93, 0.3);
+            transform: translateY(-2px);
+        }
         .btn-outline-primary {
             color: var(--umb-blue) !important;
             border-color: var(--umb-blue) !important;
+            transition: 0.3s ease;
         }
-
         .btn-outline-primary:hover {
             background: var(--umb-blue) !important;
             color: white !important;
+            transform: translateY(-2px);
         }
+        .badge.bg-primary { background-color: var(--umb-blue) !important; font-weight: 600; }
+        .text-primary { color: var(--umb-blue) !important; }
 
-        /* Samakan warna penanda nomor / badge */
-        .badge.bg-primary {
-            background-color: var(--umb-blue) !important;
-            font-weight: 600;
+        /* Footer */
+        .main-footer { background-color: #081627; color: #ffffff; padding: 70px 0 0; margin-top: auto; }
+        .footer-title { color: var(--umb-gold); font-weight: 700; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
+        .footer-link { color: rgba(255,255,255,0.6); text-decoration: none; display: block; margin-bottom: 12px; transition: 0.3s; font-size: 0.9rem;}
+        .footer-link:hover { color: var(--umb-gold); padding-left: 8px; }
+        
+        .social-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            color: white; margin-right: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
         }
+        .social-btn:hover { background: var(--umb-gold); color: var(--umb-blue); transform: translateY(-3px); }
 
-        /* Pastikan warna teks di card-info (poin 1, 2, 3) juga biru gelap */
-        .text-primary {
-            color: var(--umb-blue) !important;
-        }
+        .copyright-area { background: #050e1a; padding: 25px 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 40px; }
     </style>
 </head>
 <body>
 
+    <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="../">
-                <i class="fas fa-university me-3 text-warning"></i>
-                <div>
-                    <span class="fs-6 d-block fw-bold">LABORATORIUM INFORMATIKA</span>
-                    <small class="fs-6 opacity-75">UM BANDUNG</small>
+            <a class="navbar-brand d-flex align-items-center" href="../index.html">
+                <i class="fas fa-university fs-3 me-3 text-warning"></i>
+                <div class="d-flex flex-column">
+                    <span class="fs-6 fw-bold" style="line-height: 1.2;">LABORATORIUM INFORMATIKA</span>
+                    <small class="opacity-75" style="font-size: 0.75rem; font-weight: 500;">UNIVERSITAS MUHAMMADIYAH BANDUNG</small>
                 </div>
             </a>
 
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto py-3 py-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="../">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.html">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../info/">INFO</a></li>
                     <li class="nav-item"><a class="nav-link" href="../jadwal/">JADWAL</a></li>
                     <li class="nav-item"><a class="nav-link" href="../fasilitas/">FASILITAS</a></li>
                     <li class="nav-item"><a class="nav-link" href="../peminjaman/">PEMINJAMAN</a></li>
@@ -122,153 +208,173 @@
         </div>
     </nav>
 
-    <div class="container my-5">
-        <div class="hero-card text-center">
-            <h1 class="fw-bold">Peminjaman Ruang & Alat</h1>
-            <p class="lead opacity-75">Layanan pengajuan fasilitas terpadu Laboratorium Informatika.</p>
+    <!-- HEADER HALAMAN -->
+    <header class="page-header">
+        <div class="container">
+            <h1 class="display-5 hero-title mb-3">Sistem Peminjaman Ruang & Alat</h1>
+            <p class="fs-5 mb-0 max-w-2xl mx-auto opacity-75">Layanan pengajuan penggunaan fasilitas terpadu Laboratorium Informatika.</p>
         </div>
+    </header>
 
-        <div class="row g-4 mb-4">
-            <div class="col-md-4">
-                <div class="card-info shadow-sm" style="border-top: 4px solid var(--umb-blue);">
-                    <h6 class="fw-bold text-primary mb-3"><i class="fas fa-file-signature me-2"></i> 1. ISI SURAT PERMOHONAN</h6>
-                    <ul class="ps-3 mb-0" style="font-size: 0.8rem; line-height: 1.6;">
-                        <li>a. Nama kegiatan</li>
-                        <li>b. Tanggal, waktu, & lokasi</li>
-                        <li>c. Alat/Ruang yang dipinjam</li>
-                        <li>d. Jumlah peserta</li>
-                        <li>e. Nama & No. HP PIC</li>
-                    </ul>
-                    <hr>
-                    <small class="text-danger d-block mt-2" style="font-size: 0.7rem;">*Surat ditujukan ke Kaprodi Teknik Informatika.</small>
+    <!-- KONTEN UTAMA (OVERLAP) -->
+    <section class="pb-5 flex-grow-1">
+        <div class="container overlap-wrapper">
+            
+            <!-- Cards Informasi Prosedur -->
+            <div class="row g-4 mb-5">
+                <!-- Card 1 -->
+                <div class="col-md-4">
+                    <div class="card-info" style="border-top: 4px solid var(--umb-blue);">
+                        <h6 class="info-title"><i class="fas fa-file-signature me-2 fs-5"></i> 1. ISI SURAT PERMOHONAN</h6>
+                        <ul class="ps-3 mb-0 text-muted" style="font-size: 0.85rem; line-height: 1.7;">
+                            <li>a. Nama kegiatan</li>
+                            <li>b. Tanggal, waktu, & lokasi</li>
+                            <li>c. Alat/Ruang yang dipinjam</li>
+                            <li>d. Jumlah peserta</li>
+                            <li>e. Nama & No. HP PIC</li>
+                        </ul>
+                        <div class="mt-3 pt-2 border-top border-light">
+                            <small class="text-danger fw-medium" style="font-size: 0.75rem;">*Surat wajib ditujukan ke Kaprodi Teknik Informatika.</small>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-md-4">
-                <div class="card-info shadow-sm" style="border-top: 4px solid var(--umb-gold);">
-                    <h6 class="fw-bold text-dark mb-3"><i class="fas fa-clock me-2 text-warning"></i> 2. JAM OPERASIONAL</h6>
-                    <div class="small" style="font-size: 0.8rem;">
-                        <div class="d-flex justify-content-between mb-1"><span>Senin - Kamis</span><b>08:00 - 16:00</b></div>
-                        <div class="d-flex justify-content-between mb-1"><span>Jumat</span><b>08:00 - 16:00</b></div>
-                        <div class="d-flex justify-content-between mb-2"><span>Sabtu</span><b>08:00 - 14:00</b></div>
-                        
-                        <div class="bg-light p-2 rounded mb-3 border-start border-3 border-warning">
-                            <div class="d-flex justify-content-between">
-                                <span class="text-muted"><i class="fas fa-utensils me-1"></i> Istirahat (Sen-Kam):</span>
-                                <b class="text-danger">12:00 - 13:00</b>
+                <!-- Card 2 -->
+                <div class="col-md-4">
+                    <div class="card-info" style="border-top: 4px solid var(--umb-gold);">
+                        <h6 class="info-title text-dark"><i class="fas fa-clock me-2 fs-5 text-warning"></i> 2. JAM OPERASIONAL</h6>
+                        <div class="text-muted" style="font-size: 0.85rem;">
+                            <div class="d-flex justify-content-between mb-2"><span>Senin - Kamis</span><b class="text-dark">08:00 - 16:00</b></div>
+                            <div class="d-flex justify-content-between mb-2"><span>Jumat</span><b class="text-dark">08:00 - 16:00</b></div>
+                            <div class="d-flex justify-content-between mb-3"><span>Sabtu</span><b class="text-dark">08:00 - 14:00</b></div>
+                            
+                            <div class="bg-light p-2 rounded mb-3 border-start border-3 border-warning">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span><i class="fas fa-utensils me-1"></i> Istirahat (Sen-Kam):</span>
+                                    <b class="text-danger">12:00 - 13:00</b>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span><i class="fas fa-mosque me-1"></i> Istirahat (Jumat):</span>
+                                    <b class="text-danger">11:30 - 13:00</b>
+                                </div>
                             </div>
-                            <div class="d-flex justify-content-between">
-                                <span class="text-muted"><i class="fas fa-mosque me-1"></i> Istirahat (Jumat):</span>
-                                <b class="text-danger">11:30 - 13:00</b>
+                            <div class="alert alert-info p-2 mb-0 border-0" style="font-size: 0.8rem; background-color: #e8f4fd; color: #00428a;">
+                                <strong>Note:</strong> Pengajuan maksimal <b>H-3 Kerja</b> sebelum kegiatan.
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="alert alert-info p-2 mb-0" style="font-size: 0.75rem;">
-                            <strong>Note:</strong> Pengajuan maksimal <b>H-3 Kerja</b> sebelum kegiatan.
-                        </div>
+                <!-- Card 3 -->
+                <div class="col-md-4">
+                    <div class="card-info" style="border-top: 4px solid #dc3545;">
+                        <h6 class="info-title text-danger"><i class="fas fa-id-card me-2 fs-5"></i> 3. PENYERAHAN H-1</h6>
+                        <p class="text-muted mb-3" style="font-size: 0.85rem; line-height: 1.6;">Jika status di tabel menyatakan <b class="text-success">"Diterima"</b>, Anda wajib menyerahkan berkas fisik ke Laboran paling lambat H-1:</p>
+                        <ul class="ps-3 mb-3 text-muted" style="font-size: 0.85rem;">
+                            <li>Surat Komitmen (Asli & Dicetak)</li>
+                            <li>Kartu Identitas (KTP/KTM Asli)</li>
+                        </ul>
+                        <a href="https://s.id/komitmenpeminjamanLabIF" target="_blank" class="btn btn-sm btn-outline-danger w-100 fw-bold py-2 mt-auto">
+                            <i class="fas fa-download me-1"></i> Download Surat Komitmen
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <div class="card-info shadow-sm" style="border-top: 4px solid #dc3545;">
-                    <h6 class="fw-bold text-danger mb-3"><i class="fas fa-id-card me-2"></i> 3. PENYERAHAN H-1</h6>
-                    <p class="small mb-2" style="font-size: 0.8rem;">Jika status <b>"DISETUJUI"</b>, serahkan berkas fisik ke Laboran paling lambat H-1:</p>
-                    <ul class="ps-3 mb-2" style="font-size: 0.8rem;">
-                        <li>Surat Komitmen (Asli)</li>
-                        <li>Kartu Identitas (KTP/KTM)</li>
-                    </ul>
-                    <a href="https://s.id/komitmenpeminjamanLabIF" target="_blank" class="btn btn-sm btn-outline-danger w-100 fw-bold py-2 mt-1" style="font-size: 0.75rem;">
-                        <i class="fas fa-download me-1"></i> Download Surat Komitmen
-                    </a>
+            <!-- Tabel Status Peminjaman -->
+            <div class="card-table">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+                    <h4 class="fw-bold text-dark mb-0 d-flex align-items-center">
+                        <i class="fas fa-clipboard-check me-3 fs-3" style="color: var(--umb-gold);"></i>
+                        Status Pengajuan
+                    </h4>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#formModal">
+                            <i class="fas fa-plus-circle me-2"></i> Pengajuan Baru
+                        </button>
+                        <button class="btn btn-outline-primary rounded-pill px-4 shadow-sm" onclick="location.reload()">
+                            <i class="fas fa-sync-alt me-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="alert alert-light border-0 small mb-4 p-3 text-muted" style="background-color: #f8faff; border-left: 4px solid var(--umb-blue) !important;">
+                    <i class="fas fa-info-circle me-2 text-primary"></i> <strong>Pemberitahuan:</strong> Pada form pengajuan di bawah, cukup <i>upload</i> Surat Permohonan saja (Format PDF). Dokumen Surat Komitmen dibawa dalam bentuk fisik saat hari-H.
+                </div>
+
+                <div id="loading" class="text-center py-5">
+                    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+                    <p class="mt-3 text-muted fw-medium">Memuat data pengajuan...</p>
+                </div>
+                
+                <div class="table-responsive">
+                    <table id="tabel-peminjaman" class="table table-hover align-middle w-100" style="display:none; font-size: 0.95rem;">
+                        <thead><tr id="table-header"></tr></thead>
+                        <tbody id="table-body"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
+    </section>
 
-        <div class="card-table">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
-                <h4 class="fw-bold text-dark mb-0">
-                    <i class="fas fa-clipboard-check me-2 text-warning"></i>Status Pengajuan Peminjaman Lab
-                </h4>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#formModal">
-                        <i class="fas fa-plus-circle me-1"></i> Pengajuan Baru
-                    </button>
-                    <button class="btn btn-outline-primary rounded-pill px-3 shadow-sm" onclick="location.reload()">
-                        <i class="fas fa-sync-alt"></i> Refresh
-                    </button>
-                </div>
-            </div>
-
-            <div class="alert alert-light border-0 small mb-3 p-0 text-muted">
-                <i class="fas fa-info-circle me-1"></i> Hanya upload Surat Permohonan. Surat Komitmen dibawa fisik saat hari-H.
-            </div>
-
-            <div id="loading" class="text-center py-4">
-                <div class="spinner-border text-primary"></div>
-            </div>
-            
-            <div class="table-responsive">
-                <table id="tabel-peminjaman" class="table table-hover w-100" style="display:none;">
-                    <thead><tr id="table-header"></tr></thead>
-                    <tbody id="table-body"></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
+    <!-- FORM MODAL PENGAJUAN -->
     <div class="modal fade" id="formModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered"> 
-            <div class="modal-content border-0 shadow" style="border-radius: 20px;">
-                <div class="modal-header border-0 py-4 px-4" style="background: linear-gradient(135deg, var(--umb-blue) 0%, #004a99 100%); border-radius: 20px 20px 0 0;">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-0 py-4 px-4" style="background: linear-gradient(135deg, var(--umb-blue) 0%, #004a99 100%);">
                     <h5 class="modal-title fw-bold text-white mb-0">
-                        <i class="fas fa-file-signature me-2 text-warning"></i>Form Pengajuan Bebas Lab
+                        <i class="fas fa-file-signature me-2 text-warning"></i>Form Pengajuan Peminjaman Lab
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-4">
+                <div class="modal-body p-4 p-md-5">
                     <form id="peminjamanForm">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">Email</label>
-                                <input type="email" 
-                                    name="email" 
-                                    id="emailInput" 
-                                    class="form-control" 
-                                    placeholder="contoh@email.com" 
-                                    required>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Alamat Email</label>
+                                <input type="email" name="email" id="emailInput" class="form-control" placeholder="Email aktif..." required>
                                 <div id="email-feedback" class="text-danger mt-1 fw-bold" style="font-size: 0.75rem; display: none;">
                                     <i class="fas fa-envelope-open me-1"></i> Format email salah! (Gunakan @ dan domain)
                                 </div>
                             </div>
-                            <div class="col-md-6 mb-3"><label class="form-label fw-bold">Nama Kegiatan</label><input type="text" name="namaKegiatan" class="form-control" required></div>
-                            <div class="col-md-6 mb-3"><label class="form-label fw-bold">Nama PIC</label><input type="text" name="namaPIC" class="form-control" required></div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold text-dark">WhatsApp PIC</label>
-                                <input type="text" 
-                                    name="whatsapp" 
-                                    id="whatsappInput"
-                                    class="form-control" 
-                                    placeholder="Contoh: 08123456789"
-                                    autocomplete="off"
-                                    required>
+                            <div class="col-md-6">
+                                <label class="form-label">Nama Kegiatan</label>
+                                <input type="text" name="namaKegiatan" class="form-control" placeholder="Contoh: Rapat Hima..." required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nama Penanggung Jawab (PIC)</label>
+                                <input type="text" name="namaPIC" class="form-control" placeholder="Nama lengkap..." required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nomor WhatsApp PIC</label>
+                                <input type="text" name="whatsapp" id="whatsappInput" class="form-control" placeholder="08123xxxx" autocomplete="off" required>
                                 <div id="wa-feedback" class="text-danger mt-1 fw-bold" style="font-size: 0.75rem; display: none;">
                                     <i class="fas fa-times-circle me-1"></i> Hanya boleh angka (0-9)!
                                 </div>
                             </div>
-                            <div class="col-md-4 mb-3"><label class="form-label fw-bold">Tanggal</label><input type="date" name="tanggal" class="form-control" required></div>
-                            <div class="col-md-4 mb-3"><label class="form-label fw-bold">Jam Mulai</label><input type="time" name="waktuMulai" class="form-control" required></div>
-                            <div class="col-md-4 mb-3"><label class="form-label fw-bold">Jam Selesai</label><input type="time" name="waktuSelesai" class="form-control" required></div>
-                            <div class="col-12 mb-4">
-                                <label class="fw-bold">Upload Surat Permohonan (Hanya PDF)</label>
-                                <input type="file" id="fileInput" name="myFile" class="form-control" accept=".pdf" required>
-                                <small class="text-muted d-block mt-1">Maksimal ukuran file: <b>2 MB</b></small>
+                            <div class="col-md-4">
+                                <label class="form-label">Tanggal Peminjaman</label>
+                                <input type="date" name="tanggal" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Jam Mulai</label>
+                                <input type="time" name="waktuMulai" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Jam Selesai</label>
+                                <input type="time" name="waktuSelesai" class="form-control" required>
+                            </div>
+                            <div class="col-12 mt-4">
+                                <div class="p-3 bg-light rounded border border-light-subtle">
+                                    <label class="form-label d-block mb-2 text-dark"><i class="fas fa-file-pdf me-2 text-danger"></i>Upload Surat Permohonan</label>
+                                    <input type="file" id="fileInput" name="myFile" class="form-control bg-white" accept=".pdf" required>
+                                    <small class="text-muted d-block mt-2" style="font-size: 0.8rem;">Format wajib <b>PDF</b>. Maksimal ukuran file: <b>2 MB</b>.</small>
+                                </div>
                             </div>
                         </div>
                         <div id="statusMsg"></div>
-                        <button type="submit" id="submitBtn" class="btn btn-primary w-100 py-3 fw-bold rounded-pill shadow-lg border-0 mt-3" 
-                                style="background: linear-gradient(135deg, var(--umb-blue) 0%, #004a99 100%);">
-                            <i class="fas fa-paper-plane me-2"></i> KIRIM PENGAJUAN SEKARANG
+                        <button type="submit" id="submitBtn" class="btn btn-primary w-100 py-3 fw-bold rounded-pill shadow-sm mt-4">
+                            <i class="fas fa-paper-plane me-2"></i> KIRIM PENGAJUAN
                         </button>
                     </form>
                 </div>
@@ -276,75 +382,104 @@
         </div>
     </div>
 
+    <!-- FOOTER -->
     <footer class="main-footer">
         <div class="container">
             <div class="row g-4">
-                <div class="col-lg-4">
+                <div class="col-lg-4 pe-lg-5">
                     <div class="d-flex align-items-center mb-4">
                         <div class="me-3 d-flex align-items-center justify-content-center" 
-                            style="width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 12px; border: 1px solid rgba(255,193,7,0.3);">
+                            style="width: 50px; height: 50px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,193,7,0.2);">
                             <i class="fas fa-university fs-4" style="color: #ffc107;"></i>
                         </div>
                         <div>
-                            <h6 class="fw-bold mb-0 text-white">LABORATORIUM INFORMATIKA</h6>
-                            <small style="color: #ffc107;">UM BANDUNG</small>
+                            <h6 class="fw-bold mb-0 text-white" style="letter-spacing: 0.5px;">LABORATORIUM INFORMATIKA</h6>
+                            <small style="color: #ffc107; font-size: 0.75rem;">UM BANDUNG</small>
                         </div>
                     </div>
-                    <p class="footer-description small">
+                    <p class="text-white-50 small mb-4" style="line-height: 1.7;">
                         Pusat praktikum, riset, dan pengembangan teknologi mahasiswa Teknik Informatika Universitas Muhammadiyah Bandung. Unggul dalam keilmuan dan islami dalam karakter.
                     </p>
-                    <div class="mt-4">
-                        <a href="#" class="text-white me-3 fs-5"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-white me-3 fs-5"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="text-white fs-5"><i class="fab fa-youtube"></i></a>
+                    <div>
+                        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-btn"><i class="fas fa-globe"></i></a>
                     </div>
                 </div>
 
-                <div class="col-lg-2 col-md-6 px-lg-4">
-                    <h6 class="footer-title">Tautan</h6>
-                    <a href="../" class="footer-link small">Home</a>
-                    <a href="../jadwal/" class="footer-link small">Jadwal Lab</a>
-                    <a href="../fasilitas/" class="footer-link small">Fasilitas</a>
-                    <a href="../peminjaman/" class="footer-link small">Peminjaman</a>
+                <div class="col-lg-2 col-md-4 mt-5 mt-lg-0">
+                    <h6 class="footer-title">Navigasi</h6>
+                    <a href="../index.html" class="footer-link">Home</a>
+                    <a href="../info/" class="footer-link">Info & Berita</a>
+                    <a href="../jadwal/" class="footer-link">Jadwal Lab</a>
+                    <a href="../fasilitas/" class="footer-link">Fasilitas</a>
+                    <a href="../peminjaman/" class="footer-link">Peminjaman</a>
                 </div>
 
-                <div class="col-lg-3 col-md-6">
-                    <h6 class="footer-title">Layanan</h6>
-                    <a href="../bebas-lab/" class="footer-link small">Bebas Laboratorium</a>
-                    <a href="#" class="footer-link small">Asisten Laboratorium</a>
-                    <a href="https://lms.umbandung.ac.id/login/index.php" target="_blank" class="footer-link small">E-Learning UMB</a>
-                    <a href="#" class="footer-link small">Pusat Bantuan</a>
+                <div class="col-lg-3 col-md-4 mt-5 mt-lg-0">
+                    <h6 class="footer-title">Layanan Mahasiswa</h6>
+                    <a href="../bebas-lab/" class="footer-link">Bebas Laboratorium</a>
+                    <a href="#" class="footer-link">Asisten Praktikum (Asprak)</a>
+                    <a href="https://lms.umbandung.ac.id/login/index.php" target="_blank" class="footer-link">E-Learning UMB</a>
+                    <a href="#" class="footer-link">Pusat Bantuan Lab</a>
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-3 col-md-4 mt-5 mt-lg-0">
                     <h6 class="footer-title">Kontak Kami</h6>
-                    <div class="footer-contact-text small">
-                        <p><i class="fas fa-map-marker-alt text-warning me-2"></i> Jl. Soekarno Hatta No.752, Cipadung Kidul, Bandung.</p>
-                        <p><i class="fas fa-envelope text-warning me-2"></i> informaticslab.umbandung@gmail.com</p>
-                        <p><i class="fas fa-phone text-warning me-2"></i> (022) 1234567</p>
-                    </div>
+                    <ul class="list-unstyled text-white-50 small" style="line-height: 1.8;">
+                        <li class="mb-3 d-flex"><i class="fas fa-map-marker-alt text-warning mt-1 me-3"></i> <span>Jl. Soekarno Hatta No.752, Cipadung Kidul, Kec. Panyileukan, Kota Bandung.</span></li>
+                        <li class="mb-3 d-flex"><i class="fas fa-envelope text-warning mt-1 me-3"></i> <span>informaticslab.umbandung@gmail.com</span></li>
+                        <li class="d-flex"><i class="fas fa-phone-alt text-warning mt-1 me-3"></i> <span>(022) 1234567</span></li>
+                    </ul>
                 </div>
             </div>
         </div>
-        <div class="copyright-area mt-5">
+        <div class="copyright-area">
             <div class="container text-center">
                 <span class="copyright-text">
-                    &copy; <span id="tahun-otomatis"></span> Teknik Informatika. All rights reserved
+                    &copy; <span id="tahun-otomatis"></span> Teknik Informatika UM Bandung. All rights reserved.
                 </span>
                 <span class="made-by">
-                    made by <strong>Laboratory of Informatics</strong>
+                    Developed by <strong>Laboratory of Informatics</strong>
                 </span>
             </div>
         </div>
     </footer>
 
+    <!-- Scripts DataTables, SweetAlert DLL -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="security.js"></script>
+    
     <script>
+        // Logika Update Tahun & Active Nav Link Modern
+        document.getElementById('tahun-otomatis').textContent = new Date().getFullYear();
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll(".nav-link");
+
+            navLinks.forEach(link => {
+                const href = link.getAttribute("href");
+                link.classList.remove("active");
+
+                const cleanHref = href.replace(/\.\.\//g, '');
+                if (currentPath === "/" || currentPath === "/index.html") {
+                    if (href === "../" || href === "/" || href === "index.html" || href === "../index.html") {
+                        link.classList.add("active");
+                    }
+                } else if (cleanHref !== "" && currentPath.includes(cleanHref)) {
+                    link.classList.add("active");
+                }
+            });
+        });
+
+        // =========================================================
+        // SCRIPT INTI GOOGLE SHEETS & FORM (TIDAK ADA YANG DIUBAH)
+        // =========================================================
         const SHEET_ID = '1Kd6te5CvI4rdn05G1taE9uaUApYxJtJdqmQeqnrut1A';
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzS5rA-hZfqwVJo4WSIn7xcvVk5hSznypesheqt25c5b56uCwWTzJerzAMoC0S-u4t8/exec"; 
 
@@ -376,18 +511,16 @@
                     indeksTarget.forEach(t => {
                         let val = row.c[t.idx] ? (row.c[t.idx].f || row.c[t.idx].v || '') : '';
                         
-                        // FORMAT TIMESTAMP (Hanya menampilkan Tanggal & Jam jika tipe data Date)
-                        if (t.label === "Timestamp" && val !== "") {
-                            // Biarkan format bawaan sheet agar tidak error, atau bisa diolah lebih lanjut jika perlu
-                        }
+                        // FORMAT TIMESTAMP
+                        if (t.label === "Timestamp" && val !== "") { }
                         
                         // STATUS BADGE
                         if (t.label === "Status Kegiatan") {
                             let s = val.toString().toLowerCase();
                             let cls = s.includes("selesai") || s.includes("setuju") || s.includes("diterima") ? "bg-success" :
-                                    s.includes("proses") || s.includes("antre") || s.includes("pending") ? "bg-warning text-dark" :
-                                    s.includes("batal") || s.includes("tolak") || s.includes("reject") ? "bg-danger" : "bg-secondary";
-                            val = `<span class="badge ${cls} shadow-sm px-3 py-2" style="min-width: 80px; border-radius: 8px;">${val.toUpperCase()}</span>`;
+                                      s.includes("proses") || s.includes("antre") || s.includes("pending") ? "bg-warning text-dark" :
+                                      s.includes("batal") || s.includes("tolak") || s.includes("reject") ? "bg-danger" : "bg-secondary";
+                            val = `<span class="badge ${cls} shadow-sm px-3 py-2" style="min-width: 90px; border-radius: 8px;">${val.toUpperCase()}</span>`;
                         }
 
                         // KETERANGAN BOX
@@ -400,7 +533,7 @@
                             } else if (ket.includes("ditolak") || ket.includes("gagal") || ket.includes("penuh")) {
                                 val = `<div class="text-danger fw-bold"><i class="fas fa-times-circle me-1"></i> ${val}</div>`;
                             } else {
-                                val = `<div class="text-muted small italic">${val}</div>`;
+                                val = `<div class="text-muted small fst-italic">${val}</div>`;
                             }
                         }
                         bHtml += `<td class="align-middle">${val}</td>`;
@@ -414,7 +547,7 @@
                 
                 if (!$.fn.DataTable.isDataTable('#tabel-peminjaman')) {
                     $('#tabel-peminjaman').DataTable({ 
-                        "order": [[ 0, "desc" ]], // Urutkan berdasarkan Timestamp (Indeks 0) secara default
+                        "order": [[ 0, "desc" ]], 
                         "language": {"search": "CARI:"} 
                     });
                 }
@@ -433,7 +566,7 @@
                 this.classList.toggle('is-invalid', feedback.style.display === 'block');
             });
 
-            // Validasi File (Pake SweetAlert!)
+            // Validasi File 
             document.getElementById('fileInput').onchange = function() {
                 const file = this.files[0];
                 if (file && file.size > 2 * 1024 * 1024) {
@@ -465,7 +598,7 @@
 
             Swal.fire({
                 title: 'Sedang Memproses...',
-                text: 'Mohon tunggu sebentar, data sedang diproses.',
+                text: 'Mohon tunggu sebentar, data sedang dikirim ke server.',
                 allowOutsideClick: false,
                 didOpen: () => { Swal.showLoading(); }
             });
@@ -484,31 +617,6 @@
             };
             reader.readAsDataURL(file);
         };
-
-        document.addEventListener("DOMContentLoaded", function() {
-            const currentPath = window.location.pathname;
-            const navLinks = document.querySelectorAll(".nav-link");
-
-            navLinks.forEach(link => {
-                const href = link.getAttribute("href");
-                link.classList.remove("active");
-
-                // Logika Deteksi Khusus Struktur Folder
-                // 1. Bersihkan href dari '../' untuk pencocokan folder
-                const cleanHref = href.replace(/\.\.\//g, '');
-
-                // 2. Kondisi Halaman Utama
-                if (currentPath === "/" || currentPath === "/index.html") {
-                    if (href === "../" || href === "/" || href === "index.html") {
-                        link.classList.add("active");
-                    }
-                } 
-                // 3. Kondisi Dalam Folder (misal /jadwal/)
-                else if (cleanHref !== "" && currentPath.includes(cleanHref)) {
-                    link.classList.add("active");
-                }
-            });
-        });
     </script>
 </body>
 </html>

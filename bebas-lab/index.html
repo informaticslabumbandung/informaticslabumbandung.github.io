@@ -5,78 +5,177 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bebas Laboratorium | Lab IF UM Bandung</title>
     
+    <!-- Bootstrap & FontAwesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        :root { --umb-blue: #002d5d; --umb-gold: #ffc107; --bg-light: #f4f7f9; }
-        body { background-color: var(--bg-light); font-family: 'Poppins', sans-serif; }
-        .navbar { background: var(--umb-blue); border-bottom: 4px solid var(--umb-gold); }
-        .nav-link.active { color: var(--umb-gold) !important; font-weight: 700; }
+        :root { 
+            --umb-blue: #002d5d; 
+            --umb-blue-light: #00428a;
+            --umb-gold: #ffc107; 
+            --bg-light: #f8faff; 
+            --text-gray: #4b5563;
+        }
         
-        /* Hero Card & Buttons */
-        .hero-card { 
-            border-radius: 20px; 
-            background: linear-gradient(135deg, var(--umb-blue) 0%, #004a99 100%);
-            color: white; padding: 40px 20px; margin-bottom: 30px; 
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-light); 
+            color: #1f2937;
+            scroll-behavior: smooth;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
-        /* Override Tombol agar Birunya Gelap (Gak Terang) */
-        .btn-primary { 
-            background: linear-gradient(135deg, var(--umb-blue) 0%, #004a99 100%) !important; 
-            border: none !important; 
+        /* Navbar Modern */
+        .navbar { 
+            background: rgba(0, 45, 93, 0.98); 
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--umb-gold); 
+            transition: all 0.3s ease; 
         }
-        .btn-outline-primary { 
-            color: var(--umb-blue) !important; 
-            border-color: var(--umb-blue) !important; 
+        .navbar-brand { font-weight: 700; letter-spacing: 0.5px; color: white !important; }
+        .nav-link { 
+            font-weight: 500; 
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.7) !important; 
+            margin: 0 12px; 
+            transition: 0.3s;
+            position: relative;
         }
-        .btn-outline-primary:hover { 
-            background-color: var(--umb-blue) !important; 
-            color: white !important; 
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 2px;
+            bottom: 0; left: 50%;
+            background-color: var(--umb-gold);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .nav-link:hover, .nav-link.active { color: var(--umb-gold) !important; }
+
+        /* Header Halaman (Serasi) */
+        .page-header {
+            background: linear-gradient(to right, rgba(0,45,93,0.95), rgba(0,45,93,0.75)), url('../lab-if.jpeg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0 100px;
+            text-align: center;
+            position: relative;
+        }
+        .hero-title {
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: -1px;
+        }
+
+        /* Wrapper Overlap */
+        .overlap-wrapper {
+            margin-top: -60px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Table Styling */
+        .card-table { 
+            border-radius: 16px; 
+            background: white; 
+            padding: 35px 25px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06); 
+            border: none;
+        }
+        thead { background: var(--umb-blue); color: white; }
+        .table-hover tbody tr:hover { background-color: #f8faff; }
 
         /* Modal Styling */
         #formModal .modal-content {
-            border-radius: 20px; border: none; overflow: hidden;
+            border-radius: 20px;
+            border: none;
+            overflow: hidden; 
             box-shadow: 0 15px 50px rgba(0,0,0,0.2);
         }
-        #formModal .form-label { color: var(--umb-blue); font-weight: 600; }
-        #formModal .form-control { border-radius: 8px; padding: 10px 15px; }
+        #formModal .form-label { color: var(--umb-blue); font-weight: 600; font-size: 0.9rem; }
+        #formModal .form-control {
+            border: 1px solid #e0e0e0;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        #formModal .form-control:focus {
+            border-color: var(--umb-blue);
+            box-shadow: 0 0 0 0.25rem rgba(0, 45, 93, 0.1);
+        }
 
-        /* Card & Table */
-        .card-table { border-radius: 15px; background: white; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        thead { background: var(--umb-blue); color: white; }
-                
-        .main-footer { background-color: #0b1d33; color: #ffffff; padding: 70px 0 0; }
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--umb-blue) 0%, #004a99 100%) !important;
+            border: none !important;
+            transition: 0.3s ease;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 6px 15px rgba(0, 45, 93, 0.3);
+            transform: translateY(-2px);
+        }
+        .btn-outline-primary {
+            color: var(--umb-blue) !important;
+            border-color: var(--umb-blue) !important;
+            transition: 0.3s ease;
+        }
+        .btn-outline-primary:hover {
+            background: var(--umb-blue) !important;
+            color: white !important;
+            transform: translateY(-2px);
+        }
+        .badge.bg-primary { background-color: var(--umb-blue) !important; font-weight: 600; }
+
+        /* Footer */
+        .main-footer { background-color: #081627; color: #ffffff; padding: 70px 0 0; margin-top: auto; }
         .footer-title { color: var(--umb-gold); font-weight: 700; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
-        .footer-link { color: rgba(255,255,255,0.7); text-decoration: none; display: block; margin-bottom: 12px; transition: 0.3s; }
-        .footer-link:hover { color: var(--umb-gold); padding-left: 5px; }
+        .footer-link { color: rgba(255,255,255,0.6); text-decoration: none; display: block; margin-bottom: 12px; transition: 0.3s; font-size: 0.9rem;}
+        .footer-link:hover { color: var(--umb-gold); padding-left: 8px; }
         
-        .copyright-area { background: #071424; padding: 25px 0; border-top: 1px solid rgba(255,255,255,0.05); }
-        .copyright-text { color: rgba(255,255,255,0.5); font-size: 0.85rem; }
-        .made-by { color: rgba(255,255,255,0.5); font-size: 0.85rem; display: block; margin-top: 5px; }
-        .made-by strong { color: var(--umb-gold); }
+        .social-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            color: white; margin-right: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .social-btn:hover { background: var(--umb-gold); color: var(--umb-blue); transform: translateY(-3px); }
+
+        .copyright-area { background: #050e1a; padding: 25px 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 40px; }
     </style>
 </head>
 <body>
 
+    <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="../">
-                <i class="fas fa-university me-3 text-warning"></i>
-                <div>
-                    <span class="fs-6 d-block fw-bold">LABORATORIUM INFORMATIKA</span>
-                    <small class="fs-6 opacity-75">UM BANDUNG</small>
+            <a class="navbar-brand d-flex align-items-center" href="../index.html">
+                <i class="fas fa-university fs-3 me-3 text-warning"></i>
+                <div class="d-flex flex-column">
+                    <span class="fs-6 fw-bold" style="line-height: 1.2;">LABORATORIUM INFORMATIKA</span>
+                    <small class="opacity-75" style="font-size: 0.75rem; font-weight: 500;">UNIVERSITAS MUHAMMADIYAH BANDUNG</small>
                 </div>
             </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto py-3 py-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="../">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.html">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../info/">INFO</a></li>
                     <li class="nav-item"><a class="nav-link" href="../jadwal/">JADWAL</a></li>
                     <li class="nav-item"><a class="nav-link" href="../fasilitas/">FASILITAS</a></li>
                     <li class="nav-item"><a class="nav-link" href="../peminjaman/">PEMINJAMAN</a></li>
@@ -86,115 +185,116 @@
         </div>
     </nav>
 
-    <div class="container my-5">
-        <div class="hero-card text-center">
-            <h1 class="fw-bold">Permohonan Bebas Laboratorium</h1>
-            <p class="lead opacity-75">Gunakan layanan ini untuk mendapatkan surat keterangan bebas pinjam alat sebagai syarat Yudisium atau Wisuda.</p>
+    <!-- HEADER HALAMAN -->
+    <header class="page-header">
+        <div class="container">
+            <h1 class="display-5 hero-title mb-3">Permohonan Bebas Laboratorium</h1>
+            <p class="fs-5 mb-0 max-w-2xl mx-auto opacity-75">Layanan untuk pengajuan surat keterangan bebas pinjam alat sebagai syarat Yudisium / Wisuda.</p>
         </div>
+    </header>
 
-        <div class="card card-table">
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
-            <h4 class="fw-bold text-dark mb-0">
-                <i class="fas fa-tasks me-2 text-warning"></i>Status Pengajuan
-            </h4>
-            <div class="d-flex gap-2">
-                <button class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#formModal">
-                    <i class="fas fa-plus-circle me-1"></i> Pengajuan Baru
-                </button>
-                <button class="btn btn-outline-primary rounded-pill px-3" onclick="location.reload()">
-                    <i class="fas fa-sync-alt me-1"></i> Refresh
-                </button>
-            </div>
-        </div>
+    <!-- KONTEN UTAMA (OVERLAP) -->
+    <section class="pb-5 flex-grow-1">
+        <div class="container overlap-wrapper">
             
-            <div id="loading" class="text-center py-5">
-                <div class="spinner-border text-primary"></div>
-                <p class="mt-3 text-muted">Sinkronisasi data...</p>
+            <div class="card-table">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+                    <h4 class="fw-bold text-dark mb-0 d-flex align-items-center">
+                        <i class="fas fa-tasks me-3 fs-3" style="color: var(--umb-gold);"></i>
+                        Status Pengajuan
+                    </h4>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#formModal">
+                            <i class="fas fa-plus-circle me-2"></i> Pengajuan Baru
+                        </button>
+                        <button class="btn btn-outline-primary rounded-pill px-4 shadow-sm" onclick="location.reload()">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="alert alert-light border-0 small mb-4 p-3 text-muted" style="background-color: #f8faff; border-left: 4px solid var(--umb-blue) !important;">
+                    <i class="fas fa-info-circle me-2 text-primary"></i> <strong>Pemberitahuan:</strong> Silakan cari NIM atau Nama Anda pada tabel di bawah. Jika status sudah "SELESAI", Anda dapat langsung mengunduh Surat Bebas Lab dengan menekan tombol CETAK.
+                </div>
+
+                <div id="loading" class="text-center py-5">
+                    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+                    <p class="mt-3 text-muted fw-medium">Sinkronisasi data...</p>
+                </div>
+
+                <div class="table-responsive">
+                    <table id="tabel-bebas-lab" class="table table-hover align-middle w-100" style="display:none; font-size: 0.95rem;">
+                        <thead>
+                            <tr>
+                                <th>Waktu</th>
+                                <th>Nama Lengkap</th>
+                                <th>NIM</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body"></tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="table-responsive">
-                <table id="tabel-bebas-lab" class="table table-hover w-100" style="display:none; vertical-align: middle;">
-                    <thead>
-                        <tr>
-                            <th>Waktu</th>
-                            <th>Nama Lengkap</th>
-                            <th>NIM</th>
-                            <th class="text-center">Status</th>
-                            <th class="text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body"></tbody>
-                </table>
-            </div>
         </div>
-    </div>
+    </section>
 
+    <!-- FORM MODAL PENGAJUAN -->
     <div class="modal fade" id="formModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered"> 
-            <div class="modal-content">
-            <div class="modal-header border-0 py-4 px-4" style="background: linear-gradient(135deg, var(--umb-blue) 0%, #004a99 100%);">
-                <h5 class="modal-title fw-bold text-white mb-0">
-                    <i class="fas fa-file-signature me-2 text-warning"></i>Form Pengajuan Bebas Lab
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-0 py-4 px-4" style="background: linear-gradient(135deg, var(--umb-blue) 0%, #004a99 100%);">
+                    <h5 class="modal-title fw-bold text-white mb-0">
+                        <i class="fas fa-file-signature me-2 text-warning"></i>Form Pengajuan Bebas Lab
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
                 
-                <div class="modal-body p-4">
+                <div class="modal-body p-4 p-md-5">
                     <form id="bebasLabForm">
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <label class="form-label fw-bold">Email</label>
-                                <input type="email" 
-                                    name="email" 
-                                    id="emailInput" 
-                                    class="form-control" 
-                                    placeholder="contoh@email.com" 
-                                    required>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label">Alamat Email</label>
+                                <input type="email" name="email" id="emailInput" class="form-control" placeholder="contoh@email.com" required>
                                 <div id="email-feedback" class="text-danger mt-1 fw-bold" style="font-size: 0.75rem; display: none;">
                                     <i class="fas fa-envelope-open me-1"></i> Format email salah! (Gunakan @ dan domain)
                                 </div>
                             </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">Nama Lengkap</label>
-                                <input type="text" name="namaLengkap" class="form-control" placeholder="Masukkan Nama Lengkap" required>
+                            <div class="col-md-6">
+                                <label class="form-label">Nama Lengkap</label>
+                                <input type="text" name="namaLengkap" class="form-control" placeholder="Sesuai Ijazah/KTM" required>
                             </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">Nomor Induk Mahasiswa (NIM)</label>
+                            <div class="col-md-6">
+                                <label class="form-label">Nomor Induk Mahasiswa (NIM)</label>
                                 <input type="text" name="nim" id="nimInput" class="form-control" placeholder="Contoh: 12345678" required>
-                                <div id="nim-feedback" class="text-danger small mt-1 fw-bold" style="display: none;">
+                                <div id="nim-feedback" class="text-danger mt-1 fw-bold" style="font-size: 0.75rem; display: none;">
                                     <i class="fas fa-times-circle me-1"></i> NIM harus berupa angka saja!
                                 </div>
                             </div>
 
-                            <div class="col-12 mb-3">
-                                <label class="form-label fw-bold">Nomor WhatsApp</label>
-                                <input type="text" 
-                                    name="whatsapp" 
-                                    id="whatsappInput"
-                                    class="form-control" 
-                                    placeholder="Contoh: 08123456789"
-                                    autocomplete="off"
-                                    required>
+                            <div class="col-12">
+                                <label class="form-label">Nomor WhatsApp Aktif</label>
+                                <input type="text" name="whatsapp" id="whatsappInput" class="form-control" placeholder="Contoh: 08123456789" autocomplete="off" required>
                                 <div id="wa-feedback" class="text-danger mt-1 fw-bold" style="font-size: 0.75rem; display: none;">
                                     <i class="fas fa-times-circle me-1"></i> Hanya boleh angka (0-9)!
                                 </div>
                             </div>
 
-                            <div class="col-12 mb-4">
-                                <label class="fw-bold">Upload BAP Sidang (Hanya PDF)</label>
-                                <input type="file" id="fileInput" name="bapSidang" class="form-control" accept=".pdf" required>
-                                <div id="file-feedback" class="text-danger small mt-1 fw-bold" style="display: none;">
-                                    <i class="fas fa-exclamation-triangle me-1"></i> Ukuran file terlalu besar! Maksimal 2MB.
+                            <div class="col-12 mt-4">
+                                <div class="p-3 bg-light rounded border border-light-subtle">
+                                    <label class="form-label d-block mb-2 text-dark"><i class="fas fa-file-pdf me-2 text-danger"></i>Upload BAP Sidang Akhir</label>
+                                    <input type="file" id="fileInput" name="bapSidang" class="form-control bg-white" accept=".pdf" required>
+                                    <small class="text-muted d-block mt-2" style="font-size: 0.8rem;">Format wajib <b>PDF</b>. Maksimal ukuran file: <b>2 MB</b>.</small>
                                 </div>
-                                <small class="text-muted d-block mt-1">Maksimal ukuran file: <b>2 MB</b></small>
                             </div>
                         </div>
 
                         <div id="statusMsg"></div>
-                        
-                        <button type="submit" id="submitBtn" class="btn btn-primary w-100 py-3 fw-bold rounded-pill shadow-lg mt-3">
+                        <button type="submit" id="submitBtn" class="btn btn-primary w-100 py-3 fw-bold rounded-pill shadow-sm mt-4">
                             <i class="fas fa-paper-plane me-2"></i> KIRIM PENGAJUAN SEKARANG
                         </button>
                     </form>
@@ -203,68 +303,72 @@
         </div>
     </div>
 
+    <!-- FOOTER -->
     <footer class="main-footer">
         <div class="container">
             <div class="row g-4">
-                <div class="col-lg-4">
+                <div class="col-lg-4 pe-lg-5">
                     <div class="d-flex align-items-center mb-4">
                         <div class="me-3 d-flex align-items-center justify-content-center" 
-                            style="width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 12px; border: 1px solid rgba(255,193,7,0.3);">
+                            style="width: 50px; height: 50px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,193,7,0.2);">
                             <i class="fas fa-university fs-4" style="color: #ffc107;"></i>
                         </div>
                         <div>
-                            <h6 class="fw-bold mb-0 text-white">LABORATORIUM INFORMATIKA</h6>
-                            <small style="color: #ffc107;">UM BANDUNG</small>
+                            <h6 class="fw-bold mb-0 text-white" style="letter-spacing: 0.5px;">LABORATORIUM INFORMATIKA</h6>
+                            <small style="color: #ffc107; font-size: 0.75rem;">UM BANDUNG</small>
                         </div>
                     </div>
-                    <p class="footer-description small">
+                    <p class="text-white-50 small mb-4" style="line-height: 1.7;">
                         Pusat praktikum, riset, dan pengembangan teknologi mahasiswa Teknik Informatika Universitas Muhammadiyah Bandung. Unggul dalam keilmuan dan islami dalam karakter.
                     </p>
-                    <div class="mt-4">
-                        <a href="#" class="text-white me-3 fs-5"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-white me-3 fs-5"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="text-white fs-5"><i class="fab fa-youtube"></i></a>
+                    <div>
+                        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-btn"><i class="fas fa-globe"></i></a>
                     </div>
                 </div>
 
-                <div class="col-lg-2 col-md-6 px-lg-4">
-                    <h6 class="footer-title">Tautan</h6>
-                    <a href="../" class="footer-link small">Home</a>
-                    <a href="../jadwal/" class="footer-link small">Jadwal Lab</a>
-                    <a href="../fasilitas/" class="footer-link small">Fasilitas</a>
-                    <a href="../peminjaman/" class="footer-link small">Peminjaman</a>
+                <div class="col-lg-2 col-md-4 mt-5 mt-lg-0">
+                    <h6 class="footer-title">Navigasi</h6>
+                    <a href="../index.html" class="footer-link">Home</a>
+                    <a href="../info/" class="footer-link">Info & Berita</a>
+                    <a href="../jadwal/" class="footer-link">Jadwal Lab</a>
+                    <a href="../fasilitas/" class="footer-link">Fasilitas</a>
+                    <a href="../peminjaman/" class="footer-link">Peminjaman</a>
                 </div>
 
-                <div class="col-lg-3 col-md-6">
-                    <h6 class="footer-title">Layanan</h6>
-                    <a href="../bebas-lab/" class="footer-link small">Bebas Laboratorium</a>
-                    <a href="#" class="footer-link small">Asisten Laboratorium</a>
-                    <a href="https://lms.umbandung.ac.id/login/index.php" target="_blank" class="footer-link small">E-Learning UMB</a>
-                    <a href="#" class="footer-link small">Pusat Bantuan</a>
+                <div class="col-lg-3 col-md-4 mt-5 mt-lg-0">
+                    <h6 class="footer-title">Layanan Mahasiswa</h6>
+                    <a href="../bebas-lab/" class="footer-link">Bebas Laboratorium</a>
+                    <a href="#" class="footer-link">Asisten Praktikum (Asprak)</a>
+                    <a href="https://lms.umbandung.ac.id/login/index.php" target="_blank" class="footer-link">E-Learning UMB</a>
+                    <a href="#" class="footer-link">Pusat Bantuan Lab</a>
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-3 col-md-4 mt-5 mt-lg-0">
                     <h6 class="footer-title">Kontak Kami</h6>
-                    <div class="footer-contact-text small">
-                        <p><i class="fas fa-map-marker-alt text-warning me-2"></i> Jl. Soekarno Hatta No.752, Cipadung Kidul, Bandung.</p>
-                        <p><i class="fas fa-envelope text-warning me-2"></i> informaticslab.umbandung@gmail.com</p>
-                        <p><i class="fas fa-phone text-warning me-2"></i> (022) 1234567</p>
-                    </div>
+                    <ul class="list-unstyled text-white-50 small" style="line-height: 1.8;">
+                        <li class="mb-3 d-flex"><i class="fas fa-map-marker-alt text-warning mt-1 me-3"></i> <span>Jl. Soekarno Hatta No.752, Cipadung Kidul, Kec. Panyileukan, Kota Bandung.</span></li>
+                        <li class="mb-3 d-flex"><i class="fas fa-envelope text-warning mt-1 me-3"></i> <span>informaticslab.umbandung@gmail.com</span></li>
+                        <li class="d-flex"><i class="fas fa-phone-alt text-warning mt-1 me-3"></i> <span>(022) 1234567</span></li>
+                    </ul>
                 </div>
             </div>
         </div>
-        <div class="copyright-area mt-5">
+        <div class="copyright-area">
             <div class="container text-center">
                 <span class="copyright-text">
-                    &copy; <span id="tahun-otomatis"></span> Teknik Informatika. All rights reserved
+                    &copy; <span id="tahun-otomatis"></span> Teknik Informatika UM Bandung. All rights reserved.
                 </span>
                 <span class="made-by">
-                    made by <strong>Laboratory of Informatics</strong>
+                    Developed by <strong>Laboratory of Informatics</strong>
                 </span>
             </div>
         </div>
     </footer>
 
+    <!-- Scripts DataTables, SweetAlert DLL -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
@@ -275,6 +379,7 @@
         const SHEET_ID = '1Ke7WpL9qsUlez63hyctzIJuQwpCBRbf0uQr3NROtm9g';
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwpAUIfS6M4Ex2gctTYX9jTOfBBfXRncC6zEwps78ltN2sR19GH_Y6TTH2SrFKn7yXT4w/exec';
 
+        // 1. AMBIL DATA
         function ambilData() {
             const script = document.createElement('script');
             script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=responseHandler:handleResponse`;
@@ -294,13 +399,13 @@
 
                     if (nama === '-' && nim === '-') return;
 
-                    let statusHtml = progress.includes("selesai") ? `<span class="badge bg-success shadow-sm px-3 py-2">SELESAI</span>` :
-                                    progress.includes("tolak") ? `<span class="badge bg-danger shadow-sm px-3 py-2">DITOLAK</span>` :
-                                    `<span class="badge bg-warning text-dark shadow-sm px-3 py-2">PROSES</span>`;
+                    let statusHtml = progress.includes("selesai") ? `<span class="badge bg-success shadow-sm px-3 py-2" style="border-radius: 8px;">SELESAI</span>` :
+                                    progress.includes("tolak") ? `<span class="badge bg-danger shadow-sm px-3 py-2" style="border-radius: 8px;">DITOLAK</span>` :
+                                    `<span class="badge bg-warning text-dark shadow-sm px-3 py-2" style="border-radius: 8px;">PROSES</span>`;
 
                     let aksiHtml = progress.includes("selesai") ? `<a href="${link}" target="_blank" class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm fw-bold"><i class="fas fa-download me-1"></i> CETAK</a>` :
-                                progress.includes("tolak") ? `<span class="text-danger small fw-bold">Hubungi Admin</span>` :
-                                `<button class="btn btn-sm btn-light disabled rounded-pill px-3 border">Antre</button>`;
+                                progress.includes("tolak") ? `<span class="text-danger small fw-bold"><i class="fas fa-exclamation-circle"></i> Hubungi Admin</span>` :
+                                `<button class="btn btn-sm rounded-pill px-3 border" style="background-color: #f3f4f6; color: #9ca3af;" disabled>Antre</button>`;
 
                     bodyHtml += `<tr>
                         <td class="small align-middle">${tgl}</td>
@@ -326,19 +431,20 @@
             } catch (err) { console.error(err); }
         };
 
+        // 2. SUBMIT FORM
         document.getElementById('bebasLabForm').onsubmit = function(e) {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             const file = document.getElementById('fileInput').files[0];
             
             if (file && file.size > 2097152) {
-                Swal.fire('File Terlalu Besar!', 'Maksimal 2MB bos.', 'warning');
+                Swal.fire('File Terlalu Besar!', 'Maksimal ukuran PDF 2MB ya.', 'warning');
                 return;
             }
 
             Swal.fire({
                 title: 'Sedang Mengirim...',
-                text: 'Mohon tunggu sebentar.',
+                text: 'Mohon tunggu sebentar, data Anda sedang diproses.',
                 allowOutsideClick: false,
                 didOpen: () => { Swal.showLoading(); }
             });
@@ -365,18 +471,19 @@
         function eksekusiKirim(data, btn) {
             fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify(data), mode: 'no-cors' })
             .then(() => {
-                Swal.fire({ icon: 'success', title: 'Berhasil!', text: 'Data sudah masuk.', showConfirmButton: false, timer: 2000 })
+                Swal.fire({ icon: 'success', title: 'Berhasil!', text: 'Data pengajuan berhasil dikirim.', showConfirmButton: false, timer: 2500 })
                 .then(() => { location.reload(); });
             })
             .catch(() => {
-                Swal.fire('Gagal!', 'Cek koneksi internet.', 'error');
+                Swal.fire('Gagal!', 'Silakan cek koneksi internet Anda.', 'error');
                 btn.disabled = false;
             });
         }
 
+        // 3. VALIDASI FORM DLL
         $(document).ready(function() {
             ambilData();
-            // Gabungkan semua validasi input di sini (NIM, WA, Email)
+
             // Validasi Email
             const emailInput = document.getElementById('emailInput');
             emailInput.addEventListener('blur', function() {
@@ -409,10 +516,9 @@
                     }
                 });
             });
-
-            
         });
 
+        // UPDATE TAHUN & ACTIVE LINK
         document.addEventListener("DOMContentLoaded", function() {
             const currentPath = window.location.pathname;
             const navLinks = document.querySelectorAll(".nav-link");
@@ -421,18 +527,12 @@
                 const href = link.getAttribute("href");
                 link.classList.remove("active");
 
-                // Logika Deteksi Khusus Struktur Folder
-                // 1. Bersihkan href dari '../' untuk pencocokan folder
                 const cleanHref = href.replace(/\.\.\//g, '');
-
-                // 2. Kondisi Halaman Utama
                 if (currentPath === "/" || currentPath === "/index.html") {
-                    if (href === "../" || href === "/" || href === "index.html") {
+                    if (href === "../" || href === "/" || href === "index.html" || href === "../index.html") {
                         link.classList.add("active");
                     }
-                } 
-                // 3. Kondisi Dalam Folder (misal /jadwal/)
-                else if (cleanHref !== "" && currentPath.includes(cleanHref)) {
+                } else if (cleanHref !== "" && currentPath.includes(cleanHref)) {
                     link.classList.add("active");
                 }
             });

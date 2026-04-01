@@ -5,37 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jadwal Lab IF | UM Bandung</title>
     
+    <!-- Bootstrap & FontAwesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root { 
             --umb-blue: #002d5d; 
+            --umb-blue-light: #00428a;
             --umb-gold: #ffc107; 
-            --bg-light: #f4f7f9; 
+            --bg-light: #f8faff; 
+            --text-gray: #4b5563;
         }
         
-        body { background-color: var(--bg-light); font-family: 'Poppins', sans-serif; }
-        
-        /* Navbar Styling - Konsisten */
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-light); 
+            color: #1f2937;
+            scroll-behavior: smooth;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar Modern */
         .navbar { 
-            background: var(--umb-blue); 
-            border-bottom: 4px solid var(--umb-gold); 
-            transition: 0.3s; 
+            background: rgba(0, 45, 93, 0.98); 
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--umb-gold); 
+            transition: all 0.3s ease; 
         }
-        .navbar-brand { font-weight: 700; letter-spacing: 1px; color: white !important; }
+        .navbar-brand { font-weight: 700; letter-spacing: 0.5px; color: white !important; }
         .nav-link { 
             font-weight: 500; 
-            color: rgba(255,255,255,0.8) !important; 
-            margin: 0 10px; 
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.7) !important; 
+            margin: 0 12px; 
             transition: 0.3s;
+            position: relative;
         }
-        
-        /* Highlight Menu Aktif (JADWAL) */
-        .nav-link:hover, .nav-link.active { 
-            color: var(--umb-gold) !important; 
-            font-weight: 700 !important; 
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 2px;
+            bottom: 0; left: 50%;
+            background-color: var(--umb-gold);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .nav-link:hover, .nav-link.active { color: var(--umb-gold) !important; }
+
+        /* Header Halaman (Serasi dengan Info & Home) */
+        .page-header {
+            background: linear-gradient(to right, rgba(0,45,93,0.95), rgba(0,45,93,0.75)), url('../lab-if.jpeg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0 100px;
+            text-align: center;
+            position: relative;
+        }
+        .hero-title {
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: -1px;
+        }
+
+        /* Wrapper Overlap */
+        .overlap-wrapper {
+            margin-top: -60px;
+            position: relative;
+            z-index: 10;
         }
 
         /* Looker Studio Container */
@@ -44,52 +88,70 @@
             width: 100%;
             height: 0;
             padding-top: 75%; /* Rasio 4:3 */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border-radius: 15px;
+            border-radius: 12px;
             overflow: hidden;
             background: white;
-            border: 1px solid #ddd;
+            border: 1px solid #e5e7eb;
         }
-        
         .report-container iframe {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             border: none;
         }
 
-        .main-footer { background-color: #0b1d33; color: #ffffff; padding: 70px 0 0; }
+        /* Alert Warning */
+        .alert-custom {
+            background-color: #fff8e6;
+            border-left: 5px solid var(--umb-gold);
+            color: #856404;
+            border-radius: 10px;
+        }
+
+        /* Footer */
+        .main-footer { background-color: #0b1d33; color: #ffffff; padding: 70px 0 0; margin-top: auto; }
         .footer-title { color: var(--umb-gold); font-weight: 700; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
-        .footer-link { color: rgba(255,255,255,0.7); text-decoration: none; display: block; margin-bottom: 12px; transition: 0.3s; }
+        .footer-link { color: rgba(255,255,255,0.7); text-decoration: none; display: block; margin-bottom: 12px; transition: 0.3s; font-size: 0.9rem;}
         .footer-link:hover { color: var(--umb-gold); padding-left: 5px; }
         
-        .copyright-area { background: #071424; padding: 25px 0; border-top: 1px solid rgba(255,255,255,0.05); }
+        .copyright-area { background: #071424; padding: 25px 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 40px;}
         .copyright-text { color: rgba(255,255,255,0.5); font-size: 0.85rem; }
         .made-by { color: rgba(255,255,255,0.5); font-size: 0.85rem; display: block; margin-top: 5px; }
         .made-by strong { color: var(--umb-gold); }
+        
+        .social-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            color: white; margin-right: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .social-btn:hover { background: var(--umb-gold); color: var(--umb-blue); transform: translateY(-3px); }
     </style>
 </head>
 <body>
 
+    <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="../">
-                <i class="fas fa-university me-3 text-warning"></i>
-                <div>
-                    <span class="fs-6 d-block fw-bold" style="letter-spacing: 0.5px;">LABORATORIUM INFORMATIKA</span>
-                    <small class="fs-6 opacity-75">UM BANDUNG</small>
+            <a class="navbar-brand d-flex align-items-center" href="../index.html">
+                <i class="fas fa-university fs-3 me-3 text-warning"></i>
+                <div class="d-flex flex-column">
+                    <span class="fs-6 fw-bold" style="line-height: 1.2;">LABORATORIUM INFORMATIKA</span>
+                    <small class="opacity-75" style="font-size: 0.75rem; font-weight: 500;">UNIVERSITAS MUHAMMADIYAH BANDUNG</small>
                 </div>
             </a>
 
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto py-3 py-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="../">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.html">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../info/">INFO</a></li>
                     <li class="nav-item"><a class="nav-link" href="../jadwal/">JADWAL</a></li>
                     <li class="nav-item"><a class="nav-link" href="../fasilitas/">FASILITAS</a></li>
                     <li class="nav-item"><a class="nav-link" href="../peminjaman/">PEMINJAMAN</a></li>
@@ -99,96 +161,122 @@
         </div>
     </nav>
 
-    <div class="container my-5">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold" style="color: var(--umb-blue);">Jadwal Penggunaan Ruangan</h2>
-            <p class="text-muted">Laboratorium Teknik Informatika - Universitas Muhammadiyah Bandung</p>
-            <hr class="mx-auto" style="width: 60px; height: 4px; background: var(--umb-gold); opacity: 1;">
+    <!-- HEADER HALAMAN -->
+    <header class="page-header">
+        <div class="container">
+            <h1 class="display-5 hero-title mb-3">Jadwal Penggunaan Ruangan</h1>
+            <p class="fs-5 mb-0 max-w-2xl mx-auto opacity-75">Sistem pemantauan jadwal praktikum dan penggunaan laboratorium secara real-time.</p>
         </div>
+    </header>
 
-        <div class="report-container">
-            <iframe 
-                src="https://lookerstudio.google.com/embed/reporting/12c26ded-64f2-4a86-9ba9-84e2af31bd50/page/p_e4dsxxz9td" 
-                allowfullscreen 
-                sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
-            </iframe>
-        </div>
-        
-        <div class="alert alert-warning mt-4 border-0 shadow-sm" role="alert">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-info-circle fs-4 me-3"></i>
-                <div>
-                    <strong>Informasi:</strong> Jadwal di atas tersinkronisasi langsung dengan sistem input asisten lab. Jika laporan tidak muncul, silakan tekan <strong>F5</strong> atau refresh halaman.
+    <!-- KONTEN JADWAL (OVERLAP) -->
+    <section class="pb-5 flex-grow-1">
+        <div class="container overlap-wrapper bg-white rounded-4 shadow p-4 p-md-5">
+            
+            <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-calendar-alt fs-3 me-3" style="color: var(--umb-gold);"></i>
+                    <h2 class="fw-bold mb-0" style="color: var(--umb-blue);">Tabel Jadwal</h2>
+                </div>
+                <!-- Tombol Refresh Manual (Opsional) -->
+                <button onclick="document.getElementById('jadwalFrame').src = document.getElementById('jadwalFrame').src" class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-2">
+                    <i class="fas fa-sync-alt me-2"></i> Refresh Data
+                </button>
+            </div>
+
+            <!-- Iframe Looker Studio -->
+            <div class="report-container shadow-sm">
+                <iframe 
+                    id="jadwalFrame"
+                    src="https://lookerstudio.google.com/embed/reporting/12c26ded-64f2-4a86-9ba9-84e2af31bd50/page/p_e4dsxxz9td" 
+                    allowfullscreen 
+                    sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
+                </iframe>
+            </div>
+            
+            <!-- Alert Informasi -->
+            <div class="alert alert-custom mt-4 border-0 shadow-sm" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-info-circle fs-4 me-3"></i>
+                    <div>
+                        <strong>Informasi:</strong> Jadwal di atas tersinkronisasi langsung dengan sistem input asisten lab. Jika laporan tidak muncul atau error, silakan tekan tombol <strong>Refresh Data</strong> atau refresh halaman browser.
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
+        </div>
+    </section>
+
+    <!-- FOOTER -->
     <footer class="main-footer">
         <div class="container">
             <div class="row g-4">
-                <div class="col-lg-4">
+                <div class="col-lg-4 pe-lg-5">
                     <div class="d-flex align-items-center mb-4">
                         <div class="me-3 d-flex align-items-center justify-content-center" 
-                            style="width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 12px; border: 1px solid rgba(255,193,7,0.3);">
+                            style="width: 50px; height: 50px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,193,7,0.2);">
                             <i class="fas fa-university fs-4" style="color: #ffc107;"></i>
                         </div>
                         <div>
-                            <h6 class="fw-bold mb-0 text-white">LABORATORIUM INFORMATIKA</h6>
-                            <small style="color: #ffc107;">UM BANDUNG</small>
+                            <h6 class="fw-bold mb-0 text-white" style="letter-spacing: 0.5px;">LABORATORIUM INFORMATIKA</h6>
+                            <small style="color: #ffc107; font-size: 0.75rem;">UM BANDUNG</small>
                         </div>
                     </div>
-                    <p class="footer-description small">
+                    <p class="text-white-50 small mb-4" style="line-height: 1.7;">
                         Pusat praktikum, riset, dan pengembangan teknologi mahasiswa Teknik Informatika Universitas Muhammadiyah Bandung. Unggul dalam keilmuan dan islami dalam karakter.
                     </p>
-                    <div class="mt-4">
-                        <a href="#" class="text-white me-3 fs-5"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-white me-3 fs-5"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="text-white fs-5"><i class="fab fa-youtube"></i></a>
+                    <div>
+                        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-btn"><i class="fas fa-globe"></i></a>
                     </div>
                 </div>
 
-                <div class="col-lg-2 col-md-6 px-lg-4">
-                    <h6 class="footer-title">Tautan</h6>
-                    <a href="../" class="footer-link small">Home</a>
-                    <a href="../jadwal/" class="footer-link small">Jadwal Lab</a>
-                    <a href="../fasilitas/" class="footer-link small">Fasilitas</a>
-                    <a href="../peminjaman/" class="footer-link small">Peminjaman</a>
+                <div class="col-lg-2 col-md-4 mt-5 mt-lg-0">
+                    <h6 class="footer-title">Navigasi</h6>
+                    <a href="../index.html" class="footer-link">Home</a>
+                    <a href="../info/" class="footer-link">Info & Berita</a>
+                    <a href="../jadwal/" class="footer-link">Jadwal Lab</a>
+                    <a href="../fasilitas/" class="footer-link">Fasilitas</a>
+                    <a href="../peminjaman/" class="footer-link">Peminjaman</a>
                 </div>
 
-                <div class="col-lg-3 col-md-6">
-                    <h6 class="footer-title">Layanan</h6>
-                    <a href="../bebas-lab/" class="footer-link small">Bebas Laboratorium</a>
-                    <a href="#" class="footer-link small">Asisten Laboratorium</a>
-                    <a href="https://lms.umbandung.ac.id/login/index.php" target="_blank" class="footer-link small">E-Learning UMB</a>
-                    <a href="#" class="footer-link small">Pusat Bantuan</a>
+                <div class="col-lg-3 col-md-4 mt-5 mt-lg-0">
+                    <h6 class="footer-title">Layanan Mahasiswa</h6>
+                    <a href="../bebas-lab/" class="footer-link">Bebas Laboratorium</a>
+                    <a href="#" class="footer-link">Asisten Praktikum (Asprak)</a>
+                    <a href="https://lms.umbandung.ac.id/login/index.php" target="_blank" class="footer-link">E-Learning UMB</a>
+                    <a href="#" class="footer-link">Pusat Bantuan Lab</a>
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-3 col-md-4 mt-5 mt-lg-0">
                     <h6 class="footer-title">Kontak Kami</h6>
-                    <div class="footer-contact-text small">
-                        <p><i class="fas fa-map-marker-alt text-warning me-2"></i> Jl. Soekarno Hatta No.752, Cipadung Kidul, Bandung.</p>
-                        <p><i class="fas fa-envelope text-warning me-2"></i> informaticslab.umbandung@gmail.com</p>
-                        <p><i class="fas fa-phone text-warning me-2"></i> (022) 1234567</p>
-                    </div>
+                    <ul class="list-unstyled text-white-50 small" style="line-height: 1.8;">
+                        <li class="mb-3 d-flex"><i class="fas fa-map-marker-alt text-warning mt-1 me-3"></i> <span>Jl. Soekarno Hatta No.752, Cipadung Kidul, Kec. Panyileukan, Kota Bandung.</span></li>
+                        <li class="mb-3 d-flex"><i class="fas fa-envelope text-warning mt-1 me-3"></i> <span>informaticslab.umbandung@gmail.com</span></li>
+                        <li class="d-flex"><i class="fas fa-phone-alt text-warning mt-1 me-3"></i> <span>(022) 1234567</span></li>
+                    </ul>
                 </div>
             </div>
         </div>
-        <div class="copyright-area mt-5">
+        <div class="copyright-area">
             <div class="container text-center">
                 <span class="copyright-text">
-                    &copy; <span id="tahun-otomatis"></span> Teknik Informatika. All rights reserved
+                    &copy; <span id="tahun-otomatis"></span> Teknik Informatika UM Bandung. All rights reserved.
                 </span>
                 <span class="made-by">
-                    made by <strong>Laboratory of Informatics</strong>
+                    Developed by <strong>Laboratory of Informatics</strong>
                 </span>
             </div>
         </div>
     </footer>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.getElementById('tahun-otomatis').textContent = new Date().getFullYear();
+        
         document.addEventListener("DOMContentLoaded", function() {
             const currentPath = window.location.pathname;
             const navLinks = document.querySelectorAll(".nav-link");
@@ -198,16 +286,13 @@
                 link.classList.remove("active");
 
                 // Logika Deteksi Khusus Struktur Folder
-                // 1. Bersihkan href dari '../' untuk pencocokan folder
                 const cleanHref = href.replace(/\.\.\//g, '');
 
-                // 2. Kondisi Halaman Utama
                 if (currentPath === "/" || currentPath === "/index.html") {
-                    if (href === "../" || href === "/" || href === "index.html") {
+                    if (href === "../" || href === "/" || href === "index.html" || href === "../index.html") {
                         link.classList.add("active");
                     }
                 } 
-                // 3. Kondisi Dalam Folder (misal /jadwal/)
                 else if (cleanHref !== "" && currentPath.includes(cleanHref)) {
                     link.classList.add("active");
                 }

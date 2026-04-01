@@ -5,133 +5,239 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fasilitas Lab IF | UM Bandung</title>
     
+    <!-- Bootstrap & FontAwesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root { 
             --umb-blue: #002d5d; 
+            --umb-blue-light: #00428a;
             --umb-gold: #ffc107; 
-            --bg-light: #f4f7f9; 
+            --bg-light: #f8faff; 
+            --text-gray: #4b5563;
         }
         
-        body { background-color: var(--bg-light); font-family: 'Poppins', sans-serif; color: #333; }
-        
-        /* Navbar Styling */
-        .navbar { background: var(--umb-blue); border-bottom: 4px solid var(--umb-gold); transition: 0.3s; }
-        .nav-link { font-weight: 500; color: rgba(255,255,255,0.8) !important; margin: 0 10px; transition: 0.3s; }
-        .nav-link:hover, .nav-link.active { color: var(--umb-gold) !important; font-weight: 700 !important; }
-        
-        .hero-fasilitas { 
-            border-radius: 20px; 
-            background: linear-gradient(135deg, var(--umb-blue) 0%, #004a99 100%);
-            color: white; padding: 60px 20px; margin-bottom: 40px; 
-            box-shadow: 0 10px 30px rgba(0,45,93,0.2);
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-light); 
+            color: #1f2937;
+            scroll-behavior: smooth;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
-        .section-title {
-            font-weight: 700;
-            color: var(--umb-blue);
-            margin-bottom: 30px;
+        /* Navbar Modern */
+        .navbar { 
+            background: rgba(0, 45, 93, 0.98); 
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--umb-gold); 
+            transition: all 0.3s ease; 
+        }
+        .navbar-brand { font-weight: 700; letter-spacing: 0.5px; color: white !important; }
+        .nav-link { 
+            font-weight: 500; 
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.7) !important; 
+            margin: 0 12px; 
+            transition: 0.3s;
             position: relative;
-            padding-bottom: 10px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 2px;
+            bottom: 0; left: 50%;
+            background-color: var(--umb-gold);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .nav-link:hover, .nav-link.active { color: var(--umb-gold) !important; }
+
+        /* Header Halaman (Serasi dengan halaman lain) */
+        .page-header {
+            background: linear-gradient(to right, rgba(0,45,93,0.95), rgba(0,45,93,0.75)), url('../lab-if.jpeg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0 100px;
+            text-align: center;
+            position: relative;
+        }
+        .hero-title {
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: -1px;
+        }
+
+        /* Wrapper Overlap */
+        .overlap-wrapper {
+            margin-top: -60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Judul Section Modern */
+        .section-title {
+            position: relative;
+            display: inline-block;
+            color: var(--umb-blue);
+            font-weight: 800;
+            margin-bottom: 40px;
+            font-size: 1.75rem;
         }
         .section-title::after {
             content: '';
             position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 60px;
-            height: 4px;
+            width: 50px; height: 4px;
             background: var(--umb-gold);
+            bottom: -10px; left: 0;
+            border-radius: 2px;
+        }
+        .section-title.center::after {
+            left: 50%;
+            transform: translateX(-50%);
         }
 
+        /* Card Kegunaan */
         .card-util {
             border: none;
-            border-radius: 15px;
-            background: white;
-            padding: 30px;
+            border-radius: 16px;
+            background: #ffffff;
+            padding: 35px 25px;
             height: 100%;
-            transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            border-bottom: 4px solid transparent;
         }
-        .card-util:hover { transform: translateY(-10px); }
+        .card-util:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 12px 30px rgba(0, 45, 93, 0.12);
+            border-bottom: 4px solid var(--umb-gold); 
+        }
         .icon-box {
-            width: 60px;
-            height: 60px;
-            background: rgba(0, 45, 93, 0.1);
+            width: 70px; height: 70px;
+            background: rgba(0, 45, 93, 0.05);
             color: var(--umb-blue);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center; justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            transition: all 0.4s ease;
+        }
+        .card-util:hover .icon-box {
+            background: var(--umb-blue);
+            color: var(--umb-gold);
+            transform: scale(1.1) rotate(5deg);
         }
 
+        /* Card Spesifikasi */
         .card-spec {
             border: none;
-            border-radius: 15px;
+            border-radius: 16px;
             background: white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
             overflow: hidden;
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+        .card-spec:hover {
+            box-shadow: 0 12px 30px rgba(0, 45, 93, 0.12);
         }
         .card-header-spec {
             background: var(--umb-blue);
             color: white;
-            padding: 15px;
+            padding: 20px;
             text-align: center;
             font-weight: 700;
+            letter-spacing: 1px;
+            border-bottom: 3px solid var(--umb-gold);
         }
         .spec-list { list-style: none; padding: 0; margin: 0; }
         .spec-list li { 
-            padding: 12px 20px; 
-            border-bottom: 1px solid #f0f0f0; 
+            padding: 15px 20px; 
+            border-bottom: 1px solid #f3f4f6; 
             display: flex; 
             align-items: center;
+            color: var(--text-gray);
+            transition: background 0.3s ease;
         }
-        .spec-list li i { color: var(--umb-gold); margin-right: 15px; width: 20px; text-align: center; }
+        .spec-list li:hover { background: #f8faff; }
+        .spec-list li i { 
+            color: var(--umb-gold); 
+            margin-right: 15px; 
+            font-size: 1.1rem;
+            width: 25px; 
+            text-align: center; 
+        }
         .spec-list li:last-child { border-bottom: none; }
 
+        /* Dokumentasi Images */
+        .img-doc-wrapper {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            position: relative;
+        }
         .img-doc {
             width: 100%;
             height: 250px;
             object-fit: cover;
-            border-radius: 10px;
-            transition: 0.4s;
-            cursor: pointer;
+            transition: transform 0.5s ease;
+            display: block;
         }
-        .img-doc:hover { transform: scale(1.05); filter: brightness(0.8); }
+        .img-doc-wrapper:hover .img-doc { 
+            transform: scale(1.08); 
+            filter: brightness(0.85); 
+        }
 
-        .main-footer { background-color: #0b1d33; color: #ffffff; padding: 70px 0 0; }
+        /* Footer */
+        .main-footer { background-color: #081627; color: #ffffff; padding: 70px 0 0; margin-top: auto; }
         .footer-title { color: var(--umb-gold); font-weight: 700; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
-        .footer-link { color: rgba(255,255,255,0.7); text-decoration: none; display: block; margin-bottom: 12px; transition: 0.3s; }
-        .footer-link:hover { color: var(--umb-gold); padding-left: 5px; }
+        .footer-link { color: rgba(255,255,255,0.6); text-decoration: none; display: block; margin-bottom: 12px; transition: 0.3s; font-size: 0.9rem;}
+        .footer-link:hover { color: var(--umb-gold); padding-left: 8px; }
         
-        .copyright-area { background: #071424; padding: 25px 0; border-top: 1px solid rgba(255,255,255,0.05); }
-        .copyright-text { color: rgba(255,255,255,0.5); font-size: 0.85rem; }
-        .made-by { color: rgba(255,255,255,0.5); font-size: 0.85rem; display: block; margin-top: 5px; }
-        .made-by strong { color: var(--umb-gold); }
+        .social-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            color: white; margin-right: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .social-btn:hover { background: var(--umb-gold); color: var(--umb-blue); transform: translateY(-3px); }
+
+        .copyright-area { background: #050e1a; padding: 25px 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 40px; }
     </style>
 </head>
 <body>
 
+    <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="../">
-                <i class="fas fa-university me-3 text-warning"></i>
-                <div>
-                    <span class="fs-6 d-block fw-bold">LABORATORIUM INFORMATIKA</span>
-                    <small class="fs-6 opacity-75">UM BANDUNG</small>
+            <a class="navbar-brand d-flex align-items-center" href="../index.html">
+                <i class="fas fa-university fs-3 me-3 text-warning"></i>
+                <div class="d-flex flex-column">
+                    <span class="fs-6 fw-bold" style="line-height: 1.2;">LABORATORIUM INFORMATIKA</span>
+                    <small class="opacity-75" style="font-size: 0.75rem; font-weight: 500;">UNIVERSITAS MUHAMMADIYAH BANDUNG</small>
                 </div>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto py-3 py-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="../">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.html">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../info/">INFO</a></li>
                     <li class="nav-item"><a class="nav-link" href="../jadwal/">JADWAL</a></li>
                     <li class="nav-item"><a class="nav-link" href="../fasilitas/">FASILITAS</a></li>
                     <li class="nav-item"><a class="nav-link" href="../peminjaman/">PEMINJAMAN</a></li>
@@ -141,153 +247,175 @@
         </div>
     </nav>
 
-    <div class="container my-5">
-        <!-- Hero Section -->
-        <div class="hero-fasilitas text-center">
-            <h1 class="fw-bold mb-3">Ruang Kolaborasi & Inovasi</h1>
-            <p class="lead opacity-75 mx-auto" style="max-width: 800px;">
-                Laboratorium Informatika UM Bandung dirancang sebagai pusat kegiatan akademik, riset, dan pengembangan teknologi bagi mahasiswa dan dosen.
-            </p>
+    <!-- HEADER HALAMAN -->
+    <header class="page-header">
+        <div class="container">
+            <h1 class="display-5 hero-title mb-3">Ruang Kolaborasi & Inovasi</h1>
+            <p class="fs-5 mb-0 max-w-2xl mx-auto opacity-75">Laboratorium Informatika UM Bandung dirancang sebagai pusat kegiatan akademik, riset, dan pengembangan teknologi.</p>
         </div>
+    </header>
 
-        <!-- Kegunaan Lab -->
-        <h3 class="section-title">Kegunaan & Fungsi Laboratorium</h3>
-        <div class="row g-4 mb-5">
-            <div class="col-md-4">
-                <div class="card-util text-center">
-                    <div class="icon-box mx-auto"><i class="fas fa-laptop-code"></i></div>
-                    <h5 class="fw-bold">Pusat Praktikum</h5>
-                    <p class="text-muted small">Mendukung mata kuliah pemrograman, basis data, jaringan komputer, hingga kecerdasan buatan dengan perangkat lunak terbaru.</p>
+    <!-- KONTEN FASILITAS (OVERLAP) -->
+    <section class="pb-5 flex-grow-1">
+        <div class="container overlap-wrapper bg-white rounded-4 shadow p-4 p-md-5">
+            
+            <!-- Kegunaan Lab -->
+            <div class="text-center mb-5">
+                <h2 class="section-title center">Kegunaan & Fungsi Laboratorium</h2>
+            </div>
+            <div class="row g-4 mb-5">
+                <div class="col-md-4">
+                    <div class="card-util text-center">
+                        <div class="icon-box mx-auto"><i class="fas fa-laptop-code"></i></div>
+                        <h5 class="fw-bold text-dark mb-3">Pusat Praktikum</h5>
+                        <p class="text-muted small mb-0">Mendukung mata kuliah pemrograman, basis data, jaringan komputer, hingga kecerdasan buatan dengan perangkat lunak terbaru.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card-util text-center">
+                        <div class="icon-box mx-auto"><i class="fas fa-microchip"></i></div>
+                        <h5 class="fw-bold text-dark mb-3">Riset & Proyek Akhir</h5>
+                        <p class="text-muted small mb-0">Menyediakan workstation berperforma tinggi untuk mahasiswa yang sedang mengerjakan penelitian atau tugas akhir (Skripsi).</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card-util text-center">
+                        <div class="icon-box mx-auto"><i class="fas fa-users"></i></div>
+                        <h5 class="fw-bold text-dark mb-3">Pelatihan & Workshop</h5>
+                        <p class="text-muted small mb-0">Ruang diskusi bagi komunitas IT mahasiswa (Hima) untuk mengadakan pelatihan skill tambahan di luar jam akademik.</p>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card-util text-center">
-                    <div class="icon-box mx-auto"><i class="fas fa-microchip"></i></div>
-                    <h5 class="fw-bold">Riset & Proyek Akhir</h5>
-                    <p class="text-muted small">Menyediakan workstation berperforma tinggi untuk mahasiswa yang sedang mengerjakan penelitian atau tugas akhir (Skripsi).</p>
+
+            <!-- Spec Section -->
+            <div class="mt-5 pt-4">
+                <h2 class="section-title">Spesifikasi Fasilitas</h2>
+            </div>
+            <div class="row g-4 mb-5 pb-2">
+                <div class="col-lg-6">
+                    <div class="card-spec">
+                        <div class="card-header-spec"><i class="fas fa-desktop me-2 text-warning"></i> SPESIFIKASI UNIT PC (40 UNIT)</div>
+                        <ul class="spec-list">
+                            <li><i class="fas fa-microchip"></i> <span><strong>Prosesor:</strong> Intel Core i7-12700F (Gen 12)</span></li>
+                            <li><i class="fas fa-memory"></i> <span><strong>RAM:</strong> 16 GB DDR4</span></li>
+                            <li><i class="fas fa-database"></i> <span><strong>Penyimpanan:</strong> 512 GB M.2 NVMe SSD</span></li>
+                            <li><i class="fas fa-vr-cardboard"></i> <span><strong>Grafis:</strong> NVIDIA GTX 1050 Ti</span></li>
+                            <li><i class="fas fa-tv"></i> <span><strong>Monitor:</strong> Samsung 24" Full HD Curved/Flat</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card-spec">
+                        <div class="card-header-spec"><i class="fas fa-server me-2 text-warning"></i> INFRASTRUKTUR RUANGAN</div>
+                        <ul class="spec-list">
+                            <li><i class="fas fa-snowflake"></i> <span><strong>Kenyamanan:</strong> Full Air Conditioner (AC)</span></li>
+                            <li><i class="fas fa-wifi"></i> <span><strong>Konektivitas:</strong> High Speed Dedicated Internet</span></li>
+                            <li><i class="fas fa-video"></i> <span><strong>Keamanan:</strong> CCTV & Fire Extinguisher (APAR)</span></li>
+                            <li><i class="fas fa-network-wired"></i> <span><strong>Jaringan:</strong> LAN Giga-bit Ethernet</span></li>
+                            <li><i class="fas fa-chalkboard-teacher"></i> <span><strong>Media Belajar:</strong> LCD Proyektor & Whiteboard</span></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card-util text-center">
-                    <div class="icon-box mx-auto"><i class="fas fa-users"></i></div>
-                    <h5 class="fw-bold">Pelatihan & Workshop</h5>
-                    <p class="text-muted small">Ruang diskusi bagi komunitas IT mahasiswa (Hima) untuk mengadakan pelatihan skill tambahan di luar jam akademik.</p>
+
+            <!-- Documentation Images -->
+            <div class="mt-5 pt-3">
+                <h2 class="section-title">Dokumentasi Ruangan</h2>
+            </div>
+            <div class="row g-4 pb-3">
+                <div class="col-md-4">
+                    <div class="img-doc-wrapper">
+                        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop" class="img-doc" alt="Area Pemrograman">
+                    </div>
+                    <p class="text-center mt-3 fw-medium text-dark">Area Praktikum Utama</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="img-doc-wrapper">
+                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop" class="img-doc" alt="Laboratorium Riset">
+                    </div>
+                    <p class="text-center mt-3 fw-medium text-dark">Area Riset & Server</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="img-doc-wrapper">
+                        <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=2070&auto=format&fit=crop" class="img-doc" alt="Infrastructure & Networking">
+                    </div>
+                    <p class="text-center mt-3 fw-medium text-dark">Pusat Jaringan / Hub</p>
                 </div>
             </div>
+
         </div>
+    </section>
 
-        <!-- Spec Section -->
-        <h3 class="section-title">Spesifikasi Workstation</h3>
-        <div class="row g-4 mb-5">
-            <div class="col-lg-6">
-                <div class="card-spec">
-                    <div class="card-header-spec">SPESIFIKASI UNIT PC (40 UNIT)</div>
-                    <ul class="spec-list">
-                        <li><i class="fas fa-microchip"></i> <strong>Prosesor:</strong> &nbsp; Intel Core i7-12700F (Gen 12)</li>
-                        <li><i class="fas fa-memory"></i> <strong>RAM:</strong> &nbsp; 16 GB DDR4</li>
-                        <li><i class="fas fa-database"></i> <strong>Penyimpanan:</strong> &nbsp; SSD 512 GB (SSD)</li>
-                        <li><i class="fas fa-vr-cardboard"></i> <strong>Grafis:</strong> &nbsp; NVIDIA GTX 1050 Ti</li>
-                        <li><i class="fas fa-desktop"></i> <strong>Monitor:</strong> &nbsp; Samsung 24" Full HD Curved/Flat</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="card-spec">
-                    <div class="card-header-spec">INFRASTRUKTUR RUANGAN</div>
-                    <ul class="spec-list">
-                        <li><i class="fas fa-snowflake"></i> <strong>Kenyamanan:</strong> &nbsp; Full Air Conditioner (AC)</li>
-                        <li><i class="fas fa-wifi"></i> <strong>Konektivitas:</strong> &nbsp; High Speed Dedicated Internet</li>
-                        <li><i class="fas fa-video"></i> <strong>Keamanan:</strong> &nbsp; Fire Extinguisher (APAR)</li>
-                        <li><i class="fas fa-network-wired"></i> <strong>Jaringan:</strong> &nbsp; LAN Giga-bit Ethernet</li>
-                        <li><i class="fas fa-chalkboard-teacher"></i> <strong>Media:</strong> &nbsp; Proyektor</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Documentation Images -->
-        <h3 class="section-title">Dokumentasi Laboratorium</h3>
-        <div class="row g-3 mb-5">
-            <div class="col-md-4">
-                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop" class="img-doc shadow-sm" alt="Area Pemrograman">
-                <p class="text-center mt-2 small text-muted">Area Pemrograman</p>
-            </div>
-            <div class="col-md-4">
-                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop" class="img-doc shadow-sm" alt="Laboratorium Riset">
-                <p class="text-center mt-2 small text-muted">Laboratorium Riset</p>
-            </div>
-            <div class="col-md-4">
-                <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=2070&auto=format&fit=crop" class="img-doc shadow-sm" alt="Infrastructure & Networking">
-                <p class="text-center mt-2 small text-muted">Infrastructure & Networking</p>
-            </div>
-        </div>
-    </div>
-
+    <!-- FOOTER -->
     <footer class="main-footer">
         <div class="container">
             <div class="row g-4">
-                <div class="col-lg-4">
+                <div class="col-lg-4 pe-lg-5">
                     <div class="d-flex align-items-center mb-4">
                         <div class="me-3 d-flex align-items-center justify-content-center" 
-                            style="width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 12px; border: 1px solid rgba(255,193,7,0.3);">
+                            style="width: 50px; height: 50px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,193,7,0.2);">
                             <i class="fas fa-university fs-4" style="color: #ffc107;"></i>
                         </div>
                         <div>
-                            <h6 class="fw-bold mb-0 text-white">LABORATORIUM INFORMATIKA</h6>
-                            <small style="color: #ffc107;">UM BANDUNG</small>
+                            <h6 class="fw-bold mb-0 text-white" style="letter-spacing: 0.5px;">LABORATORIUM INFORMATIKA</h6>
+                            <small style="color: #ffc107; font-size: 0.75rem;">UM BANDUNG</small>
                         </div>
                     </div>
-                    <p class="footer-description small">
+                    <p class="text-white-50 small mb-4" style="line-height: 1.7;">
                         Pusat praktikum, riset, dan pengembangan teknologi mahasiswa Teknik Informatika Universitas Muhammadiyah Bandung. Unggul dalam keilmuan dan islami dalam karakter.
                     </p>
-                    <div class="mt-4">
-                        <a href="#" class="text-white me-3 fs-5"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-white me-3 fs-5"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="text-white fs-5"><i class="fab fa-youtube"></i></a>
+                    <div>
+                        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-btn"><i class="fas fa-globe"></i></a>
                     </div>
                 </div>
 
-                <div class="col-lg-2 col-md-6 px-lg-4">
-                    <h6 class="footer-title">Tautan</h6>
-                    <a href="../" class="footer-link small">Home</a>
-                    <a href="../jadwal/" class="footer-link small">Jadwal Lab</a>
-                    <a href="../fasilitas/" class="footer-link small">Fasilitas</a>
-                    <a href="../peminjaman/" class="footer-link small">Peminjaman</a>
+                <div class="col-lg-2 col-md-4 mt-5 mt-lg-0">
+                    <h6 class="footer-title">Navigasi</h6>
+                    <a href="../index.html" class="footer-link">Home</a>
+                    <a href="../info/" class="footer-link">Info & Berita</a>
+                    <a href="../jadwal/" class="footer-link">Jadwal Lab</a>
+                    <a href="../fasilitas/" class="footer-link">Fasilitas</a>
+                    <a href="../peminjaman/" class="footer-link">Peminjaman</a>
                 </div>
 
-                <div class="col-lg-3 col-md-6">
-                    <h6 class="footer-title">Layanan</h6>
-                    <a href="../bebas-lab/" class="footer-link small">Bebas Laboratorium</a>
-                    <a href="#" class="footer-link small">Asisten Laboratorium</a>
-                    <a href="https://lms.umbandung.ac.id/login/index.php" target="_blank" class="footer-link small">E-Learning UMB</a>
-                    <a href="#" class="footer-link small">Pusat Bantuan</a>
+                <div class="col-lg-3 col-md-4 mt-5 mt-lg-0">
+                    <h6 class="footer-title">Layanan Mahasiswa</h6>
+                    <a href="../bebas-lab/" class="footer-link">Bebas Laboratorium</a>
+                    <a href="#" class="footer-link">Asisten Praktikum (Asprak)</a>
+                    <a href="https://lms.umbandung.ac.id/login/index.php" target="_blank" class="footer-link">E-Learning UMB</a>
+                    <a href="#" class="footer-link">Pusat Bantuan Lab</a>
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-3 col-md-4 mt-5 mt-lg-0">
                     <h6 class="footer-title">Kontak Kami</h6>
-                    <div class="footer-contact-text small">
-                        <p><i class="fas fa-map-marker-alt text-warning me-2"></i> Jl. Soekarno Hatta No.752, Cipadung Kidul, Bandung.</p>
-                        <p><i class="fas fa-envelope text-warning me-2"></i> informaticslab.umbandung@gmail.com</p>
-                        <p><i class="fas fa-phone text-warning me-2"></i> (022) 1234567</p>
-                    </div>
+                    <ul class="list-unstyled text-white-50 small" style="line-height: 1.8;">
+                        <li class="mb-3 d-flex"><i class="fas fa-map-marker-alt text-warning mt-1 me-3"></i> <span>Jl. Soekarno Hatta No.752, Cipadung Kidul, Kec. Panyileukan, Kota Bandung.</span></li>
+                        <li class="mb-3 d-flex"><i class="fas fa-envelope text-warning mt-1 me-3"></i> <span>informaticslab.umbandung@gmail.com</span></li>
+                        <li class="d-flex"><i class="fas fa-phone-alt text-warning mt-1 me-3"></i> <span>(022) 1234567</span></li>
+                    </ul>
                 </div>
             </div>
         </div>
-        <div class="copyright-area mt-5">
+        <div class="copyright-area">
             <div class="container text-center">
                 <span class="copyright-text">
-                    &copy; <span id="tahun-otomatis"></span> Teknik Informatika. All rights reserved
+                    &copy; <span id="tahun-otomatis"></span> Teknik Informatika UM Bandung. All rights reserved.
                 </span>
                 <span class="made-by">
-                    made by <strong>Laboratory of Informatics</strong>
+                    Developed by <strong>Laboratory of Informatics</strong>
                 </span>
             </div>
         </div>
     </footer>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.getElementById('tahun-otomatis').textContent = new Date().getFullYear();
+        
         document.addEventListener("DOMContentLoaded", function() {
             const currentPath = window.location.pathname;
             const navLinks = document.querySelectorAll(".nav-link");
@@ -297,16 +425,13 @@
                 link.classList.remove("active");
 
                 // Logika Deteksi Khusus Struktur Folder
-                // 1. Bersihkan href dari '../' untuk pencocokan folder
                 const cleanHref = href.replace(/\.\.\//g, '');
 
-                // 2. Kondisi Halaman Utama
                 if (currentPath === "/" || currentPath === "/index.html") {
-                    if (href === "../" || href === "/" || href === "index.html") {
+                    if (href === "../" || href === "/" || href === "index.html" || href === "../index.html") {
                         link.classList.add("active");
                     }
                 } 
-                // 3. Kondisi Dalam Folder (misal /jadwal/)
                 else if (cleanHref !== "" && currentPath.includes(cleanHref)) {
                     link.classList.add("active");
                 }

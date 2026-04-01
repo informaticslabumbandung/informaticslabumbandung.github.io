@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Berita | Laboratorium Informatika UM Bandung</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { 
+            --umb-blue: #002d5d; 
+            --umb-blue-light: #00428a;
+            --umb-gold: #ffc107; 
+            --bg-light: #f8faff; 
+            --text-gray: #4b5563;
+        }
+        
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-light); display: flex; flex-direction: column; min-height: 100vh; color: #1f2937; }
+
+        /* NAVBAR KONSISTEN DENGAN ANIMASI HOVER */
+        .navbar { 
+            background: rgba(0, 45, 93, 0.98); 
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--umb-gold); 
+            transition: all 0.3s ease; 
+        }
+        .navbar-brand { font-weight: 700; letter-spacing: 0.5px; color: white !important; }
+        .nav-link { 
+            font-weight: 500; 
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.7) !important; 
+            margin: 0 12px; 
+            transition: 0.3s;
+            position: relative;
+        }
+        /* Animasi Garis Bawah */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 2px;
+            bottom: 0; left: 50%;
+            background-color: var(--umb-gold);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .nav-link:hover, .nav-link.active { color: var(--umb-gold) !important; }
+
+        /* KONTEN BERITA */
+        .konten-berita {
+            white-space: pre-wrap;
+            line-height: 1.8;
+            font-size: 1.05rem;
+            color: #4b5563;
+        }
+        .news-header-image {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            border-radius: 15px 15px 0 0;
+        }
+
+        /* SIDEBAR LAINNYA */
+        .sidebar-title {
+            font-weight: 700;
+            color: var(--umb-blue);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--umb-gold);
+        }
+        .other-news-item {
+            display: flex;
+            gap: 12px;
+            padding: 10px;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            text-decoration: none;
+            transition: 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .other-news-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+        .other-news-img {
+            width: 70px; height: 70px;
+            border-radius: 8px; object-fit: cover; flex-shrink: 0;
+        }
+        .other-news-title {
+            font-size: 0.85rem; font-weight: 600; color: #1a1a1a;
+            margin-bottom: 4px; line-height: 1.4;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .other-news-date { font-size: 0.7rem; color: #9ca3af; }
+
+        /* FOOTER KONSISTEN */
+        .main-footer { background-color: #0b1d33; color: #ffffff; padding: 70px 0 0; margin-top: auto; }
+        .footer-title { color: var(--umb-gold); font-weight: 700; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
+        .footer-link { color: rgba(255,255,255,0.7); text-decoration: none; display: block; margin-bottom: 12px; font-size: 0.9rem; transition: 0.3s; }
+        .footer-link:hover { color: var(--umb-gold); padding-left: 5px; }
+        .copyright-area { background: #071424; padding: 25px 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 40px; }
+        
+        @media (max-width: 991px) {
+            .news-header-image { height: 250px; }
+            .sidebar-area { margin-top: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="../index.html">
+                <i class="fas fa-university me-3 text-warning"></i>
+                <div class="d-flex flex-column">
+                    <span class="fs-6 fw-bold" style="line-height: 1.2;">LABORATORIUM INFORMATIKA</span>
+                    <small class="opacity-75" style="font-size: 0.75rem; font-weight: 500;">UNIVERSITAS MUHAMMADIYAH BANDUNG</small>
+                </div>
+            </a>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto py-3 py-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="../index.html">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../info/">INFO</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../jadwal/">JADWAL</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../fasilitas/">FASILITAS</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../peminjaman/">PEMINJAMAN</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../bebas-lab/">BEBAS LAB</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="py-5 flex-grow-1">
+        <div class="container">
+            <div class="row">
+                <!-- SISI KIRI: DETAIL BERITA -->
+                <div class="col-lg-8">
+                    <a href="../index.html#informasi-lab" class="text-decoration-none d-inline-flex align-items-center mb-4 fw-bold" style="color: var(--umb-blue);">
+                        <i class="fas fa-arrow-left me-2"></i> Kembali ke Beranda
+                    </a>
+
+                    <div id="loading-detail" class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status"></div>
+                        <p class="text-muted mt-3">Memuat berita...</p>
+                    </div>
+
+                    <div id="detail-container" class="card border-0 shadow-sm d-none" style="border-radius: 15px; overflow: hidden; background: white;">
+                        <!-- JS Render -->
+                    </div>
+                </div>
+
+                <!-- SISI KANAN: SIDEBAR -->
+                <div class="col-lg-4 sidebar-area">
+                    <div class="ps-lg-3">
+                        <h5 class="sidebar-title">Informasi Lainnya</h5>
+                        <div id="sidebar-container">
+                            <!-- Berita lain render di sini -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 pe-lg-5 text-center text-md-start">
+                    <div class="d-flex align-items-center mb-4 justify-content-center justify-content-md-start">
+                        <div class="me-3 d-flex align-items-center justify-content-center" 
+                            style="width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 12px; border: 1px solid rgba(255,193,7,0.3);">
+                            <i class="fas fa-university fs-4" style="color: #ffc107;"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-0 text-white">LABORATORIUM INFORMATIKA</h6>
+                            <small style="color: #ffc107;">UM BANDUNG</small>
+                        </div>
+                    </div>
+                    <p class="text-white-50 small mb-4">Pusat praktikum, riset, dan pengembangan teknologi mahasiswa Teknik Informatika UM Bandung. Unggul dalam keilmuan dan islami dalam karakter.</p>
+                </div>
+
+                <div class="col-lg-2 col-md-6 px-lg-4 text-center text-md-start">
+                    <h6 class="footer-title">Tautan</h6>
+                    <a href="../index.html" class="footer-link small">Home</a>
+                    <a href="../info/" class="footer-link small">Info & Berita</a>
+                    <a href="../jadwal/" class="footer-link small">Jadwal Lab</a>
+                </div>
+
+                <div class="col-lg-3 col-md-6 text-center text-md-start">
+                    <h6 class="footer-title">Layanan</h6>
+                    <a href="../bebas-lab/" class="footer-link small">Bebas Laboratorium</a>
+                    <a href="../peminjaman/" class="footer-link small">Peminjaman</a>
+                    <a href="https://lms.umbandung.ac.id/" target="_blank" class="footer-link small">E-Learning UMB</a>
+                </div>
+
+                <div class="col-lg-3 text-center text-md-start">
+                    <h6 class="footer-title">Kontak Kami</h6>
+                    <div class="footer-contact-text small text-white-50">
+                        <p><i class="fas fa-map-marker-alt text-warning me-2"></i> Jl. Soekarno Hatta No.752, Bandung.</p>
+                        <p><i class="fas fa-envelope text-warning me-2"></i> informaticslab.umbandung@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright-area">
+            <div class="container text-center">
+                <span class="text-white-50 small">&copy; <span id="tahun"></span> Teknik Informatika UM Bandung. All rights reserved.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('tahun').textContent = new Date().getFullYear();
+
+        document.addEventListener("DOMContentLoaded", function() {    
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentBeritaId = urlParams.get('id');
+
+            const SHEET_ID = '15JWk-ItlTGXX3xCNtO4cc8hBLdYVJkCMo0eTcac9QO4';
+            const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Sheet1`;
+            
+            const detailContainer = document.getElementById('detail-container');
+            const sidebarContainer = document.getElementById('sidebar-container');
+            const loading = document.getElementById('loading-detail');
+
+            function parseCSV(str) {
+                const arr = [];
+                let quote = false; let row = 0, col = 0, c = 0;
+                for (; c < str.length; c++) {
+                    let cc = str[c], nc = str[c+1];
+                    arr[row] = arr[row] || []; arr[row][col] = arr[row][col] || '';
+                    if (cc == '"' && quote && nc == '"') { arr[row][col] += cc; ++c; continue; }
+                    if (cc == '"') { quote = !quote; continue; }
+                    if (cc == ',' && !quote) { ++col; continue; }
+                    if (cc == '\r' && nc == '\n' && !quote) { ++row; col = 0; ++c; continue; }
+                    if (cc == '\n' && !quote) { ++row; col = 0; continue; }
+                    if (cc == '\r' && !quote) { ++row; col = 0; continue; }
+                    arr[row][col] += cc;
+                }
+                return arr;
+            }
+
+            fetch(url)
+                .then(res => res.text())
+                .then(text => {
+                    const rows = parseCSV(text);
+                    rows.shift();
+                    const validRows = rows.filter(row => row.length > 1 && row[0].trim() !== "");
+
+                    const item = validRows.find(r => r[0] && r[0].toString() === currentBeritaId);
+                    if (item) {
+                        const tgl = item[1] || '';
+                        const jdl = item[2] || 'Tanpa Judul';
+                        const img = item[3] || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1000';
+                        const isi = item[4] || '';
+
+                        detailContainer.innerHTML = `
+                            <img src="${img}" class="news-header-image" alt="${jdl}" onerror="this.src='https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1000'">
+                            <div class="card-body p-4 p-md-5">
+                                <div class="mb-2 text-primary fw-bold text-uppercase small"><i class="far fa-calendar-alt me-1"></i> ${tgl}</div>
+                                <h1 class="fw-bold mb-4" style="color: #1a1a1a; line-height: 1.3;">${jdl}</h1>
+                                <hr class="mb-4" style="opacity: 0.1;">
+                                <div class="konten-berita">${isi}</div>
+                            </div>`;
+                        
+                        loading.classList.add('d-none');
+                        detailContainer.classList.remove('d-none');
+                        document.title = jdl + " | Lab IF UM Bandung";
+                    }
+
+                    let sidebarHtml = '';
+                    const otherNews = validRows
+                        .filter(r => r[0] && r[0].toString() !== currentBeritaId)
+                        .reverse()
+                        .slice(0, 5);
+
+                    otherNews.forEach(news => {
+                        const id = news[0];
+                        const tgl = news[1];
+                        const judul = news[2];
+                        const gambar = news[3] || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=200';
+                        
+                        sidebarHtml += `
+                            <a href="index.html?id=${id}" class="other-news-item">
+                                <img src="${gambar}" class="other-news-img" alt="${judul}" onerror="this.src='https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=200'">
+                                <div class="other-news-content">
+                                    <h6 class="other-news-title">${judul}</h6>
+                                    <span class="other-news-date">${tgl}</span>
+                                </div>
+                            </a>`;
+                    });
+
+                    sidebarContainer.innerHTML = sidebarHtml || '<p class="text-muted small">Tidak ada informasi lainnya.</p>';
+                });
+        });
+    </script>
+</body>
+</html>
