@@ -175,11 +175,12 @@
             position: relative;
         }
         .card-berita img {
-            width: 100%;
-            aspect-ratio: 16/9;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
+                    width: 100%;
+                    aspect-ratio: 16/9;
+                    object-fit: contain;
+                    background: #f5f5f5;
+                    transition: transform 0.5s ease;
+                }
         
         .date-badge {
             background: rgba(255, 255, 255, 0.95);
@@ -416,13 +417,14 @@
                     const latestNews = validRows.reverse().slice(0, 3);
                     
                     latestNews.forEach(row => {
-                        const idBerita = row[0] || '';
-                        const tanggal = row[1] || 'Baru Saja';
-                        const judul = row[2] || 'Tanpa Judul';
-                        const gambar = row[3] || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&q=80';
-                        const isi = row[4] || '';
-                        const rawText = isi.replace(/<[^>]*>?/gm, ''); 
-                        const snippet = rawText.length > 90 ? rawText.substring(0, 90) + '...' : rawText;
+                                                                const idBerita = row[0] || '';
+                                                                const tanggal = row[1] || 'Baru Saja';
+                                                                const judul = row[2] || 'Tanpa Judul';
+                                                                const gambar = row[3] || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&q=80';
+                                                                const isi = row[4] || '';
+                        
+                                            const rawText = isi.replace(/<[^>]*>?/gm, ''); 
+                                            const snippet = rawText.length > 90 ? rawText.substring(0, 90) + '...' : rawText;
 
                         htmlBerita += `
                             <div class="col-lg-4 col-md-6">

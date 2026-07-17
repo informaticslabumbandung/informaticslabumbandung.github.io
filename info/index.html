@@ -101,11 +101,13 @@
             position: relative;
         }
         .card-berita img {
-            width: 100%;
-            aspect-ratio: 16/9;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
+                    width: 100%;
+                    aspect-ratio: 16/9;
+                    object-fit: contain;
+                    background: #f5f5f5;
+                    transition: transform 0.5s ease;
+                }
+                }
         .card-berita:hover img { transform: scale(1.08); }
         
         .date-badge {
@@ -348,14 +350,14 @@
                     let htmlBerita = '';
                     
                     validRows.reverse().forEach(row => {
-                        const idBerita = row[0] || '';
-                        const tanggal = row[1] || 'Baru Saja';
-                        const judul = row[2] || 'Tanpa Judul';
-                        const gambar = row[3] || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80';
-                        const isi = row[4] || '';
+                                                                const idBerita = row[0] || '';
+                                                                const tanggal = row[1] || 'Baru Saja';
+                                                                const judul = row[2] || 'Tanpa Judul';
+                                                                const gambar = row[3] || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80';
+                                                                const isi = row[4] || '';
                         
-                        const rawText = isi.replace(/<[^>]*>?/gm, ''); 
-                        const snippet = rawText.length > 110 ? rawText.substring(0, 110) + '...' : rawText;
+                                            const rawText = isi.replace(/<[^>]*>?/gm, ''); 
+                                            const snippet = rawText.length > 110 ? rawText.substring(0, 110) + '...' : rawText;
 
                         // Perhatikan: Link diarahkan ke folder berita menggunakan jalur ../berita/
                         htmlBerita += `

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Peminjaman | Admin Lab IF UM Bandung</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --umb-blue: #002d5d; --umb-gold: #ffc107; --sidebar-bg: #0b1d33; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f5f7fa; min-height: 100vh; display: flex; }
+        #sidebar { width: 280px; background: var(--sidebar-bg); color: white; min-height: 100vh; position: fixed; left: 0; top: 0; z-index: 1000; }
+        #sidebar .sidebar-header { padding: 25px 20px; background: rgba(0,0,0,0.2); }
+        #sidebar .logo { display: flex; align-items: center; gap: 15px; }
+        #sidebar .logo-icon { width: 45px; height: 45px; background: rgba(255,255,255,0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--umb-gold); font-size: 1.5rem; }
+        #sidebar .logo-text h5 { margin: 0; font-weight: 700; font-size: 1rem; }
+        #sidebar .logo-text small { font-size: 0.7rem; opacity: 0.7; }
+        #sidebar .nav-link { color: rgba(255,255,255,0.7); padding: 15px 25px; border-left: 4px solid transparent; transition: all 0.3s; font-weight: 500; font-size: 0.9rem; display: flex; align-items: center; gap: 12px; }
+        #sidebar .nav-link:hover, #sidebar .nav-link.active { color: white; background: rgba(255,255,255,0.05); border-left-color: var(--umb-gold); }
+        #sidebar .logout-section { position: absolute; bottom: 0; width: 100%; padding: 20px; background: rgba(0,0,0,0.2); }
+        #content { flex: 1; margin-left: 280px; padding: 20px; min-height: 100vh; }
+        .page-header { background: white; border-radius: 15px; padding: 25px; margin-bottom: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-left: 5px solid var(--umb-blue); }
+        .page-header h1 { color: var(--umb-blue); font-weight: 700; font-size: 1.8rem; margin: 0; }
+        .table-container { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .table-container h5 { color: var(--umb-blue); font-weight: 700; margin-bottom: 20px; border-bottom: 2px solid var(--umb-gold); padding-bottom: 10px; }
+        .badge-status { padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; }
+        .badge-pending { background-color: #fff3cd; color: #856404; }
+        .badge-proses { background-color: #cce5ff; color: #004085; }
+        .badge-selesai { background-color: #d4edda; color: #155724; }
+        .badge-batal { background-color: #f8d7da; color: #721c24; }
+        .btn-action { padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; transition: all 0.3s; }
+        .btn-edit { background-color: rgba(0,45,93,0.1); color: var(--umb-blue); }
+        .btn-edit:hover { background-color: var(--umb-blue); color: white; }
+        .btn-delete { background-color: rgba(220,53,69,0.1); color: #dc3545; }
+        .btn-delete:hover { background-color: #dc3545; color: white; }
+        .btn-view { background-color: rgba(40,167,69,0.1); color: #28a745; }
+        .btn-view:hover { background-color: #28a745; color: white; }
+        .filter-section { background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        @media (max-width: 992px) { #sidebar { margin-left: -280px; } #content { margin-left: 0; } }
+    </style>
+</head>
+<body>
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-university"></i></div>
+                <div class="logo-text"><h5>LABORATORIUM INFORMATIKA</h5><small>UM BANDUNG | ADMIN PANEL</small></div>
+            </div>
+        </div>
+        <div class="sidebar-menu">
+            <ul class="nav flex-column">
+                <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                <li class="nav-item"><a class="nav-link active" href="peminjaman.html"><i class="fas fa-laptop-house"></i><span>Kelola Peminjaman</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="bebaslab.html"><i class="fas fa-file-signature"></i><span>Kelola Bebas Lab</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="berita.html"><i class="fas fa-newspaper"></i><span>Kelola Berita</span></a></li>
+            </ul>
+        </div>
+        <div class="logout-section">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="user-avatar" id="userInitials">AD</div>
+                    <div><small class="d-block fw-semibold" id="adminName">Administrator</small></div>
+                </div>
+                <button class="btn btn-sm btn-outline-light rounded-pill" onclick="logout()"><i class="fas fa-sign-out-alt me-1"></i> Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="content">
+        <div class="page-header d-flex justify-content-between align-items-center">
+            <h1>Kelola Data Peminjaman</h1>
+            <div class="d-flex align-items-center gap-3">
+                <span id="welcomeText">Selamat datang, Admin!</span>
+                <div class="user-avatar" id="userInitialsHeader">AD</div>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label>Status</label>
+                    <select class="form-select" id="filterStatus">
+                        <option value="">Semua Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Proses">Proses</option>
+                        <option value="Selesai">Selesai</option>
+                        <option value="Batal">Batal</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label>Tanggal Mulai</label>
+                    <input type="date" class="form-control" id="filterStartDate">
+                </div>
+                <div class="col-md-3">
+                    <label>Tanggal Selesai</label>
+                    <input type="date" class="form-control" id="filterEndDate">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button class="btn btn-primary w-100" onclick="applyFilters()"><i class="fas fa-filter me-2"></i> Filter</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <h5>Data Peminjaman Ruang & Alat</h5>
+            <div class="table-responsive">
+                <table id="peminjamanTable" class="table table-sm table-hover w-100">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Nama Kegiatan</th>
+                            <th>PIC</th>
+                            <th>WhatsApp</th>
+                            <th>Waktu</th>
+                            <th>Surat</th>
+                            <th>Keterangan</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/utils.js"></script>
+
+    <script>
+        // ─────────────────────────────────────────────
+        // PEMINJAMAN MANAGER - CLEAN IMPLEMENTATION
+        // ─────────────────────────────────────────────
+        const PeminjamanManager = (function() {
+            const API_URL = gsAPI?.appsScriptURL || 'https://script.google.com/macros/s/AKfycbzdK8HlTDc6yh6G_SfyhCx-hA9VXT4_VHKBKaj6CYvgjhf_m9qJ2pdagdFvEHoaYTTE_w/exec';
+            let allData = [];
+            let table = null;
+
+            const UPDATE_FIELDS = {
+                            keterangan: 'Keterangan',
+                            statusKegiatan: 'Status Kegiatan',
+                            namaKegiatan: 'Nama Kegiatan',
+                            namaPIC: 'Nama PIC',
+                            nomorWhatsAppPIC: 'Nomor WhatsApp PIC',
+                            tanggalKegiatan: 'Tanggal Kegiatan',
+                            waktuMulaiKegiatan: 'Waktu Mulai Kegiatan',
+                            waktuSelesaiKegiatan: 'Waktu Selesai Kegiatan',
+                            suratPeminjaman: 'Surat Peminjaman'
+                        };
+
+            function formatDate(dateStr) {
+                if (!dateStr) return '-';
+                try {
+                    const d = new Date(dateStr);
+                    return d.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                } catch { return dateStr; }
+            }
+
+            function formatTime(timeStr) {
+                if (!timeStr) return '-';
+                try {
+                    const d = new Date(timeStr);
+                    return d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+                } catch { return timeStr; }
+            }
+
+            function getStatusBadge(status) {
+                const s = (status || 'Pending').toLowerCase();
+                if (s === 'pending') return '<span class="badge-status badge-pending">Pending</span>';
+                if (s === 'proses') return '<span class="badge-status badge-proses">Proses</span>';
+                if (s === 'selesai') return '<span class="badge-status badge-selesai">Selesai</span>';
+                if (s === 'batal') return '<span class="badge-status badge-batal">Batal</span>';
+                return '<span class="badge-status badge-pending">' + status + '</span>';
+            }
+
+            async function fetchAPI(params) {
+                const url = new URL(API_URL);
+                Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
+                const res = await fetch(url);
+                return res.json();
+            }
+
+            function mapRow(item) {
+                return {
+                    rowId: item.rowId,
+                    timestamp: item.timestamp,
+                    emailAddress: item.emailAddress,
+                    namaKegiatan: item.namaKegiatan,
+                    namaPIC: item.namaPIC,
+                    nomorWhatsAppPIC: item.nomorWhatsAppPIC,
+                    tanggalKegiatan: item.tanggalKegiatan,
+                    suratPeminjaman: item.suratPeminjaman,
+                    waktuMulaiKegiatan: item.waktuMulaiKegiatan,
+                    waktuSelesaiKegiatan: item.waktuSelesaiKegiatan,
+                    keterangan: item.keterangan,
+                    statusKegiatan: item.statusKegiatan
+                };
+            }
+
+            async function loadData() {
+                const result = await fetchAPI({ action: 'getData', module: 'peminjaman' });
+                if (Array.isArray(result)) {
+                    allData = result.map(mapRow);
+                    applyFilters();
+                } else {
+                    throw new Error(result?.error || 'Gagal memuat data');
+                }
+            }
+
+            function applyFilters() {
+                const status = document.getElementById('filterStatus').value;
+                const start = document.getElementById('filterStartDate').value;
+                const end = document.getElementById('filterEndDate').value;
+
+                let filtered = allData.filter(item => {
+                    if (status && (item.statusKegiatan || '').toLowerCase() !== status.toLowerCase()) return false;
+                    if (start && new Date(item.tanggalKegiatan) < new Date(start)) return false;
+                    if (end) {
+                        const endDate = new Date(end);
+                        endDate.setHours(23, 59, 59);
+                        if (new Date(item.tanggalKegiatan) > endDate) return false;
+                    }
+                    return true;
+                });
+
+                filtered.sort((a, b) => new Date(b.tanggalKegiatan) - new Date(a.tanggalKegiatan));
+                renderTable(filtered);
+            }
+
+            function renderTable(data) {
+                const tbody = document.querySelector('#peminjamanTable tbody');
+                if (!tbody) return;
+
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted">Tidak ada data</td></tr>';
+                    if (table) { table.destroy(); table = null; }
+                    return;
+                }
+
+                const html = data.map(item => {
+                    const whatsapp = item.nomorWhatsAppPIC
+                        ? `<a href="https://wa.me/${String(item.nomorWhatsAppPIC).replace(/\D/g, '')}" target="_blank">${item.nomorWhatsAppPIC}</a>`
+                        : '-';
+                    const surat = item.suratPeminjaman
+                        ? `<a href="${item.suratPeminjaman}" target="_blank"><i class="fas fa-file-pdf text-danger"></i> Lihat</a>`
+                        : '-';
+                    const waktu = item.waktuMulaiKegiatan && item.waktuSelesaiKegiatan
+                        ? `${formatTime(item.waktuMulaiKegiatan)} - ${formatTime(item.waktuSelesaiKegiatan)}`
+                        : '-';
+
+                    return `
+                        <tr data-rowid="${item.rowId}">
+                            <td>${formatDate(item.tanggalKegiatan)}</td>
+                            <td>${item.namaKegiatan || '-'}</td>
+                            <td>${item.namaPIC || '-'}</td>
+                            <td>${whatsapp}</td>
+                            <td>${waktu}</td>
+                            <td>${surat}</td>
+                            <td>${item.keterangan || '-'}</td>
+                            <td>${getStatusBadge(item.statusKegiatan)}</td>
+                            <td>
+                                <button class="btn btn-sm btn-action btn-view me-1" onclick="PeminjamanManager.viewDetail('${item.rowId}')"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-sm btn-action btn-edit me-1" onclick="PeminjamanManager.editData('${item.rowId}')"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-action btn-delete" onclick="PeminjamanManager.deleteData('${item.rowId}')"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+
+                tbody.innerHTML = html;
+
+                if (table) table.destroy();
+                table = $('#peminjamanTable').DataTable({
+                    order: [[0, 'desc']],
+                    language: { search: 'Cari:', lengthMenu: 'Tampilkan _MENU_ data', info: 'Menampilkan _START_ hingga _END_ dari _TOTAL_ data' }
+                });
+            }
+
+            function findItem(rowId) {
+                return allData.find(d => String(d.rowId) === String(rowId));
+            }
+
+            // ─── Public API ───
+            return {
+                async init() {
+                    setDefaultDates();
+                    await loadData();
+                },
+
+                async viewDetail(rowId) {
+                    const item = findItem(rowId);
+                    if (!item) return Swal.fire({ icon: 'error', title: 'Data tidak ditemukan' });
+
+                    const html = `
+                        <div class="text-start">
+                            <p><strong>Kegiatan:</strong> ${item.namaKegiatan || '-'}</p>
+                            <p><strong>PIC:</strong> ${item.namaPIC || '-'}</p>
+                            <p><strong>WhatsApp:</strong> ${item.nomorWhatsAppPIC || '-'}</p>
+                            <p><strong>Email:</strong> ${item.emailAddress || '-'}</p>
+                            <p><strong>Tanggal:</strong> ${formatDate(item.tanggalKegiatan)}</p>
+                            <p><strong>Waktu:</strong> ${item.waktuMulaiKegiatan && item.waktuSelesaiKegiatan ? formatTime(item.waktuMulaiKegiatan) + ' - ' + formatTime(item.waktuSelesaiKegiatan) : '-'}</p>
+                            <p><strong>Surat:</strong> ${item.suratPeminjaman ? `<a href="${item.suratPeminjaman}" target="_blank"><i class="fas fa-file-pdf text-danger"></i> Lihat</a>` : '-'}</p>
+                            <p><strong>Keterangan:</strong> ${item.keterangan || '-'}</p>
+                            <p><strong>Status:</strong> ${getStatusBadge(item.statusKegiatan)}</p>
+                        </div>
+                    `;
+                    Swal.fire({ title: 'Detail Peminjaman', html, confirmButtonColor: '#002d5d', width: '600px' });
+                },
+
+                async editData(rowId) {
+                    const item = findItem(rowId);
+                    if (!item) return Swal.fire({ icon: 'error', title: 'Data tidak ditemukan' });
+
+                    const html = `
+                        <div class="text-start">
+                            <p class="text-muted small"><strong>Kegiatan:</strong> ${item.namaKegiatan || '-'}</p>
+                            <p class="text-muted small"><strong>PIC:</strong> ${item.namaPIC || '-'}</p>
+                            <hr>
+                            <div class="mb-3">
+                                <label class="form-label">Status Kegiatan</label>
+                                <select id="editStatus" class="form-select">
+                                    <option value="Pending" ${item.statusKegiatan === 'Pending' ? 'selected' : ''}>Pending</option>
+                                    <option value="Proses" ${item.statusKegiatan === 'Proses' ? 'selected' : ''}>Proses</option>
+                                    <option value="Selesai" ${item.statusKegiatan === 'Selesai' ? 'selected' : ''}>Selesai</option>
+                                    <option value="Batal" ${item.statusKegiatan === 'Batal' ? 'selected' : ''}>Batal</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Keterangan</label>
+                                <select id="editKeterangan" class="form-select">
+                                    <option value="">-- Pilih --</option>
+                                    <option value="Diterima" ${item.keterangan === 'Diterima' ? 'selected' : ''}>Diterima</option>
+                                    <option value="Ditolak" ${item.keterangan === 'Ditolak' ? 'selected' : ''}>Ditolak</option>
+                                    <option value="Hubungi Laboran" ${item.keterangan === 'Hubungi Laboran' ? 'selected' : ''}>Hubungi Laboran</option>
+                                </select>
+                            </div>
+                        </div>
+                    `;
+
+                    const result = await Swal.fire({
+                        title: 'Edit Status & Keterangan',
+                        html,
+                        showCancelButton: true,
+                        confirmButtonColor: '#002d5d',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Simpan',
+                        preConfirm: () => ({
+                            statusKegiatan: document.getElementById('editStatus').value,
+                            keterangan: document.getElementById('editKeterangan').value
+                        })
+                    });
+
+                    if (!result.isConfirmed) return;
+
+                    const success = await updateRow(item.rowId, result.value);
+                    if (success) {
+                        Object.assign(item, result.value);
+                        applyFilters();
+                        Swal.fire({ icon: 'success', title: 'Berhasil', text: 'Data diupdate', timer: 1500, showConfirmButton: false });
+                    } else {
+                        Swal.fire({ icon: 'error', title: 'Gagal', text: 'Gagal menyimpan ke Google Sheets' });
+                    }
+                },
+
+                async deleteData(rowId) {
+                    const item = findItem(rowId);
+                    if (!item) return;
+
+                    const confirm = await Swal.fire({
+                        title: 'Konfirmasi Hapus',
+                        text: `Hapus "${item.namaKegiatan}"?`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#dc3545',
+                        confirmButtonText: 'Ya, Hapus'
+                    });
+
+                    if (!confirm.isConfirmed) return;
+
+                    const result = await fetchAPI({ action: 'deleteData', module: 'peminjaman', rowId });
+                    if (result?.success) {
+                        allData = allData.filter(d => String(d.rowId) !== String(rowId));
+                        applyFilters();
+                        Swal.fire({ icon: 'success', title: 'Dihapus', timer: 2000, showConfirmButton: false });
+                    } else {
+                        Swal.fire({ icon: 'error', title: 'Gagal Hapus', text: result?.error || 'Unknown error' });
+                    }
+                }
+            };
+
+            function setDefaultDates() {
+                const today = new Date();
+                const thirtyDaysAgo = new Date(today);
+                thirtyDaysAgo.setDate(today.getDate() - 30);
+                document.getElementById('filterStartDate').value = thirtyDaysAgo.toISOString().split('T')[0];
+                document.getElementById('filterEndDate').value = today.toISOString().split('T')[0];
+            }
+
+            async function updateRow(rowId, data) {
+                const updates = [];
+                for (const [key, value] of Object.entries(data)) {
+                    if (UPDATE_FIELDS[key] && value !== '') {
+                        updates.push(fetchAPI({
+                            action: 'updateData',
+                            module: 'peminjaman',
+                            rowId,
+                            columnName: UPDATE_FIELDS[key],
+                            newValue: value
+                        }));
+                    }
+                }
+                if (updates.length === 0) return true;
+                const results = await Promise.all(updates);
+                return results.every(r => r?.success === true);
+            }
+        })();
+
+        // ─────────────────────────────────────────────
+        // GLOBAL HELPERS
+        // ─────────────────────────────────────────────
+        function applyFilters() {
+            PeminjamanManager.applyFilters();
+        }
+
+        function logout() {
+            Swal.fire({ title: 'Logout?', text: 'Yakin keluar?', icon: 'question', showCancelButton: true, confirmButtonColor: '#002d5d', confirmButtonText: 'Ya' })
+            .then(function(result) {
+                if (result.isConfirmed) {
+                    localStorage.removeItem('admin_logged_in');
+                    localStorage.removeItem('admin_username');
+                    window.location.href = 'index.html';
+                }
+            });
+        }
+
+        // ─────────────────────────────────────────────
+        // INIT
+        // ─────────────────────────────────────────────
+        document.addEventListener("DOMContentLoaded", function() {
+            if (localStorage.getItem('admin_logged_in') !== 'true') {
+                window.location.href = 'index.html';
+                return;
+            }
+            const username = localStorage.getItem('admin_username') || 'Admin';
+            const initials = username.substring(0, 2).toUpperCase();
+            document.getElementById('adminName').textContent = username;
+            document.getElementById('userInitials').textContent = initials;
+            document.getElementById('userInitialsHeader').textContent = initials;
+            document.getElementById('welcomeText').textContent = 'Kelola Peminjaman - ' + username;
+
+            PeminjamanManager.init();
+        });
+    </script>
+</body>
+</html>

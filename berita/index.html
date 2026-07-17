@@ -57,13 +57,68 @@
             color: #4b5563;
         }
         .news-header-image {
-            width: 100%;
-            height: 450px;
-            object-fit: cover;
-            border-radius: 15px 15px 0 0;
-        }
+                                    width: 100%;
+                                    height: 450px;
+                                    object-fit: contain;
+                                    border-radius: 15px 15px 0 0;
+                                    background: #f5f5f5;
+                                }
+                .news-header-wrapper {
+                                    position: relative;
+                                    width: 100%;
+                                    height: 450px;
+                                    border-radius: 15px 15px 0 0;
+                                    overflow: hidden;
+                                }
+                .news-header-wrapper::before {
+                                    content: '';
+                                    position: absolute;
+                                    top: 0; left: 0; width: 100%; height: 100%;
+                                    background-image: inherit;
+                                    background-size: cover;
+                                    background-position: center;
+                                    filter: blur(40px) brightness(0.6);
+                                    transform: scale(1.3);
+                                    z-index: 0;
+                                }
+                .news-header-wrapper .news-header-image {
+                                    position: relative;
+                                    z-index: 1;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: contain;
+                                    border-radius: 15px 15px 0 0;
+                                }
+                .zoomable-image { transition: transform 0.2s ease; }
+                .zoomable-image:hover { transform: scale(1.02); }
+        
+                /* Image Zoom Modal */
+                .image-zoom-overlay {
+                    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                    background: rgba(0,0,0,0.95); z-index: 9999;
+                    display: flex; align-items: center; justify-content: center;
+                    opacity: 0; visibility: hidden; transition: all 0.3s ease;
+                }
+                .image-zoom-overlay.active { opacity: 1; visibility: visible; }
+                .image-zoom-overlay img {
+                    max-width: 90%; max-height: 90%; object-fit: contain;
+                    transform: scale(0.8); transition: transform 0.3s ease;
+                }
+                .image-zoom-overlay.active img { transform: scale(1); }
+                .image-zoom-close {
+                    position: absolute; top: 30px; right: 40px;
+                    width: 50px; height: 50px; background: rgba(255,255,255,0.1);
+                    border: none; border-radius: 50%; color: white; font-size: 24px;
+                    cursor: pointer; display: flex; align-items: center; justify-content: center;
+                    transition: background 0.2s;
+                }
+                .image-zoom-close:hover { background: rgba(255,255,255,0.3); }
+                .image-zoom-caption {
+                    position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+                    color: white; font-size: 1rem; max-width: 80%; text-align: center;
+                }
 
-        /* SIDEBAR LAINNYA */
+                /* SIDEBAR LAINNYA */
         .sidebar-title {
             font-weight: 700;
             color: var(--umb-blue);
@@ -88,9 +143,11 @@
             transform: translateY(-2px);
         }
         .other-news-img {
-            width: 70px; height: 70px;
-            border-radius: 8px; object-fit: cover; flex-shrink: 0;
-        }
+                    width: 70px; height: 70px;
+                    border-radius: 8px; object-fit: contain; flex-shrink: 0;
+                    background: #f5f5f5;
+                }
+                }
         .other-news-title {
             font-size: 0.85rem; font-weight: 600; color: #1a1a1a;
             margin-bottom: 4px; line-height: 1.4;
@@ -253,57 +310,102 @@
 
             fetch(url)
                 .then(res => res.text())
-                .then(text => {
-                    const rows = parseCSV(text);
-                    rows.shift();
-                    const validRows = rows.filter(row => row.length > 1 && row[0].trim() !== "");
+                                .then(text => {
+                                    const rows = parseCSV(text);
+                                    rows.shift();
+                                    const validRows = rows.filter(row => row.length > 1 && row[0].trim() !== "");
 
-                    const item = validRows.find(r => r[0] && r[0].toString() === currentBeritaId);
-                    if (item) {
-                        const tgl = item[1] || '';
-                        const jdl = item[2] || 'Tanpa Judul';
-                        const img = item[3] || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1000';
-                        const isi = item[4] || '';
+                                    const item = validRows.find(r => r[0] && r[0].toString() === currentBeritaId);
+                                                                        if (item) {
+                                                                            const id = item[0] || '';
+                                                                            const tanggal = item[1] || '';
+                                                                            const judul = item[2] || 'Tanpa Judul';
+                                                                            const img = item[3] || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1000';
+                                                                            const isi = item[4] || '';
 
-                        detailContainer.innerHTML = `
-                            <img src="${img}" class="news-header-image" alt="${jdl}" onerror="this.src='https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1000'">
-                            <div class="card-body p-4 p-md-5">
-                                <div class="mb-2 text-primary fw-bold text-uppercase small"><i class="far fa-calendar-alt me-1"></i> ${tgl}</div>
-                                <h1 class="fw-bold mb-4" style="color: #1a1a1a; line-height: 1.3;">${jdl}</h1>
-                                <hr class="mb-4" style="opacity: 0.1;">
-                                <div class="konten-berita">${isi}</div>
-                            </div>`;
-                        
-                        loading.classList.add('d-none');
-                        detailContainer.classList.remove('d-none');
-                        document.title = jdl + " | Lab IF UM Bandung";
-                    }
+                                        detailContainer.innerHTML = `
+                                                                                                                                                    <div class="news-header-wrapper" style="background-image: url('${img}')">
+                                                                                                                                                        <img src="${img}" class="news-header-image zoomable-image" alt="${judul}" onerror="this.src='https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1000'" style="cursor: zoom-in;">
+                                                                                                                                                    </div>
+                                                                                                                                                    <div class="card-body p-4 p-md-5">
+                                                                                                                <div class="mb-2 text-primary fw-bold text-uppercase small"><i class="far fa-calendar-alt me-1"></i> ${tanggal}</div>
+                                                                                                                <h1 class="fw-bold mb-4" style="color: #1a1a1a; line-height: 1.3;">${judul}</h1>
+                                                                                                                <hr class="mb-4" style="opacity: 0.1;">
+                                                                                                                <div class="konten-berita">${isi}</div>
+                                                                                                            </div>`;
 
-                    let sidebarHtml = '';
-                    const otherNews = validRows
-                        .filter(r => r[0] && r[0].toString() !== currentBeritaId)
-                        .reverse()
-                        .slice(0, 5);
+                                        loading.classList.add('d-none');
+                                        detailContainer.classList.remove('d-none');
+                                        document.title = judul + " | Lab IF UM Bandung";
+                                    }
 
-                    otherNews.forEach(news => {
-                        const id = news[0];
-                        const tgl = news[1];
-                        const judul = news[2];
-                        const gambar = news[3] || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=200';
-                        
-                        sidebarHtml += `
-                            <a href="index.html?id=${id}" class="other-news-item">
-                                <img src="${gambar}" class="other-news-img" alt="${judul}" onerror="this.src='https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=200'">
-                                <div class="other-news-content">
-                                    <h6 class="other-news-title">${judul}</h6>
-                                    <span class="other-news-date">${tgl}</span>
-                                </div>
-                            </a>`;
-                    });
+                                    let sidebarHtml = '';
+                                    const otherNews = validRows
+                                        .filter(r => r[0] && r[0].toString() !== currentBeritaId)
+                                        .reverse()
+                                        .slice(0, 5);
 
-                    sidebarContainer.innerHTML = sidebarHtml || '<p class="text-muted small">Tidak ada informasi lainnya.</p>';
-                });
-        });
-    </script>
-</body>
-</html>
+                                    otherNews.forEach(news => {
+                                                                            const id = news[0];
+                                                                            const tanggal = news[1];
+                                                                            const judul = news[2];
+                                                                            const gambar = news[3] || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=200';
+
+                                        sidebarHtml += `
+                                            <a href="index.html?id=${id}" class="other-news-item">
+                                                <img src="${gambar}" class="other-news-img" alt="${judul}" onerror="this.src='https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=200'">
+                                                <div class="other-news-content">
+                                                    <h6 class="other-news-title">${judul}</h6>
+                                                    <span class="other-news-date">${tgl}</span>
+                                                </div>
+                                            </a>`;
+                                    });
+
+                                    sidebarContainer.innerHTML = sidebarHtml || '<p class="text-muted small">Tidak ada informasi lainnya.</p>';
+                                                                    });
+                                            });
+
+                                        // Image Zoom Functionality
+                                        const zoomOverlay = document.createElement('div');
+                                        zoomOverlay.className = 'image-zoom-overlay';
+                                        zoomOverlay.innerHTML = `
+                                            <button class="image-zoom-close" aria-label="Tutup">&times;</button>
+                                            <img src="" alt="">
+                                            <div class="image-zoom-caption"></div>
+                                        `;
+                                        document.body.appendChild(zoomOverlay);
+
+                                        const zoomImg = zoomOverlay.querySelector('img');
+                                        const zoomCaption = zoomOverlay.querySelector('.image-zoom-caption');
+                                        const zoomClose = zoomOverlay.querySelector('.image-zoom-close');
+
+                                        function openZoom(src, alt) {
+                                            zoomImg.src = src;
+                                            zoomImg.alt = alt;
+                                            zoomCaption.textContent = alt;
+                                            zoomOverlay.classList.add('active');
+                                            document.body.style.overflow = 'hidden';
+                                        }
+
+                                        function closeZoom() {
+                                            zoomOverlay.classList.remove('active');
+                                            document.body.style.overflow = '';
+                                        }
+
+                                        zoomClose.addEventListener('click', closeZoom);
+                                        zoomOverlay.addEventListener('click', (e) => {
+                                            if (e.target === zoomOverlay) closeZoom();
+                                        });
+                                        document.addEventListener('keydown', (e) => {
+                                            if (e.key === 'Escape' && zoomOverlay.classList.contains('active')) closeZoom();
+                                        });
+
+                                        // Delegate click on news header image
+                                        document.addEventListener('click', (e) => {
+                                            if (e.target.classList.contains('zoomable-image')) {
+                                                openZoom(e.target.src, e.target.alt);
+                                            }
+                                        });
+                                    </script>
+                                    </body>
+                                    </html>
