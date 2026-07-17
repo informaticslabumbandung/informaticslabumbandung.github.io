@@ -209,27 +209,29 @@
         }
 
         async function loadBeritaData() {
-                    try {
-                                            Swal.fire({ title: 'Memuat Data...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-                                            const rawData = await gsAPI.loadData('berita');
-                                            // Map API fields (exact Google Sheet headers) to expected field names
-                                            beritaData = rawData.map(item => ({
-                                                                        iDBerita: item['ID Berita'] || item.iDBerita || item.id,
-                                                                        judulBerita: item['Judul Berita'] || item.judulBerita,
-                                                                        linkGambar: item['Link Gambar'] || item.linkGambar,
-                                                                        isiBerita: item['Isi Berita'] || item.isiBerita,
-                                                                        tanggal: item['Tanggal'] || item.tanggal,
-                                                                        rowId: item.rowId
-                                                                    })).filter(item => item.judulBerita || item.isiBerita);
-                                            updateStats(beritaData);
-                                            renderCards(beritaData);
-                                            renderTable(beritaData);
-                                            Swal.close();
-                                        } catch (error) {
-                                            console.error('Error:', error);
-                                            Swal.fire({ icon: 'error', title: 'Gagal Memuat', text: 'Tidak dapat memuat data dari Google Sheets' });
-                                        }
-                                    }
+                                    try {
+                                                            Swal.fire({ title: 'Memuat Data...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+                                                            const rawData = await gsAPI.loadData('berita');
+                                                            console.log('Raw data from API:', rawData); // DEBUG
+                                                            // Robust mapping: handle both camelCase (from GAS) and original headers (with spaces)
+                                                            beritaData = rawData.map(item => ({
+                                                                                        iDBerita: item.idBerita || item.id || item['ID Berita'] || item['Id Berita'] || item.iDBerita,
+                                                                                        judulBerita: item.judulBerita || item['Judul Berita'] || item.judul || item.title,
+                                                                                        linkGambar: item.linkGambar || item['Link Gambar'] || item['link gambar'] || item.gambar || item.image,
+                                                                                        isiBerita: item.isiBerita || item['Isi Berita'] || item['isi berita'] || item.konten || item.content,
+                                                                                        tanggal: item.tanggal || item['Tanggal'] || item.date,
+                                                                                        rowId: item.rowId
+                                                                                    })).filter(item => item.judulBerita || item.isiBerita);
+                                                            console.log('Mapped beritaData:', beritaData); // DEBUG
+                                                            updateStats(beritaData);
+                                                            renderCards(beritaData);
+                                                            renderTable(beritaData);
+                                                            Swal.close();
+                                                        } catch (error) {
+                                                            console.error('Error:', error);
+                                                            Swal.fire({ icon: 'error', title: 'Gagal Memuat', text: 'Tidak dapat memuat data dari Google Sheets: ' + error.message });
+                                                        }
+                                                    }
 
         function updateStats(data) {
                                     document.getElementById('totalBerita').textContent = data.length;
@@ -400,17 +402,17 @@
         }
 
         async function updateBeritaInSheet(rowId, data) {
-                            try {
-                                // Gunakan columnName (header) bukan index - Apps Script auto-detect column position
-                                await Promise.all([
-                                    fetch(gsAPI.appsScriptURL + '?action=updateData&module=berita&rowId=' + rowId + '&columnName=judul&newValue=' + encodeURIComponent(data.judul)),
-                                    fetch(gsAPI.appsScriptURL + '?action=updateData&module=berita&rowId=' + rowId + '&columnName=konten&newValue=' + encodeURIComponent(data.konten)),
-                                    fetch(gsAPI.appsScriptURL + '?action=updateData&module=berita&rowId=' + rowId + '&columnName=tanggal&newValue=' + encodeURIComponent(data.tanggal)),
-                                    fetch(gsAPI.appsScriptURL + '?action=updateData&module=berita&rowId=' + rowId + '&columnName=gambar&newValue=' + encodeURIComponent(data.gambar))
-                                ]);
-                                return true;
-                            } catch(e) { console.error('Update error:', e); return false; }
-                        }
+                                    try {
+                                        // Gunakan columnName (header) yang sesuai dengan Google Sheets: "Judul Berita", "Isi Berita", "Tanggal", "Link Gambar"
+                                        await Promise.all([
+                                            fetch(gsAPI.appsScriptURL + '?action=updateData&module=berita&rowId=' + rowId + '&columnName=' + encodeURIComponent('Judul Berita') + '&newValue=' + encodeURIComponent(data.judul)),
+                                            fetch(gsAPI.appsScriptURL + '?action=updateData&module=berita&rowId=' + rowId + '&columnName=' + encodeURIComponent('Isi Berita') + '&newValue=' + encodeURIComponent(data.konten)),
+                                            fetch(gsAPI.appsScriptURL + '?action=updateData&module=berita&rowId=' + rowId + '&columnName=' + encodeURIComponent('Tanggal') + '&newValue=' + encodeURIComponent(data.tanggal)),
+                                            fetch(gsAPI.appsScriptURL + '?action=updateData&module=berita&rowId=' + rowId + '&columnName=' + encodeURIComponent('Link Gambar') + '&newValue=' + encodeURIComponent(data.gambar))
+                                        ]);
+                                        return true;
+                                    } catch(e) { console.error('Update error:', e); return false; }
+                                }
 
         async function deleteBerita(index) {
                     const item = beritaData[index];
@@ -466,15 +468,15 @@
                                                         };
 
                         try {
-                            const success = await gsAPI.addData('berita', newData);
-                if (success) {
-                    Swal.fire({ icon: 'success', title: 'Berita Tersimpan', text: 'Berita berhasil disimpan ke Google Sheets', confirmButtonColor: '#002d5d' })
-                    .then(() => {
-                        bootstrap.Modal.getInstance(document.getElementById('addModal')).hide();
-                        form.reset();
-                        loadBeritaData();
-                    });
-                } else { throw new Error('Gagal menyimpan'); }
+                                                    const success = await gsAPI.addData('berita', newData);
+                                        if (success) {
+                                            Swal.fire({ icon: 'success', title: 'Berita Tersimpan', text: 'Berita berhasil disimpan ke Google Sheets', confirmButtonColor: '#002d5d' })
+                                            .then(() => {
+                                                bootstrap.Modal.getInstance(document.getElementById('addModal')).hide();
+                                                form.reset();
+                                                window.location.reload();
+                                            });
+                                        } else { throw new Error('Gagal menyimpan'); }
             } catch (error) {
                 Swal.fire({ icon: 'error', title: 'Gagal Menyimpan', text: 'Tidak dapat menyimpan data ke Google Sheets', confirmButtonColor: '#dc3545' });
             }

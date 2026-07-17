@@ -180,58 +180,80 @@
             }
 
             async function fetchAPI(params) {
-                const url = new URL(API_URL);
-                Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
-                const res = await fetch(url);
-                return res.json();
-            }
+                            const url = new URL(API_URL);
+                            Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
+                            // Cache busting untuk GET getData
+                            if (params.action === 'getData') {
+                                url.searchParams.set('_', Date.now().toString());
+                            }
+                            console.log('[Peminjaman] Request:', url.toString()); // DEBUG
+                            const res = await fetch(url);
+                            console.log('[Peminjaman] Response status:', res.status); // DEBUG
+                            const json = await res.json();
+                            console.log('[Peminjaman] Response data:', json); // DEBUG
+                            return json;
+                        }
 
             function mapRow(item) {
-                return {
-                    rowId: item.rowId,
-                    timestamp: item.timestamp,
-                    emailAddress: item.emailAddress,
-                    namaKegiatan: item.namaKegiatan,
-                    namaPIC: item.namaPIC,
-                    nomorWhatsAppPIC: item.nomorWhatsAppPIC,
-                    tanggalKegiatan: item.tanggalKegiatan,
-                    suratPeminjaman: item.suratPeminjaman,
-                    waktuMulaiKegiatan: item.waktuMulaiKegiatan,
-                    waktuSelesaiKegiatan: item.waktuSelesaiKegiatan,
-                    keterangan: item.keterangan,
-                    statusKegiatan: item.statusKegiatan
-                };
-            }
+                            const mapped = {
+                                rowId: item.rowId,
+                                timestamp: item.timestamp,
+                                emailAddress: item.emailAddress,
+                                namaKegiatan: item.namaKegiatan,
+                                namaPIC: item.namaPIC,
+                                nomorWhatsAppPIC: item.nomorWhatsAppPIC,
+                                tanggalKegiatan: item.tanggalKegiatan,
+                                suratPeminjaman: item.suratPeminjaman,
+                                waktuMulaiKegiatan: item.waktuMulaiKegiatan,
+                                waktuSelesaiKegiatan: item.waktuSelesaiKegiatan,
+                                keterangan: item.keterangan,
+                                statusKegiatan: item.statusKegiatan
+                            };
+                            console.log('[Peminjaman] mapRow:', {rowId: mapped.rowId, tanggalKegiatan: mapped.tanggalKegiatan, namaKegiatan: mapped.namaKegiatan}); // DEBUG
+                            return mapped;
+                        }
 
             async function loadData() {
-                const result = await fetchAPI({ action: 'getData', module: 'peminjaman' });
-                if (Array.isArray(result)) {
-                    allData = result.map(mapRow);
-                    applyFilters();
-                } else {
-                    throw new Error(result?.error || 'Gagal memuat data');
-                }
-            }
+                                                    Swal.fire({ title: 'Memuat Data...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+                                                    try {
+                                                        const result = await fetchAPI({ action: 'getData', module: 'peminjaman' });
+                                                        console.log('[Peminjaman] loadData result type:', Array.isArray(result) ? 'array' : typeof result, result); // DEBUG
+                                                        Swal.close();
+                                                        if (Array.isArray(result)) {
+                                                            allData = result.map(mapRow);
+                                                            console.log('[Peminjaman] Mapped allData:', allData.length, 'rows'); // DEBUG
+                                                            applyFilters();
+                                                        } else {
+                                                            throw new Error(result?.error || 'Gagal memuat data');
+                                                        }
+                                                    } catch (error) {
+                                                        Swal.close();
+                                                        console.error('Error loading peminjaman:', error);
+                                                        Swal.fire({ icon: 'error', title: 'Gagal Memuat', text: 'Tidak dapat memuat data dari Google Sheets: ' + error.message });
+                                                    }
+                                                }
 
             function applyFilters() {
-                const status = document.getElementById('filterStatus').value;
-                const start = document.getElementById('filterStartDate').value;
-                const end = document.getElementById('filterEndDate').value;
+                            const status = document.getElementById('filterStatus').value;
+                            const start = document.getElementById('filterStartDate').value;
+                            const end = document.getElementById('filterEndDate').value;
+                            console.log('[Peminjaman] applyFilters:', {status, start, end, allDataCount: allData.length}); // DEBUG
 
-                let filtered = allData.filter(item => {
-                    if (status && (item.statusKegiatan || '').toLowerCase() !== status.toLowerCase()) return false;
-                    if (start && new Date(item.tanggalKegiatan) < new Date(start)) return false;
-                    if (end) {
-                        const endDate = new Date(end);
-                        endDate.setHours(23, 59, 59);
-                        if (new Date(item.tanggalKegiatan) > endDate) return false;
-                    }
-                    return true;
-                });
+                            let filtered = allData.filter(item => {
+                                if (status && (item.statusKegiatan || '').toLowerCase() !== status.toLowerCase()) return false;
+                                if (start && new Date(item.tanggalKegiatan) < new Date(start)) return false;
+                                if (end) {
+                                    const endDate = new Date(end);
+                                    endDate.setHours(23, 59, 59);
+                                    if (new Date(item.tanggalKegiatan) > endDate) return false;
+                                }
+                                return true;
+                            });
 
-                filtered.sort((a, b) => new Date(b.tanggalKegiatan) - new Date(a.tanggalKegiatan));
-                renderTable(filtered);
-            }
+                            console.log('[Peminjaman] Filtered:', filtered.length, 'rows'); // DEBUG
+                            filtered.sort((a, b) => new Date(b.tanggalKegiatan) - new Date(a.tanggalKegiatan));
+                            renderTable(filtered);
+                        }
 
             function renderTable(data) {
                 const tbody = document.querySelector('#peminjamanTable tbody');
@@ -358,14 +380,13 @@
 
                     if (!result.isConfirmed) return;
 
-                    const success = await updateRow(item.rowId, result.value);
-                    if (success) {
-                        Object.assign(item, result.value);
-                        applyFilters();
-                        Swal.fire({ icon: 'success', title: 'Berhasil', text: 'Data diupdate', timer: 1500, showConfirmButton: false });
-                    } else {
-                        Swal.fire({ icon: 'error', title: 'Gagal', text: 'Gagal menyimpan ke Google Sheets' });
-                    }
+                                        const success = await updateRow(item.rowId, result.value);
+                                        if (success) {
+                                            Swal.fire({ icon: 'success', title: 'Berhasil', text: 'Data diupdate', timer: 1500, showConfirmButton: false })
+                                                .then(() => window.location.reload());
+                                        } else {
+                                            Swal.fire({ icon: 'error', title: 'Gagal', text: 'Gagal menyimpan ke Google Sheets' });
+                                        }
                 },
 
                 async deleteData(rowId) {
@@ -395,12 +416,11 @@
             };
 
             function setDefaultDates() {
-                const today = new Date();
-                const thirtyDaysAgo = new Date(today);
-                thirtyDaysAgo.setDate(today.getDate() - 30);
-                document.getElementById('filterStartDate').value = thirtyDaysAgo.toISOString().split('T')[0];
-                document.getElementById('filterEndDate').value = today.toISOString().split('T')[0];
-            }
+                            // Jangan set default tanggal - biarkan kosong agar semua data tampil
+                            // User bisa filter manual jika perlu
+                            document.getElementById('filterStartDate').value = '';
+                            document.getElementById('filterEndDate').value = '';
+                        }
 
             async function updateRow(rowId, data) {
                 const updates = [];
