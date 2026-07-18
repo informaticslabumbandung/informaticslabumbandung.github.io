@@ -222,12 +222,15 @@
                 btnText.textContent = 'Memproses...';
 
                 try {
-                    const resp = await fetch(GAS_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ action: 'login', password: password })
-                    });
-                    const data = await resp.json();
+                                    const formData = new URLSearchParams();
+                                    formData.append('action', 'login');
+                                    formData.append('password', password);
+                                    const resp = await fetch(GAS_URL, {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                        body: formData.toString()
+                                    });
+                                    const data = await resp.json();
 
                     if (data.ok && data.token) {
                         // Store token and redirect
