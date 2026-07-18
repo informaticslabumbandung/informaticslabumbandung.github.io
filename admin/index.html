@@ -73,8 +73,10 @@ form.addEventListener('submit', e => {
   if (u !== VALID_USER) return showErr('Username salah');
   if (p !== VALID_PASS) return showErr('Password salah');
 
-  // login sukses
-  sessionStorage.setItem('adminLoggedIn', '1');
+  // login sukses – set localStorage agar dashboard bisa cek
+  localStorage.setItem('admin_logged_in', 'true');
+  localStorage.setItem('admin_username', u);
+  localStorage.setItem('login_time', Date.now().toString());
   location.href = 'dashboard.html';
 });
 
@@ -84,8 +86,8 @@ function showErr(msg){
   document.getElementById('pwd').focus();
 }
 
-// auto redirect jika sudah login di tab ini
-if (sessionStorage.getItem('adminLoggedIn') === '1') {
+// auto redirect jika sudah login
+if (localStorage.getItem('admin_logged_in') === 'true') {
   location.href = 'dashboard.html';
 }
 </script>
